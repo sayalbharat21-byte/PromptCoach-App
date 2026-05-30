@@ -518,10 +518,9 @@ const PROMPT_LIBRARY = [
 
 /* ── API ── */
 async function callClaude(messages, system, maxTokens) {
-  const apiKey = "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";
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+  const res = await fetch("/api/claude", {
     method:"POST",
-    headers:{ "Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true" },
+    headers:{ "Content-Type":"application/json" },
     body:JSON.stringify({ model:"claude-haiku-4-5-20251001", max_tokens:maxTokens||450, system, messages }),
   });
   const data = await res.json();
