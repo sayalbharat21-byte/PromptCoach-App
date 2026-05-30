@@ -518,7 +518,7 @@ const PROMPT_LIBRARY = [
 
 /* ── API ── */
 async function callClaude(messages, system, maxTokens) {
-  const apiKey = "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";
+  const apiKey = "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";
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method:"POST",
     headers:{ "Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true" },
