@@ -22,19 +22,20 @@ const STYLES = `
   body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; }
   body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 90% 60% at 15% -5%,rgba(99,102,241,0.16) 0%,transparent 55%),radial-gradient(ellipse 60% 40% at 85% 105%,rgba(16,185,129,0.08) 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 50% 50%,rgba(99,102,241,0.03) 0%,transparent 70%); pointer-events:none; z-index:0; animation:ambientShift 12s ease-in-out infinite alternate; }
   @keyframes ambientShift { 0% { opacity:1; transform:scale(1) translateY(0); } 100% { opacity:0.75; transform:scale(1.04) translateY(-8px); } }
+  html { background:#07090f; }
   #root { min-height:100vh; display:block; }
-  html, body { margin:0; padding:0; }
-  .shell { position:relative; z-index:1; max-width:860px; margin:0 auto; padding:0 28px 100px; min-height:100vh; }
-  .top-bar { display:flex; align-items:center; justify-content:space-between; padding:24px 0 28px; }
+  html, body { margin:0; padding:0; overflow-x:hidden; }
+  .shell { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 28px 80px; min-height:100vh; }
+  .top-bar { display:flex; align-items:center; justify-content:space-between; padding:16px 0 18px; }
   .brand { display:flex; align-items:center; gap:13px; }
-  .brand-icon { width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,var(--indigo),var(--indigo-d)); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:var(--shadow-primary); transition:transform 0.2s var(--ease),box-shadow 0.2s; }
+  .brand-icon { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--indigo),var(--indigo-d)); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:var(--shadow-primary); transition:transform 0.2s var(--ease),box-shadow 0.2s; }
   .brand-icon:hover { transform:scale(1.05) rotate(-3deg); }
   .brand-name { font-size:clamp(18px,2.2vw,24px); font-weight:800; color:var(--text); letter-spacing:-0.5px; }
   .brand-name span { color:var(--indigo-l); }
-  .hero { padding:4px 0 32px; }
-  .hero h1 { font-size:clamp(32px,5vw,56px); font-weight:800; line-height:1.1; letter-spacing:-1.5px; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:14px; }
-  .hero p { font-size:clamp(15px,1.8vw,19px); color:var(--text2); line-height:1.7; max-width:580px; }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:20px; margin-bottom:14px; position:relative; overflow:hidden; box-shadow:var(--shadow-card); transition:border-color 0.2s,box-shadow 0.2s; }
+  .hero { padding:2px 0 16px; }
+  .hero h1 { font-size:clamp(24px,3.5vw,44px); font-weight:800; line-height:1.1; letter-spacing:-1.5px; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:14px; }
+  .hero p { font-size:clamp(14px,1.4vw,17px); color:var(--text2); line-height:1.6; max-width:580px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:var(--shadow-card); transition:border-color 0.2s,box-shadow 0.2s; }
   .card::before { content:''; position:absolute; inset:0; background:linear-gradient(145deg,rgba(255,255,255,0.03) 0%,transparent 50%); pointer-events:none; }
   .card:hover { border-color:var(--border2); }
   .card-accent { border-left:2px solid var(--indigo); box-shadow:var(--shadow-card),-2px 0 20px rgba(99,102,241,0.08); }
@@ -148,9 +149,9 @@ const STYLES = `
   .nav-item.active .nav-icon-wrap { background:rgba(99,102,241,0.18); border-color:rgba(99,102,241,0.35); box-shadow:0 2px 12px rgba(99,102,241,0.25); }
   .nav-icon-wrap { width:clamp(44px,5vw,56px); height:clamp(28px,3vw,36px); border-radius:999px; border:1px solid transparent; display:flex; align-items:center; justify-content:center; font-size:16px; transition:all 0.2s var(--ease); }
   .nav-label { font-size:clamp(10px,1vw,13px); font-weight:600; transition:all 0.2s; }
-  .lesson-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); margin-bottom:10px; overflow:hidden; cursor:pointer; transition:all 0.2s var(--ease); box-shadow:var(--shadow-card); }
+  .lesson-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); margin-bottom:8px; overflow:hidden; cursor:pointer; transition:all 0.2s var(--ease); box-shadow:var(--shadow-card); }
   .lesson-block:hover { border-color:var(--border2); transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
-  .lesson-header { display:flex; align-items:center; justify-content:space-between; padding:20px 22px; gap:12px; }
+  .lesson-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; gap:12px; }
   .lesson-icon { width:clamp(38px,4vw,50px); height:clamp(38px,4vw,50px); border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:clamp(19px,2vw,26px); flex-shrink:0; }
   .lesson-body { padding:16px 18px 20px; border-top:1px solid var(--border); animation:fadeDown 0.22s var(--ease); }
   .lib-cat-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
@@ -931,7 +932,7 @@ export default function PromptCoach() {
             React.createElement("div",{className:"brand-icon",style:{fontFamily:"serif",fontSize:14,fontWeight:900,letterSpacing:"-1px",color:"#fff"}},"PC"),
             React.createElement("div", null,
               React.createElement("div",{className:"brand-name"},"Prompt",React.createElement("span",null,"Coach")),
-              React.createElement("div",{style:{fontSize:9,color:"var(--text3)",letterSpacing:"0.3px",marginTop:-1}},"The AI expert in your pocket")
+              React.createElement("div",{style:{fontSize:"clamp(11px,1vw,14px)",color:"var(--text2)",letterSpacing:"0.3px",marginTop:1,fontWeight:500}},"The AI expert in your pocket")
             )
           ),
 
@@ -973,8 +974,8 @@ export default function PromptCoach() {
             React.createElement("div",{style:{display:"flex",gap:5,marginBottom:16,background:"var(--surface)",borderRadius:"var(--r-md)",padding:5,border:"1px solid var(--border)"}},
               [{id:"wizard",icon:"+",label:"Build",sub:"8 guided questions"},{id:"improve",icon:"W",label:"Improve",sub:"Upgrade a prompt"},{id:"compare",icon:"=",label:"Compare",sub:"A vs B side by side"}].map(function(m){
                 return React.createElement("button",{key:m.id,onClick:function(){ switchMode(m.id); },style:{flex:1,padding:"8px 2px",borderRadius:"var(--r-sm)",border:"none",cursor:"pointer",background:bMode===m.id?"linear-gradient(135deg,var(--indigo),var(--indigo-d))":"transparent",color:bMode===m.id?"#fff":"var(--text2)",fontFamily:"'Plus Jakarta Sans',sans-serif",textAlign:"center",transition:"all 0.18s",boxShadow:bMode===m.id?"0 4px 14px rgba(99,102,241,0.3)":"none"}},
-                  React.createElement("div",{style:{fontSize:10,fontWeight:700}},m.label),
-                  React.createElement("div",{style:{fontSize:9,opacity:0.7,marginTop:1}},m.sub)
+                  React.createElement("div",{style:{fontSize:"clamp(13px,1.3vw,16px)",fontWeight:700}},m.label),
+                  React.createElement("div",{style:{fontSize:"clamp(11px,1.1vw,13px)",opacity:0.85,marginTop:2}},m.sub)
                 );
               })
             ),
