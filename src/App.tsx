@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   :root {
     --bg:#07090f; --bg2:#0c0f1a; --surface:#0f1320; --surface2:#141827;
-    --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
+    --border:rgba(255,255,255,0.09); --border2:rgba(255,255,255,0.14);
     --indigo:#6366f1; --indigo-l:#818cf8; --indigo-d:#4338ca;
     --emerald:#10b981; --rose:#f43f5e; --amber:#f59e0b; --sky:#38bdf8;
-    --text:#f1f5f9; --text2:#94a3b8; --text3:#475569;
-    --r-sm:9px; --r-md:14px; --r-lg:20px;
+    --text:#f1f5f9; --text2:#a9b6c9; --text3:#74839a;
+    --r-sm:8px; --r-md:12px; --r-lg:16px;
     --ease:cubic-bezier(0.4,0,0.2,1);
+    --ease-out:cubic-bezier(0.16,1,0.3,1); --dur-fast:140ms; --dur-base:220ms; --dur-slow:360ms;
     --shadow-card:0 1px 3px rgba(0,0,0,0.4),0 4px 16px rgba(0,0,0,0.25);
     --shadow-primary:0 4px 20px rgba(99,102,241,0.35),0 1px 4px rgba(99,102,241,0.2);
     --shadow-primary-hover:0 8px 30px rgba(99,102,241,0.5),0 2px 8px rgba(99,102,241,0.3);
@@ -20,36 +21,36 @@ const STYLES = `
   ::-webkit-scrollbar-thumb { background:rgba(99,102,241,0.35); border-radius:999px; }
   ::-webkit-scrollbar-thumb:hover { background:rgba(99,102,241,0.6); }
   body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; }
-  body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 90% 60% at 15% -5%,rgba(99,102,241,0.16) 0%,transparent 55%),radial-gradient(ellipse 60% 40% at 85% 105%,rgba(16,185,129,0.08) 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 50% 50%,rgba(99,102,241,0.03) 0%,transparent 70%); pointer-events:none; z-index:0; animation:ambientShift 12s ease-in-out infinite alternate; }
+  body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 90% 55% at 15% -5%,rgba(99,102,241,0.06) 0%,transparent 55%); pointer-events:none; z-index:0; }
   @keyframes ambientShift { 0% { opacity:1; transform:scale(1) translateY(0); } 100% { opacity:0.75; transform:scale(1.04) translateY(-8px); } }
   html { background:#07090f; }
   #root { min-height:100vh; display:block; }
   html, body { margin:0; padding:0; overflow-x:hidden; }
-  .shell { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 28px 80px; min-height:100vh; }
+  .shell { position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:0 28px 96px; min-height:100vh; }
   .top-bar { display:flex; align-items:center; justify-content:space-between; padding:16px 0 18px; }
   .brand { display:flex; align-items:center; gap:13px; }
   .brand-icon { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--indigo),var(--indigo-d)); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:var(--shadow-primary); transition:transform 0.2s var(--ease),box-shadow 0.2s; }
   .brand-icon:hover { transform:scale(1.05) rotate(-3deg); }
   .brand-name { font-size:clamp(18px,2.2vw,24px); font-weight:800; color:var(--text); letter-spacing:-0.5px; }
   .brand-name span { color:var(--indigo-l); }
-  .hero { padding:2px 0 16px; }
-  .hero h1 { font-size:clamp(24px,3.5vw,44px); font-weight:800; line-height:1.1; letter-spacing:-1.5px; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:14px; }
-  .hero p { font-size:clamp(14px,1.4vw,17px); color:var(--text2); line-height:1.6; max-width:580px; }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:var(--shadow-card); transition:border-color 0.2s,box-shadow 0.2s; }
+  .hero { padding:2px 0 8px; }
+  .hero h1 { font-size:clamp(21px,2.6vw,30px); font-weight:800; line-height:1.15; letter-spacing:-0.8px; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:7px; }
+  .hero p { font-size:clamp(13px,1.2vw,15px); color:var(--text2); line-height:1.5; max-width:580px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.45),0 8px 24px rgba(0,0,0,0.22); transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out); }
   .card::before { content:''; position:absolute; inset:0; background:linear-gradient(145deg,rgba(255,255,255,0.03) 0%,transparent 50%); pointer-events:none; }
-  .card:hover { border-color:var(--border2); }
+  @media (hover:hover) { .card:hover { background:var(--surface2); border-color:var(--border2); transform:translateY(-1px); } }
   .card-accent { border-left:2px solid var(--indigo); box-shadow:var(--shadow-card),-2px 0 20px rgba(99,102,241,0.08); }
   .card-title { font-size:clamp(16px,1.8vw,22px); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
   .card-title .icon { width:30px; height:30px; border-radius:9px; background:rgba(99,102,241,0.13); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; box-shadow:0 2px 8px rgba(99,102,241,0.15); }
-  .card-sub { font-size:clamp(13px,1.4vw,17px); color:var(--text2); line-height:1.65; margin-bottom:16px; }
-  textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; padding:14px 16px; resize:vertical; outline:none; line-height:1.7; min-height:108px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
+  .card-sub { font-size:clamp(13px,1.4vw,17px); color:var(--text2); line-height:1.6; margin-bottom:12px; }
+  textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; padding:13px 16px; resize:vertical; outline:none; line-height:1.6; min-height:84px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
   textarea::placeholder { color:var(--text3); }
-  textarea:focus { border-color:rgba(99,102,241,0.6); box-shadow:0 0 0 3px rgba(99,102,241,0.12),0 2px 12px rgba(99,102,241,0.1); }
+  textarea:focus { border-color:rgba(99,102,241,0.7); box-shadow:0 0 0 4px rgba(99,102,241,0.15),0 2px 14px rgba(99,102,241,0.12); }
   .btn { display:inline-flex; align-items:center; gap:7px; border:none; border-radius:var(--r-sm); font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:clamp(13px,1.3vw,16px); cursor:pointer; transition:all 0.18s var(--ease); white-space:nowrap; padding:12px 24px; position:relative; overflow:hidden; }
   .btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:background 0.15s; }
   .btn:active::after { background:rgba(255,255,255,0.08); }
-  .btn-primary { background:linear-gradient(135deg,var(--indigo),var(--indigo-d)); color:#fff; box-shadow:var(--shadow-primary); }
-  .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:var(--shadow-primary-hover); }
+  .btn-primary { background:radial-gradient(140px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.22),transparent 60%),linear-gradient(135deg,var(--indigo),var(--indigo-d)); color:#fff; box-shadow:var(--shadow-primary); }
+  .btn-primary:hover:not(:disabled) { transform:translateY(-2px); filter:brightness(1.08); box-shadow:var(--shadow-primary-hover); }
   .btn-primary:active:not(:disabled) { transform:scale(0.97) translateY(0); box-shadow:0 2px 8px rgba(99,102,241,0.3); }
   .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
   .btn-ghost { background:rgba(255,255,255,0.05); color:var(--text2); border:1px solid var(--border); }
@@ -61,7 +62,7 @@ const STYLES = `
   .copy-btn:hover { color:var(--text); border-color:var(--border2); background:rgba(255,255,255,0.09); transform:translateY(-1px); }
   .copy-btn:active { transform:scale(0.94); }
   .copy-btn.done { color:var(--emerald); border-color:rgba(16,185,129,0.35); background:rgba(16,185,129,0.1); }
-  .output-block { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-top:14px; font-size:13px; line-height:1.85; color:var(--text2); white-space:pre-wrap; word-break:break-word; animation:fadeUp 0.3s var(--ease); box-shadow:inset 0 1px 0 rgba(255,255,255,0.04); }
+  .output-block { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-top:14px; font-size:13px; line-height:1.85; color:var(--text2); white-space:pre-wrap; word-break:break-word; animation:aiReveal 0.5s cubic-bezier(0.22,1,0.36,1); box-shadow:inset 0 1px 0 rgba(255,255,255,0.04); }
   .output-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px; }
   .output-label { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--indigo-l); }
   .spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,0.12); border-top-color:#fff; border-radius:50%; animation:spin 0.6s linear infinite; flex-shrink:0; }
@@ -75,6 +76,22 @@ const STYLES = `
   @keyframes backdropIn  { from{opacity:0} to{opacity:1} }
   @keyframes scaleIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
   .page-enter { animation:fadeUp 0.28s var(--ease); }
+  @keyframes aiReveal { from{opacity:0;transform:translateY(14px) scale(0.99);filter:blur(8px)} to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)} }
+  @keyframes aiShimmer { from{left:-60%} to{left:140%} }
+  @keyframes aiDot { 0%,80%,100%{opacity:0.3;transform:translateY(0)} 40%{opacity:1;transform:translateY(-3px)} }
+  .ai-reveal > div { animation:aiReveal 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+  .ai-reveal > div:nth-child(2){ animation-delay:0.10s; }
+  .ai-reveal > div:nth-child(3){ animation-delay:0.20s; }
+  .ai-reveal > div:nth-child(4){ animation-delay:0.30s; }
+  .ai-shimmer { position:relative; overflow:hidden; }
+  .ai-shimmer::after { content:''; position:absolute; top:0; left:-60%; width:55%; height:100%; pointer-events:none; background:linear-gradient(90deg,transparent,rgba(129,140,248,0.13),transparent); animation:aiShimmer 1.2s ease-out 0.2s 1 both; }
+  @property --auraA { syntax:'<angle>'; inherits:false; initial-value:0deg; }
+  @keyframes auraTrace { to { --auraA:360deg; } }
+  .ai-shimmer::before { content:''; position:absolute; inset:0; border-radius:inherit; padding:1px; pointer-events:none; z-index:1; background:conic-gradient(from var(--auraA),transparent 0deg,var(--indigo-l) 55deg,transparent 130deg); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude; animation:auraTrace 1.3s var(--ease-out) 0.15s 1 both; }
+  .ai-thinking { display:inline-flex; align-items:center; gap:5px; }
+  .ai-thinking span { width:5px; height:5px; border-radius:50%; background:currentColor; animation:aiDot 1.1s ease-in-out infinite; }
+  .ai-thinking span:nth-child(2){ animation-delay:0.16s; }
+  .ai-thinking span:nth-child(3){ animation-delay:0.32s; }
 
   /* Hamburger lines */
   .burger-line { display:block; width:clamp(22px,2vw,28px); height:2.5px; background:var(--text2); border-radius:1px; transition:transform 0.22s ease-in-out, opacity 0.22s ease-in-out, width 0.22s ease-in-out, background 0.2s; }
@@ -104,6 +121,10 @@ const STYLES = `
     .drawer-backdrop { animation:none; }
     .burger-line { transition:none; }
     .page-enter { animation:none; }
+    .ai-reveal > div { animation:none; }
+    .ai-shimmer::after { display:none; }
+    .ai-shimmer::before { display:none; }
+    .ai-thinking span { animation:none; opacity:0.6; }
   }
   .section-label { font-size:clamp(11px,1vw,13px); font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text3); margin-bottom:8px; }
   .tag { display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:999px; margin-right:6px; margin-bottom:6px; }
@@ -141,14 +162,15 @@ const STYLES = `
   .empty p { font-size:14px; color:var(--text2); max-width:280px; margin:0 auto; line-height:1.7; }
   .gen-load { display:flex; flex-direction:column; align-items:center; gap:16px; padding:56px 24px; color:var(--text2); font-size:13.5px; }
   .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:100; background:rgba(7,9,15,0.92); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border-top:1px solid var(--border); display:flex; padding:12px 8px 16px; gap:4px; justify-content:center; }
-  .nav-item { flex:1; max-width:160px; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px; border-radius:var(--r-sm); border:none; background:transparent; cursor:pointer; transition:all 0.2s var(--ease); color:var(--text3); font-family:'Plus Jakarta Sans',sans-serif; position:relative; }
-  .nav-item:hover { color:var(--text2); }
+  .nav-item { flex:1; max-width:160px; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px; border-radius:var(--r-sm); border:none; background:transparent; cursor:pointer; transition:color var(--dur-fast) var(--ease-out); color:var(--text2); font-family:'Plus Jakarta Sans',sans-serif; position:relative; }
+  .nav-item:hover { color:var(--text); }
   .nav-item:active { transform:scale(0.92); }
   .nav-item.active { color:var(--indigo-l); }
   .nav-item.active .nav-label { font-weight:800; color:var(--indigo-l); }
-  .nav-item.active .nav-icon-wrap { background:rgba(99,102,241,0.18); border-color:rgba(99,102,241,0.35); box-shadow:0 2px 12px rgba(99,102,241,0.25); }
-  .nav-icon-wrap { width:clamp(44px,5vw,56px); height:clamp(28px,3vw,36px); border-radius:999px; border:1px solid transparent; display:flex; align-items:center; justify-content:center; font-size:16px; transition:all 0.2s var(--ease); }
-  .nav-label { font-size:clamp(10px,1vw,13px); font-weight:600; transition:all 0.2s; }
+  .nav-item.active .nav-icon-wrap { background:rgba(99,102,241,0.22); border-color:rgba(99,102,241,0.45); box-shadow:0 3px 16px rgba(99,102,241,0.35); }
+  .nav-icon-wrap { width:clamp(56px,6.5vw,72px); height:clamp(34px,4vw,42px); border-radius:999px; border:1px solid transparent; display:flex; align-items:center; justify-content:center; transition:background var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out); }
+  .nav-icon-wrap svg { width:clamp(21px,2.4vw,25px); height:clamp(21px,2.4vw,25px); }
+  .nav-label { font-size:clamp(11.5px,1.2vw,14px); font-weight:700; transition:all 0.2s; }
   .lesson-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); margin-bottom:8px; overflow:hidden; cursor:pointer; transition:all 0.2s var(--ease); box-shadow:var(--shadow-card); }
   .lesson-block:hover { border-color:var(--border2); transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
   .lesson-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; gap:12px; }
@@ -175,6 +197,7 @@ const STYLES = `
   .wiz-chip-row { display:flex; flex-wrap:wrap; gap:7px; }
   .cert-wrap { background:linear-gradient(135deg,#0d1025 0%,#111a2e 50%,#0a1520 100%); border:2px solid rgba(245,158,11,0.5); border-radius:var(--r-lg); padding:28px 22px; margin-top:16px; position:relative; overflow:hidden; text-align:center; animation:scaleIn 0.4s var(--ease); box-shadow:0 8px 40px rgba(245,158,11,0.1); }
   .compare-col { flex:1; min-width:0; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:14px; }
+  @media (max-width:640px) { .compare-grid { flex-direction:column; } }
   .hist-item { display:flex; align-items:flex-start; gap:10px; padding:11px 0; border-bottom:1px solid var(--border); cursor:pointer; transition:opacity 0.15s; }
   .hist-item:hover { opacity:0.8; }
   .hist-item:last-child { border-bottom:none; }
@@ -306,11 +329,14 @@ const TRACKS = [
   { id:"personal",    label:"🌱 Personal Growth",         desc:"Goals, habits, communication" },
   { id:"students",    label:"🎓 Students",                desc:"Study plans, essays, research" },
 ];
+var navSvg = function(children) {
+  return React.createElement("svg",{width:24,height:24,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},children);
+};
 const TABS = [
-  { id:"guide",    icon:"📖", label:"Learn"     },
-  { id:"builder",  icon:"✦",  label:"Build"     },
-  { id:"library",  icon:"📚", label:"Browse"    },
-  { id:"practice", icon:"✏",  label:"Practice"  },
+  { id:"guide",    icon:navSvg([React.createElement("path",{key:"a",d:"M2 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H2z"}),React.createElement("path",{key:"b",d:"M22 4h-6a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H22z"})]), label:"Learn" },
+  { id:"builder",  icon:navSvg([React.createElement("path",{key:"a",d:"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"})]), label:"Build" },
+  { id:"library",  icon:navSvg([React.createElement("rect",{key:"a",x:3,y:3,width:7,height:7,rx:1}),React.createElement("rect",{key:"b",x:14,y:3,width:7,height:7,rx:1}),React.createElement("rect",{key:"c",x:14,y:14,width:7,height:7,rx:1}),React.createElement("rect",{key:"d",x:3,y:14,width:7,height:7,rx:1})]), label:"Browse" },
+  { id:"practice", icon:navSvg([React.createElement("circle",{key:"a",cx:12,cy:12,r:10}),React.createElement("circle",{key:"b",cx:12,cy:12,r:6}),React.createElement("circle",{key:"c",cx:12,cy:12,r:2})]), label:"Practice" },
 ];
 
 const PROMPT_LIBRARY = [
@@ -518,13 +544,23 @@ const PROMPT_LIBRARY = [
 
 /* ── API ── */
 async function callClaude(messages, system, maxTokens) {
-  const res = await fetch("/api/claude", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: maxTokens||1024, system, messages }),
-  });
-  const data = await res.json();
-  return data.content?.map(function(b){ return b.text||""; }).join("") || "Error. Please try again.";
+  try {
+    const res = await fetch("/api/claude", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: maxTokens||1024, system, messages }),
+    });
+    const data = await res.json();
+    if (!res.ok || (data && data.error)) {
+      var msg = (data && data.error && (data.error.message || data.error)) || ("request failed ("+res.status+")");
+      console.error("Claude API error:", msg);
+      return "[The AI request failed: "+msg+"] Please try again in a moment.";
+    }
+    return (data.content && data.content.map(function(b){ return b.text||""; }).join("")) || "No response was returned. Please try again.";
+  } catch (e) {
+    console.error("Claude call failed:", e);
+    return "[Could not reach the AI - this is usually a network or server issue.] Please check your connection and try again.";
+  }
 }
 
 /* ── COPY BTN ── */
@@ -618,7 +654,19 @@ const LESSONS = [
   ];
 
 export default function PromptCoach() {
-  var [tab, setTab]               = useState("guide");
+  useEffect(function(){
+    function onMove(e){
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      var btn = e.target && e.target.closest ? e.target.closest(".btn-primary") : null;
+      if (!btn) return;
+      var r = btn.getBoundingClientRect();
+      btn.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      btn.style.setProperty("--my", (e.clientY - r.top) + "px");
+    }
+    document.addEventListener("pointermove", onMove);
+    return function(){ document.removeEventListener("pointermove", onMove); };
+  }, []);
+  var [tab, setTab]               = useState("builder");
   var [animKey, setAnimKey]       = useState(0);
   var [practiceCount, setPracticeCount] = useState(0);
 
@@ -819,7 +867,7 @@ export default function PromptCoach() {
     setLoadingB(true); setBOutput(""); setBAnswer("");
     try {
       var sys2 = "You are a prompt engineer. Improve the given prompt to include: Role, Objective, Context, Tone, Format, Constraints, and a Critique instruction.\nReply in this exact format:\n\nIMPROVED PROMPT:\n[improved prompt]\n\nWHAT WAS MISSING:\n- [issue]\n\nWHY ITS BETTER:\n- [improvement]";
-      var improved = await callClaude([{role:"user",content:"Improve: \""+bInput+"\""}], sys2, 2000);
+      var improved = await callClaude([{role:"user",content:"Improve: \""+bInput+"\""}], sys2, 3000);
       setBOutput(improved);
       var s = improved.indexOf("IMPROVED PROMPT:");
       if (s !== -1) {
@@ -828,9 +876,7 @@ export default function PromptCoach() {
         var cleanPrompt = e===-1 ? after.trim() : after.slice(0,e).trim();
         if (cleanPrompt) {
           saveVersion(bInput, cleanPrompt);
-          var answer = await callClaude([{role:"user",content:cleanPrompt}], "You are a helpful AI assistant. Answer the prompt directly.", 2000);
-          setBAnswer(answer);
-          addToHistory("Improved: "+bInput.slice(0,30), cleanPrompt, answer);
+          addToHistory("Improved: "+bInput.slice(0,30), cleanPrompt, "");
         }
       }
     } finally { setLoadingB(false); }
@@ -1008,6 +1054,9 @@ export default function PromptCoach() {
                     var wm = personaSuggestion.match(/WHY THIS WORKS:\s*([\s\S]*?)(?=ALTERNATIVE:|$)/i);
                     var am = personaSuggestion.match(/ALTERNATIVE:\s*([\s\S]*?)$/i);
                     var persona = pm?pm[1].trim():""; var why=wm?wm[1].trim():""; var alt=am?am[1].trim():"";
+                    if (!persona) {
+                      return React.createElement("div",{style:{marginTop:12,background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:12,fontSize:12.5,color:"var(--text2)",lineHeight:1.65,whiteSpace:"pre-wrap",wordBreak:"break-word"}}, personaSuggestion);
+                    }
                     return React.createElement("div",{style:{marginTop:12}},
                       React.createElement("div",{style:{background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:12,marginBottom:8}},
                         React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:6}},"Recommended Expert"),
@@ -1097,10 +1146,10 @@ export default function PromptCoach() {
               React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"W"),"Improve My Prompt"),
               React.createElement("div",{className:"card-sub"},"Share a rough idea - we improve it, run it, and show you the real AI output."),
               React.createElement("div",{className:"section-label"},"Your prompt idea"),
-              React.createElement("textarea",{value:bInput,onChange:function(e){ setBInput(e.target.value); },placeholder:"Paste your rough idea here - even 3 words is enough. Try: 'Help me write an email to my manager'",rows:4}),
+              React.createElement("textarea",{value:bInput,onChange:function(e){ setBInput(e.target.value); },placeholder:"Paste your rough idea here - even 3 words is enough. Try: 'Help me write an email to my manager'",rows:3}),
               React.createElement("div",{className:"btn-row"},
                 React.createElement("button",{className:"btn btn-primary",onClick:runBuilder,disabled:loadingB||!bInput.trim()},
-                  loadingB?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Improving..."):"Improve My Prompt"
+                  loadingB?React.createElement(React.Fragment,null,React.createElement("span",{className:"ai-thinking"},React.createElement("span",{key:"1"}),React.createElement("span",{key:"2"}),React.createElement("span",{key:"3"})),"Improving..."):"Improve My Prompt"
                 ),
                 bInput && React.createElement("button",{className:"btn btn-ghost",onClick:function(){ setBInput(""); setBOutput(""); setBAnswer(""); }},"Clear")
               ),
@@ -1109,7 +1158,7 @@ export default function PromptCoach() {
                 var misMatch = bOutput.match(/WHAT WAS MISSING:\s*([\s\S]*?)(?=WHY ITS BETTER:|$)/i);
                 var whyMatch = bOutput.match(/WHY ITS BETTER:\s*([\s\S]*?)$/i);
                 var mis = misMatch?misMatch[1].trim():""; var why=whyMatch?whyMatch[1].trim():"";
-                return React.createElement("div",{style:{marginTop:14}},
+                return React.createElement("div",{className:"ai-reveal",style:{marginTop:14}},
                   versions.length>0 && React.createElement("div",{style:{marginBottom:12,padding:"10px 13px",background:"var(--surface2)",borderRadius:"var(--r-sm)",border:"1px solid var(--border)"}},
                     React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:7}},"Version History"),
                     React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
@@ -1118,7 +1167,7 @@ export default function PromptCoach() {
                       })
                     )
                   ),
-                  React.createElement("div",{style:{background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:16,marginBottom:12}},
+                  React.createElement("div",{className:"ai-shimmer",style:{background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:16,marginBottom:12}},
                     React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,paddingBottom:12,borderBottom:"1px solid var(--border)",flexWrap:"wrap",gap:8}},
                       React.createElement("span",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Improved Prompt"),
                       React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
@@ -1131,13 +1180,6 @@ export default function PromptCoach() {
                       React.createElement("button",{className:"apply-btn",onClick:function(){ setBInput(imp); runBuilder(); }},"Refine Further"),
                       React.createElement("button",{className:"apply-btn",style:{background:"rgba(99,102,241,0.1)",borderColor:"rgba(99,102,241,0.3)",color:"var(--indigo-l)"},onClick:function(){ setCmpA(bInput); setCmpB(imp); switchMode("compare"); }},"Compare Original vs Improved")
                     )
-                  ),
-                  bAnswer && React.createElement("div",{style:{background:"rgba(16,185,129,0.05)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:"var(--r-md)",padding:16,marginBottom:12}},
-                    React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,paddingBottom:12,borderBottom:"1px solid rgba(16,185,129,0.15)",flexWrap:"wrap",gap:8}},
-                      React.createElement("span",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--emerald)"}},"AI Answer"),
-                      React.createElement(CopyBtn,{text:bAnswer,label:"Copy Answer"})
-                    ),
-                    React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},bAnswer)
                   ),
                   mis && React.createElement("div",{style:{background:"rgba(244,63,94,0.05)",border:"1px solid rgba(244,63,94,0.18)",borderRadius:"var(--r-md)",padding:14,marginBottom:12}},
                     React.createElement("div",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--rose)",marginBottom:10}},"What was Missing"),
@@ -1161,7 +1203,7 @@ export default function PromptCoach() {
                   (loadingCmpA||loadingCmpB)?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Running..."):"Run Both"
                 )
               ),
-              React.createElement("div",{style:{display:"flex",gap:8,marginBottom:8}},
+              React.createElement("div",{className:"compare-grid",style:{display:"flex",gap:8,marginBottom:8}},
                 React.createElement("div",{style:{flex:1}},
                   React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:6}},"Prompt A"),
                   React.createElement("textarea",{value:cmpA,onChange:function(e){ setCmpA(e.target.value); },placeholder:"Write your first prompt here...",rows:5,style:{minHeight:100}}),
@@ -1185,7 +1227,7 @@ export default function PromptCoach() {
               ),
               (cmpOutA||cmpOutB||loadingCmpA||loadingCmpB) && React.createElement("div",null,
                 React.createElement("div",{style:{height:1,background:"var(--border)",margin:"16px 0"}}),
-                React.createElement("div",{style:{display:"flex",gap:8}},
+                React.createElement("div",{className:"compare-grid",style:{display:"flex",gap:8}},
                   React.createElement("div",{style:{flex:1,background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-md)",padding:12}},
                     React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:8}},"Output A"),
                     loadingCmpA?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,color:"var(--text2)",fontSize:12}},React.createElement("div",{className:"spinner spinner-indigo"}),"Generating..."):
