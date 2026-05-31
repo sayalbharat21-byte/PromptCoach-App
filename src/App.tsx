@@ -43,7 +43,7 @@ const STYLES = `
   .card-title { font-size:clamp(16px,1.8vw,22px); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
   .card-title .icon { width:30px; height:30px; border-radius:9px; background:rgba(99,102,241,0.13); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; box-shadow:0 2px 8px rgba(99,102,241,0.15); }
   .card-sub { font-size:clamp(13px,1.4vw,17px); color:var(--text2); line-height:1.6; margin-bottom:12px; }
-  textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; padding:13px 16px; resize:vertical; outline:none; line-height:1.6; min-height:84px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
+  textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; padding:13px 16px; resize:vertical; outline:none; line-height:1.6; min-height:84px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
   textarea::placeholder { color:var(--text3); }
   textarea:focus { border-color:rgba(99,102,241,0.7); box-shadow:0 0 0 4px rgba(99,102,241,0.15),0 2px 14px rgba(99,102,241,0.12); }
   .btn { display:inline-flex; align-items:center; gap:7px; border:none; border-radius:var(--r-sm); font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:clamp(13px,1.3vw,16px); cursor:pointer; transition:all 0.18s var(--ease); white-space:nowrap; padding:12px 24px; position:relative; overflow:hidden; }
@@ -62,7 +62,7 @@ const STYLES = `
   .copy-btn:hover { color:var(--text); border-color:var(--border2); background:rgba(255,255,255,0.09); transform:translateY(-1px); }
   .copy-btn:active { transform:scale(0.94); }
   .copy-btn.done { color:var(--emerald); border-color:rgba(16,185,129,0.35); background:rgba(16,185,129,0.1); }
-  .output-block { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-top:14px; font-size:13px; line-height:1.85; color:var(--text2); white-space:pre-wrap; word-break:break-word; animation:aiReveal 0.5s cubic-bezier(0.22,1,0.36,1); box-shadow:inset 0 1px 0 rgba(255,255,255,0.04); }
+  .output-block { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-top:14px; font-size:14px; line-height:1.65; color:var(--text2); white-space:pre-wrap; word-break:break-word; animation:aiReveal 0.5s cubic-bezier(0.22,1,0.36,1); box-shadow:inset 0 1px 0 rgba(255,255,255,0.04); }
   .output-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px; }
   .output-label { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--indigo-l); }
   .spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,0.12); border-top-color:#fff; border-radius:50%; animation:spin 0.6s linear infinite; flex-shrink:0; }
@@ -126,7 +126,7 @@ const STYLES = `
     .ai-shimmer::before { display:none; }
     .ai-thinking span { animation:none; opacity:0.6; }
   }
-  .section-label { font-size:clamp(11px,1vw,13px); font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text3); margin-bottom:8px; }
+  .section-label { font-size:clamp(11px,1vw,13px); font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text2); margin-bottom:8px; }
   .tag { display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:999px; margin-right:6px; margin-bottom:6px; }
   .tag-weak { background:rgba(244,63,94,0.1); color:var(--rose); border:1px solid rgba(244,63,94,0.2); }
   .tag-good { background:rgba(16,185,129,0.1); color:var(--emerald); border:1px solid rgba(16,185,129,0.2); }
@@ -544,22 +544,42 @@ const PROMPT_LIBRARY = [
 
 /* ── API ── */
 async function callClaude(messages, system, maxTokens) {
+  async function attempt(timeoutMs) {
+    var ctrl = new AbortController();
+    var timer = setTimeout(function(){ ctrl.abort(); }, timeoutMs);
+    try {
+      const res = await fetch("/api/claude", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: maxTokens||1024, system, messages }),
+        signal: ctrl.signal,
+      });
+      const data = await res.json();
+      if (!res.ok || (data && data.error)) {
+        var msg = (data && data.error && (data.error.message || data.error)) || ("request failed ("+res.status+")");
+        var e = new Error(msg); e.handled = true; throw e;
+      }
+      return (data.content && data.content.map(function(b){ return b.text||""; }).join("")) || "";
+    } finally { clearTimeout(timer); }
+  }
   try {
-    const res = await fetch("/api/claude", {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: maxTokens||1024, system, messages }),
-    });
-    const data = await res.json();
-    if (!res.ok || (data && data.error)) {
-      var msg = (data && data.error && (data.error.message || data.error)) || ("request failed ("+res.status+")");
-      console.error("Claude API error:", msg);
-      return "[The AI request failed: "+msg+"] Please try again in a moment.";
+    var out = await attempt(28000);
+    return out || "No response was returned. Please try again.";
+  } catch (e1) {
+    if (e1 && e1.handled) {
+      console.error("Claude API error:", e1.message);
+      return "[The AI request failed: "+e1.message+"] Please try again in a moment.";
     }
-    return (data.content && data.content.map(function(b){ return b.text||""; }).join("")) || "No response was returned. Please try again.";
-  } catch (e) {
-    console.error("Claude call failed:", e);
-    return "[Could not reach the AI - this is usually a network or server issue.] Please check your connection and try again.";
+    // Network error or timeout (often a cold start) - wait briefly and retry once.
+    console.warn("Claude call failed, retrying once:", e1 && e1.message);
+    await new Promise(function(r){ setTimeout(r, 800); });
+    try {
+      var out2 = await attempt(28000);
+      return out2 || "No response was returned. Please try again.";
+    } catch (e2) {
+      console.error("Claude call failed after retry:", e2 && e2.message);
+      return "[Could not reach the AI - this is usually a network or server issue.] Please check your connection and try again.";
+    }
   }
 }
 
