@@ -38,6 +38,8 @@ const STYLES = `
   .hero { padding:2px 0 8px; }
   .hero h1 { font-size:var(--fs-xl); font-weight:800; line-height:var(--lh-tight); letter-spacing:-0.03em; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:7px; }
   .hero p { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); max-width:580px; }
+  .h1-short { display:none; }
+  @media (max-width:600px) { .h1-full { display:none; } .h1-short { display:inline; } }
   .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.45),0 8px 24px rgba(0,0,0,0.22); transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out); }
   .card::before { content:''; position:absolute; inset:0; background:linear-gradient(145deg,rgba(255,255,255,0.03) 0%,transparent 50%); pointer-events:none; }
   @media (hover:hover) { .card:hover { background:var(--surface2); border-color:var(--border2); transform:translateY(-1px); } }
@@ -47,8 +49,8 @@ const STYLES = `
   .card-sub { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); margin-bottom:12px; }
   @media (max-width:600px) {
     .hero { padding:0 0 6px; }
-    .hero h1 { font-size:19px; font-weight:700; line-height:1.18; margin-bottom:6px; }
-    .hero p { font-size:13px; line-height:1.45; }
+    .hero h1 { font-size:19px; font-weight:700; line-height:1.18; margin-bottom:0; }
+    .hero p { display:none; }
     .card { padding:14px; margin-bottom:10px; }
     .card-title { font-size:16px; }
     .card-sub { font-size:12.5px; line-height:1.5; margin-bottom:10px; }
@@ -1072,7 +1074,7 @@ export default function PromptCoach() {
 
           tab==="builder" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
-              React.createElement("h1",null,"Tell Us What You Need. We'll Build the Prompt With You."),
+              React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"Tell Us What You Need. We'll Build the Prompt With You."),React.createElement("span",{className:"h1-short"},"Build Your Perfect Prompt.")),
               React.createElement("p",null,"Start with any rough idea - even 3 words is enough. We shape it into a prompt that gets you the result you actually wanted.")
             ),
             React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:12}},
@@ -1331,7 +1333,7 @@ export default function PromptCoach() {
 
           tab==="guide" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
-              React.createElement("h1",null,"You Don't Need to Be Technical. You Need the Right Framework."),
+              React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"You Don't Need to Be Technical. You Need the Right Framework."),React.createElement("span",{className:"h1-short"},"Master Prompting in Minutes.")),
               React.createElement("p",null,"Learn the 8 building blocks of a great prompt in plain English. Each lesson takes under 5 minutes.")
             ),
             React.createElement("div",{onClick:function(){ window.open("https://youtu.be/ezmuCprlTVE","_blank"); },style:{marginBottom:18,background:"var(--surface)",border:"1px solid var(--border)",borderRadius:"var(--r-lg)",overflow:"hidden",boxShadow:"var(--shadow-card)",cursor:"pointer"}},
@@ -1501,7 +1503,7 @@ export default function PromptCoach() {
 
           tab==="library" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
-              React.createElement("h1",null,"Borrowed From Experts. Ready for Your World."),
+              React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"Borrowed From Experts. Ready for Your World."),React.createElement("span",{className:"h1-short"},"Expert Prompts, Ready to Use.")),
               React.createElement("p",null,"Pick from ready-made prompts across real-life needs. Use them as-is or tweak them to fit your situation.")
             ),
             React.createElement("div",{className:"promo-banner"},
@@ -1616,7 +1618,7 @@ export default function PromptCoach() {
 
           tab==="practice" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
-              React.createElement("h1",null,"Every Attempt Makes the Next One Better."),
+              React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"Every Attempt Makes the Next One Better."),React.createElement("span",{className:"h1-short"},"Practice. Get Feedback. Improve.")),
               React.createElement("p",null,"Try real-world scenarios and get honest feedback on your prompts. No jargon - just clear guidance.")
             ),
             practiceCount>0 && React.createElement("div",{className:"session-bar"},
