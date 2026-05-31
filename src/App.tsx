@@ -86,7 +86,6 @@ const STYLES = `
     .sidebar-item.active { color:var(--indigo-l); background:rgba(99,102,241,0.1); border-color:rgba(99,102,241,0.2); }
     .sidebar-item .nav-icon-wrap { width:auto; height:auto; border:none; background:none; box-shadow:none; }
     .sidebar-item .nav-icon-wrap svg { width:19px; height:19px; }
-    .bottom-nav { display:none; }
   }
   @keyframes aiReveal { from{opacity:0;transform:translateY(14px) scale(0.99);filter:blur(8px)} to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)} }
   @keyframes aiShimmer { from{left:-60%} to{left:140%} }
@@ -116,11 +115,12 @@ const STYLES = `
   .burger-btn.open .burger-line-bot { transform:translateY(-7px) rotate(-45deg); }
 
   /* Drawer */
-  .drawer-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:200; animation:backdropIn 0.2s ease-out; }
-  .drawer-panel { position:fixed; top:0; left:0; height:100%; width:88%; max-width:320px; background:var(--bg2); border-right:1px solid var(--border2); z-index:201; display:flex; flex-direction:column; animation:slideInLeft 0.24s cubic-bezier(0.4,0,0.2,1); overflow:hidden; }
+  .drawer-backdrop { position:fixed; inset:0; background:rgba(3,4,7,0.45); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); z-index:200; animation:backdropIn 0.22s var(--ease-out); }
+  .drawer-panel { position:fixed; top:0; left:0; height:100%; width:88%; max-width:320px; background:rgba(12,15,26,0.78); backdrop-filter:blur(30px) saturate(1.4); -webkit-backdrop-filter:blur(30px) saturate(1.4); border-right:1px solid rgba(255,255,255,0.08); z-index:201; display:flex; flex-direction:column; animation:slideInLeft 0.36s cubic-bezier(0.16,1,0.3,1); box-shadow:40px 0 80px rgba(0,0,0,0.55); overflow:hidden; }
   .drawer-scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; -webkit-mask-image:linear-gradient(to bottom, black 85%, transparent 100%); mask-image:linear-gradient(to bottom, black 85%, transparent 100%); }
   .drawer-close-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text2); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; flex-shrink:0; }
   .drawer-close-btn:hover { background:var(--surface2); color:var(--text); border-color:var(--border2); }
+  @media (hover:hover) { .drawer-close-btn:hover { transform:rotate(90deg); } .menu-item-btn:hover { padding-left:20px; } }
   .drawer-close-btn:active { transform:scale(0.93); }
   .menu-item-btn { width:100%; display:flex; align-items:center; gap:14px; padding:15px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); margin-bottom:10px; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; text-align:left; transition:all 0.15s; }
   .menu-item-btn:hover { background:rgba(99,102,241,0.06); border-color:rgba(99,102,241,0.3); }
@@ -174,6 +174,7 @@ const STYLES = `
   .empty p { font-size:14px; color:var(--text2); max-width:280px; margin:0 auto; line-height:1.7; }
   .gen-load { display:flex; flex-direction:column; align-items:center; gap:16px; padding:56px 24px; color:var(--text2); font-size:13.5px; }
   .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:100; background:rgba(7,9,15,0.92); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border-top:1px solid var(--border); display:flex; padding:12px 8px 16px; gap:4px; justify-content:center; }
+  @media (min-width:1024px) { .bottom-nav { display:none; } }
   .nav-item { flex:1; max-width:160px; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px; border-radius:var(--r-sm); border:none; background:transparent; cursor:pointer; transition:color var(--dur-fast) var(--ease-out); color:var(--text2); font-family:'Plus Jakarta Sans',sans-serif; position:relative; }
   .nav-item:hover { color:var(--text); }
   .nav-item:active { transform:scale(0.92); }
@@ -1304,14 +1305,14 @@ export default function PromptCoach() {
                   React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},"A quick walkthrough of how PromptCoach works")
                 )
               ),
-              React.createElement("div",{style:{position:"relative",width:"100%",paddingBottom:"26%",height:0,background:"linear-gradient(135deg,#0b0f1d,#111a2e)"}},
-                React.createElement("div",{style:{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:14}},
-                  React.createElement("div",{style:{width:68,height:68,borderRadius:"50%",background:"var(--rose)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 30px rgba(244,63,94,0.4)",transition:"transform 0.2s"}},
-                    React.createElement("div",{style:{width:0,height:0,borderTop:"13px solid transparent",borderBottom:"13px solid transparent",borderLeft:"22px solid #fff",marginLeft:5}})
+              React.createElement("div",{style:{position:"relative",width:"100%",aspectRatio:"16 / 9",maxHeight:300,backgroundImage:"linear-gradient(rgba(7,9,15,0.35),rgba(7,9,15,0.55)),url('https://i.ytimg.com/vi/ezmuCprlTVE/hqdefault.jpg')",backgroundSize:"cover",backgroundPosition:"center"}},
+                React.createElement("div",{style:{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:12}},
+                  React.createElement("div",{style:{width:60,height:60,borderRadius:"50%",background:"var(--rose)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 30px rgba(244,63,94,0.45)",transition:"transform 0.2s"}},
+                    React.createElement("div",{style:{width:0,height:0,borderTop:"11px solid transparent",borderBottom:"11px solid transparent",borderLeft:"19px solid #fff",marginLeft:5}})
                   ),
-                  React.createElement("div",{style:{fontSize:12,fontWeight:600,color:"var(--text2)",letterSpacing:"0.3px"}},"Tap to watch on YouTube")
+                  React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"#fff",letterSpacing:"0.3px",textShadow:"0 1px 4px rgba(0,0,0,0.6)"}},"Tap to watch on YouTube")
                 ),
-                React.createElement("div",{style:{position:"absolute",top:10,right:12,fontSize:9,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",background:"rgba(0,0,0,0.4)",padding:"3px 8px",borderRadius:5}},"Video Guide")
+                React.createElement("div",{style:{position:"absolute",top:10,right:12,fontSize:9,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"#fff",background:"rgba(0,0,0,0.55)",padding:"3px 8px",borderRadius:5}},"Video Guide")
               )
             ),
             LESSONS.map(function(lesson){
@@ -1677,7 +1678,12 @@ export default function PromptCoach() {
                 React.createElement("div",{style:{fontSize:9,color:"var(--text3)"}},"The AI expert in your pocket")
               )
             ),
-            React.createElement("button",{className:"drawer-close-btn",onClick:function(){ setShowMenu(false); setMenuPage("home"); },"aria-label":"Close navigation menu"},"x")
+            React.createElement("button",{className:"drawer-close-btn",onClick:function(){ setShowMenu(false); setMenuPage("home"); },"aria-label":"Close navigation menu"},
+              React.createElement("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.5,strokeLinecap:"round",strokeLinejoin:"round"},
+                React.createElement("line",{x1:18,y1:6,x2:6,y2:18}),
+                React.createElement("line",{x1:6,y1:6,x2:18,y2:18})
+              )
+            )
           ),
           React.createElement("div",{className:"drawer-scroll"},
             React.createElement("div",{style:{padding:"16px 20px"}},
