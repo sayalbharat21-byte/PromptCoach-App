@@ -1079,7 +1079,7 @@ export default function PromptCoach() {
             ),
             React.createElement("div",{style:{display:"flex",gap:8,marginBottom:8,alignItems:"stretch"}},
               React.createElement("div",{style:{display:"flex",gap:5,flex:1,background:"var(--surface)",borderRadius:"var(--r-md)",padding:5,border:"1px solid var(--border)"}},
-              [{id:"wizard",label:"Build",sub:"8 guided questions"},{id:"improve",label:"Improve",sub:"Upgrade a prompt"},{id:"compare",label:"Compare",sub:"A vs B side by side"}].map(function(m){
+              [{id:"wizard",label:"Build",sub:"8 guided questions"},{id:"improve",label:"Improve",sub:"Upgrade a prompt"}].map(function(m){
                 return React.createElement("button",{key:m.id,onClick:function(){ switchMode(m.id); },style:{flex:1,padding:"8px 2px",borderRadius:"var(--r-sm)",border:"none",cursor:"pointer",background:bMode===m.id?"linear-gradient(135deg,var(--indigo),var(--indigo-d))":"transparent",color:bMode===m.id?"#fff":"var(--text2)",fontFamily:"'Inter',sans-serif",textAlign:"center",transition:"all 0.18s",boxShadow:bMode===m.id?"0 4px 14px rgba(99,102,241,0.3)":"none"}},
                   React.createElement("div",{style:{fontSize:"clamp(13px,1.3vw,16px)",fontWeight:700}},m.label),
                   React.createElement("div",{style:{fontSize:"clamp(11px,1.1vw,13px)",opacity:0.85,marginTop:2}},m.sub)
@@ -1251,8 +1251,7 @@ export default function PromptCoach() {
                     ),
                     React.createElement("div",{style:{fontSize:14,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},imp),
                     React.createElement("div",{style:{marginTop:12,display:"flex",gap:8,flexWrap:"wrap"}},
-                      React.createElement("button",{className:"apply-btn",onClick:function(){ setBInput(imp); runBuilder(); }},"Refine Further"),
-                      React.createElement("button",{className:"apply-btn",style:{background:"rgba(99,102,241,0.1)",borderColor:"rgba(99,102,241,0.3)",color:"var(--indigo-l)"},onClick:function(){ setCmpA(bInput); setCmpB(imp); switchMode("compare"); }},"Compare Original vs Improved")
+                      React.createElement("button",{className:"apply-btn",onClick:function(){ setBInput(imp); runBuilder(); }},"Refine Further")
                     )
                   ),
                   mis && React.createElement("div",{style:{background:"rgba(244,63,94,0.05)",border:"1px solid rgba(244,63,94,0.18)",borderRadius:"var(--r-md)",padding:14,marginBottom:12}},
@@ -1267,56 +1266,7 @@ export default function PromptCoach() {
               })()
             ),
 
-            bMode==="compare" && React.createElement("div",{className:"card card-accent"},
-              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoCompare(16)),"Compare Mode"),
-              React.createElement("div",{className:"card-sub"},"Write two prompts for the same task. Run both. See which wins."),
-              React.createElement("div",{style:{display:"flex",gap:8,marginBottom:16}},
-                React.createElement("button",{className:"btn btn-ghost btn-sm",onClick:function(){ if(cmpA.trim()) setCmpB(cmpA); }},"Copy A to B"),
-                React.createElement("button",{className:"btn btn-ghost btn-sm",onClick:function(){ setCmpA(""); setCmpB(""); setCmpOutA(""); setCmpOutB(""); }},"Clear All"),
-                React.createElement("button",{className:"btn btn-primary btn-sm",onClick:runBothCompare,disabled:(!cmpA.trim()&&!cmpB.trim())||loadingCmpA||loadingCmpB},
-                  (loadingCmpA||loadingCmpB)?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Running..."):"Run Both"
-                )
-              ),
-              React.createElement("div",{className:"compare-grid",style:{display:"flex",gap:8,marginBottom:8}},
-                React.createElement("div",{style:{flex:1}},
-                  React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:6}},"Prompt A"),
-                  React.createElement("textarea",{value:cmpA,onChange:function(e){ setCmpA(e.target.value); },placeholder:"Write your first prompt here...",rows:5,style:{minHeight:100}}),
-                  React.createElement("div",{style:{marginTop:6,display:"flex",gap:6}},
-                    React.createElement("button",{className:"btn btn-primary btn-sm",onClick:function(){ runCompare("A"); },disabled:loadingCmpA||!cmpA.trim()},
-                      loadingCmpA?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Running A..."):"Run A"
-                    ),
-                    cmpA&&React.createElement(CopyBtn,{text:cmpA,label:"Copy A"})
-                  )
-                ),
-                React.createElement("div",{style:{flex:1}},
-                  React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:6}},"Prompt B"),
-                  React.createElement("textarea",{value:cmpB,onChange:function(e){ setCmpB(e.target.value); },placeholder:"Write your second prompt here...",rows:5,style:{minHeight:100}}),
-                  React.createElement("div",{style:{marginTop:6,display:"flex",gap:6}},
-                    React.createElement("button",{className:"btn btn-primary btn-sm",onClick:function(){ runCompare("B"); },disabled:loadingCmpB||!cmpB.trim()},
-                      loadingCmpB?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Running B..."):"Run B"
-                    ),
-                    cmpB&&React.createElement(CopyBtn,{text:cmpB,label:"Copy B"})
-                  )
-                )
-              ),
-              (cmpOutA||cmpOutB||loadingCmpA||loadingCmpB) && React.createElement("div",null,
-                React.createElement("div",{style:{height:1,background:"var(--border)",margin:"16px 0"}}),
-                React.createElement("div",{className:"compare-grid",style:{display:"flex",gap:8}},
-                  React.createElement("div",{style:{flex:1,background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-md)",padding:12}},
-                    React.createElement("div",{style:{fontSize:11,fontWeight:800,textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:8}},"Output A"),
-                    loadingCmpA?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,color:"var(--text2)",fontSize:12}},React.createElement("div",{className:"spinner spinner-indigo"}),"Generating..."):
-                    React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.7,whiteSpace:"pre-wrap",wordBreak:"break-word"}},cmpOutA||"Run Prompt A to see output"),
-                    cmpOutA&&React.createElement("div",{style:{marginTop:8}},React.createElement(CopyBtn,{text:cmpOutA,label:"Copy"}))
-                  ),
-                  React.createElement("div",{style:{flex:1,background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:"var(--r-md)",padding:12}},
-                    React.createElement("div",{style:{fontSize:11,fontWeight:800,textTransform:"uppercase",color:"var(--emerald)",marginBottom:8}},"Output B"),
-                    loadingCmpB?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,color:"var(--text2)",fontSize:12}},React.createElement("div",{className:"spinner",style:{borderColor:"rgba(16,185,129,0.2)",borderTopColor:"var(--emerald)"}}),"Generating..."):
-                    React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.7,whiteSpace:"pre-wrap",wordBreak:"break-word"}},cmpOutB||"Run Prompt B to see output"),
-                    cmpOutB&&React.createElement("div",{style:{marginTop:8}},React.createElement(CopyBtn,{text:cmpOutB,label:"Copy"}))
-                  )
-                )
-              )
-            )
+            bMode==="compare" && null
           ),
 
           tab==="guide" && React.createElement("div", null,
@@ -1742,7 +1692,7 @@ export default function PromptCoach() {
                 React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
                 React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"Guide to the App"),
                 [{icon:"L",tab:"Learn",color:"rgba(99,102,241,0.12)",tc:"var(--indigo-l)",border:"rgba(99,102,241,0.25)",tagline:"Start here. Always.",what:"The Learn tab teaches you the 8 building blocks of a great prompt - the same framework used by AI professionals.",how:"Tap any lesson to expand it. Start with Lesson 1 (The 8 Building Blocks). Each lesson takes under 5 minutes.",tip:"Finish Lesson 1 before using any other tab - it makes everything else 10x more useful."},
-                 {icon:"B",tab:"Build",color:"rgba(16,185,129,0.08)",tc:"var(--emerald)",border:"rgba(16,185,129,0.2)",tagline:"Where you create your prompts.",what:"Build has 3 modes - Build (guided 8-question wizard), Improve (paste any rough idea and we upgrade it), and Compare (test two prompts side by side).",how:"New to prompting? Use Build mode. Have a rough idea? Use Improve. Compare lets you test two prompts side by side.",tip:"In the Role block, tap Help me choose and describe your task - we will suggest the best expert or team."},
+                 {icon:"B",tab:"Build",color:"rgba(16,185,129,0.08)",tc:"var(--emerald)",border:"rgba(16,185,129,0.2)",tagline:"Where you create your prompts.",what:"Build has 2 modes - Build (a guided 8-question wizard that writes an expert prompt for you) and Improve (paste any rough idea and we upgrade it into a polished prompt).",how:"New to prompting? Use Build mode for step-by-step guidance. Have a rough idea already? Use Improve to upgrade it instantly.",tip:"In the Role step, choose 'Help me choose' from the dropdown and describe your task - we will suggest the best expert or team."},
                  {icon:"P",tab:"Browse",color:"rgba(245,158,11,0.08)",tc:"var(--amber)",border:"rgba(245,158,11,0.2)",tagline:"Ready-made expert prompts.",what:"The Browse tab has professionally crafted prompts across 9 categories - Marketing, Sales, HR, Finance, Customer Service, and more.",how:"Pick a category, find a prompt, tap Copy to use it. Tap Why This Works to see the 8-block breakdown.",tip:"Tap Why This Works on at least 3 prompts. It is the fastest way to learn what makes a prompt powerful."},
                  {icon:"X",tab:"Practice",color:"rgba(244,63,94,0.08)",tc:"var(--rose)",border:"rgba(244,63,94,0.2)",tagline:"Learn by doing - with real feedback.",what:"Practice gives you real-world scenarios. Write a prompt for each and get AI feedback against all 8 building blocks.",how:"Choose a track, generate exercises, write your prompt, tap Get Feedback. A Daily Challenge gives you one scenario every day.",tip:"Do not read the Ideal Prompt before attempting. Write your own first - that is where the learning happens."}
                 ].map(function(item,i){
