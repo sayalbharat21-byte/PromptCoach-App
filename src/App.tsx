@@ -172,7 +172,7 @@ const STYLES = `
   .session-stat-label { font-size:10px; color:var(--text3); margin-top:3px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; }
   .session-divider { width:1px; height:38px; background:var(--border); }
   .empty { text-align:center; padding:56px 24px; }
-  .empty-icon { font-size:48px; margin-bottom:16px; opacity:0.6; animation:pulse 3s ease-in-out infinite; }
+  .empty-icon { color:var(--indigo-l); margin-bottom:16px; opacity:0.6; animation:pulse 3s ease-in-out infinite; }
   .empty p { font-size:14px; color:var(--text2); max-width:280px; margin:0 auto; line-height:1.7; }
   .gen-load { display:flex; flex-direction:column; align-items:center; gap:16px; padding:56px 24px; color:var(--text2); font-size:13.5px; }
   .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:100; background:rgba(7,9,15,0.92); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border-top:1px solid var(--border); display:flex; padding:12px 8px 16px; gap:4px; justify-content:center; }
@@ -367,6 +367,14 @@ const TABS = [
 // listing (once live) or a dedicated feedback form. Defaults to the existing form so it works now.
 var RATE_URL = "https://tally.so/r/rjvEep";
 var rateIcon = navSvg([React.createElement("path",{key:"s",d:"M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9.9l6.9-.8z"})]);
+var cardSvg = function(size, children) {
+  return React.createElement("svg",{width:size,height:size,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},children);
+};
+// Card-title icons (replace old placeholder letters +, W, =, P)
+var icoBuild   = function(s){ return cardSvg(s,[React.createElement("path",{key:"a",d:"M12 2v4M12 18v4M2 12h4M18 12h4"}),React.createElement("path",{key:"b",d:"M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"})]); };
+var icoImprove = function(s){ return cardSvg(s,[React.createElement("path",{key:"a",d:"M5 3v4M3 5h4M6 17v4M4 19h4"}),React.createElement("path",{key:"b",d:"M13 4l3 3L7 16l-3.5.5L4 13z"}),React.createElement("path",{key:"c",d:"M19 11l1.5 3 3 1.5-3 1.5L19 21l-1.5-3-3-1.5 3-1.5z"})]); };
+var icoCompare = function(s){ return cardSvg(s,[React.createElement("rect",{key:"a",x:3,y:4,width:7,height:16,rx:1}),React.createElement("rect",{key:"b",x:14,y:4,width:7,height:16,rx:1})]); };
+var icoPractice= function(s){ return cardSvg(s,[React.createElement("circle",{key:"a",cx:12,cy:12,r:9}),React.createElement("circle",{key:"b",cx:12,cy:12,r:5}),React.createElement("circle",{key:"c",cx:12,cy:12,r:1.5})]); };
 
 
 const PROMPT_LIBRARY = [
@@ -1093,7 +1101,7 @@ export default function PromptCoach() {
               })
             ),
             bMode==="wizard" && React.createElement("div",{className:"card card-accent"},
-              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"+"),"Prompt Builder - 8 Building Blocks"),
+              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoBuild(16)),"Prompt Builder - 8 Building Blocks"),
               React.createElement("div",{className:"card-sub"},"Answer 8 simple questions. We write the expert prompt for you."),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(1),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Role - What expert should AI be?")),
@@ -1210,7 +1218,7 @@ export default function PromptCoach() {
             ),
 
             bMode==="improve" && React.createElement("div",{className:"card card-accent"},
-              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"W"),"Improve My Prompt"),
+              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoImprove(16)),"Improve My Prompt"),
               React.createElement("div",{className:"card-sub"},"Share a rough idea - we improve it, run it, and show you the real AI output."),
               React.createElement("div",{className:"section-label"},"Your prompt idea"),
               React.createElement("textarea",{value:bInput,onChange:function(e){ setBInput(e.target.value); },placeholder:"Paste your rough idea here - even 3 words is enough. Try: 'Help me write an email to my manager'",rows:3}),
@@ -1261,7 +1269,7 @@ export default function PromptCoach() {
             ),
 
             bMode==="compare" && React.createElement("div",{className:"card card-accent"},
-              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"="),"Compare Mode"),
+              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoCompare(16)),"Compare Mode"),
               React.createElement("div",{className:"card-sub"},"Write two prompts for the same task. Run both. See which wins."),
               React.createElement("div",{style:{display:"flex",gap:8,marginBottom:16}},
                 React.createElement("button",{className:"btn btn-ghost btn-sm",onClick:function(){ if(cmpA.trim()) setCmpB(cmpA); }},"Copy A to B"),
@@ -1634,26 +1642,17 @@ export default function PromptCoach() {
               )
             ),
             React.createElement("div",{className:"card"},
-              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"P"),"Practice by Track"),
+              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoPractice(16)),"Practice by Track"),
               React.createElement("div",{className:"card-sub"},"Pick your focus area - get 3 real scenarios from that world every time."),
-              React.createElement("select",{value:track,onChange:function(e){ setTrack(e.target.value); setExs([]); },style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"11px 13px",outline:"none",cursor:"pointer",marginBottom:12}},
+              React.createElement("select",{value:track,onChange:function(e){ setTrack(e.target.value); setExs([]); },style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"11px 13px",outline:"none",cursor:"pointer",marginBottom:16}},
                 TRACKS.map(function(t){ return React.createElement("option",{key:t.id,value:t.id},t.label+" - "+t.desc); })
               ),
-              (function(){
-                var sel = TRACKS.find(function(t){ return t.id===track; });
-                return sel?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-sm)",marginBottom:14}},
-                  React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"var(--indigo-l)"}},sel.label),
-                    React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},sel.desc)
-                  )
-                ):null;
-              })(),
               React.createElement("button",{className:"btn btn-primary",onClick:genExs,disabled:loadingEx},
                 loadingEx?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Generating..."):exs.length?"New Exercises":"Generate Exercises"
               )
             ),
             loadingEx && React.createElement("div",{className:"gen-load"},React.createElement("div",{className:"spinner spinner-indigo",style:{width:28,height:28,borderWidth:3}}),React.createElement("span",null,"Creating exercises...")),
-            !loadingEx && exs.length===0 && React.createElement("div",{className:"empty"},React.createElement("div",{className:"empty-icon"},"P"),React.createElement("p",null,"Choose your track and generate exercises. Fresh scenarios every time.")),
+            !loadingEx && exs.length===0 && React.createElement("div",{className:"empty"},React.createElement("div",{className:"empty-icon"},icoPractice(34)),React.createElement("p",null,"Choose your track and generate exercises. Fresh scenarios every time.")),
             !loadingEx && exs.map(function(ex,i){
               return React.createElement("div",{key:i,className:"ex-card"},
                 React.createElement("div",{className:"ex-num"},React.createElement("div",{className:"ex-num-pill"},i+1),"Exercise "+(i+1)+" of "+exs.length),
