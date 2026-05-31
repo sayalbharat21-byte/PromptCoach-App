@@ -1077,9 +1077,18 @@ export default function PromptCoach() {
               React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"Tell Us What You Need. We'll Build the Prompt With You."),React.createElement("span",{className:"h1-short"},"Build Your Perfect Prompt.")),
               React.createElement("p",null,"Start with any rough idea - even 3 words is enough. We shape it into a prompt that gets you the result you actually wanted.")
             ),
-            React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:12}},
-              React.createElement("button",{onClick:function(){ setShowHistory(!showHistory); },style:{display:"flex",alignItems:"center",gap:5,background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:history.length>0?"var(--indigo-l)":"var(--text3)",fontSize:12,fontWeight:600,padding:"5px 10px",cursor:"pointer",fontFamily:"'Inter',sans-serif"}},
-                "History "+(history.length>0?"("+history.length+")":"")
+            React.createElement("div",{style:{display:"flex",gap:8,marginBottom:8,alignItems:"stretch"}},
+              React.createElement("div",{style:{display:"flex",gap:5,flex:1,background:"var(--surface)",borderRadius:"var(--r-md)",padding:5,border:"1px solid var(--border)"}},
+              [{id:"wizard",label:"Build",sub:"8 guided questions"},{id:"improve",label:"Improve",sub:"Upgrade a prompt"},{id:"compare",label:"Compare",sub:"A vs B side by side"}].map(function(m){
+                return React.createElement("button",{key:m.id,onClick:function(){ switchMode(m.id); },style:{flex:1,padding:"8px 2px",borderRadius:"var(--r-sm)",border:"none",cursor:"pointer",background:bMode===m.id?"linear-gradient(135deg,var(--indigo),var(--indigo-d))":"transparent",color:bMode===m.id?"#fff":"var(--text2)",fontFamily:"'Inter',sans-serif",textAlign:"center",transition:"all 0.18s",boxShadow:bMode===m.id?"0 4px 14px rgba(99,102,241,0.3)":"none"}},
+                  React.createElement("div",{style:{fontSize:"clamp(13px,1.3vw,16px)",fontWeight:700}},m.label),
+                  React.createElement("div",{style:{fontSize:"clamp(11px,1.1vw,13px)",opacity:0.85,marginTop:2}},m.sub)
+                );
+              })
+              ),
+              React.createElement("button",{onClick:function(){ setShowHistory(!showHistory); },title:"Recent prompts",style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,background:showHistory?"rgba(99,102,241,0.12)":"var(--surface)",border:"1px solid "+(showHistory?"rgba(99,102,241,0.3)":"var(--border)"),borderRadius:"var(--r-md)",color:history.length>0?"var(--indigo-l)":"var(--text3)",fontSize:11,fontWeight:600,padding:"0 12px",cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0}},
+                React.createElement("span",{style:{fontSize:15}},"\u21BA"),
+                React.createElement("span",null,"History"+(history.length>0?" ("+history.length+")":""))
               )
             ),
             showHistory && React.createElement("div",{style:{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:14,marginBottom:14}},
@@ -1103,37 +1112,26 @@ export default function PromptCoach() {
                 );
               })
             ),
-            React.createElement("div",{style:{display:"flex",gap:5,marginBottom:16,background:"var(--surface)",borderRadius:"var(--r-md)",padding:5,border:"1px solid var(--border)"}},
-              [{id:"wizard",icon:"+",label:"Build",sub:"8 guided questions"},{id:"improve",icon:"W",label:"Improve",sub:"Upgrade a prompt"},{id:"compare",icon:"=",label:"Compare",sub:"A vs B side by side"}].map(function(m){
-                return React.createElement("button",{key:m.id,onClick:function(){ switchMode(m.id); },style:{flex:1,padding:"8px 2px",borderRadius:"var(--r-sm)",border:"none",cursor:"pointer",background:bMode===m.id?"linear-gradient(135deg,var(--indigo),var(--indigo-d))":"transparent",color:bMode===m.id?"#fff":"var(--text2)",fontFamily:"'Inter',sans-serif",textAlign:"center",transition:"all 0.18s",boxShadow:bMode===m.id?"0 4px 14px rgba(99,102,241,0.3)":"none"}},
-                  React.createElement("div",{style:{fontSize:"clamp(13px,1.3vw,16px)",fontWeight:700}},m.label),
-                  React.createElement("div",{style:{fontSize:"clamp(11px,1.1vw,13px)",opacity:0.85,marginTop:2}},m.sub)
-                );
-              })
-            ),
             bMode==="wizard" && React.createElement("div",{className:"card card-accent"},
               React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoBuild(16)),"Prompt Builder - 8 Building Blocks"),
               React.createElement("div",{className:"card-sub"},"Answer 8 simple questions. We write the expert prompt for you."),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(1),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Role - What expert should AI be?")),
-                React.createElement("div",{style:{background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.18)",borderRadius:"var(--r-sm)",padding:"10px 13px",marginBottom:10}},
-                  React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6,marginBottom:8}},"In case you don't find the role or persona you are looking for, or don't know who you want AI to act like - just write what you want to achieve and we will select the role or the team for you."),
-                  React.createElement("button",{onClick:function(){ setShowPersonaSuggester(!showPersonaSuggester); setPersonaSuggestion(""); setPersonaTask(""); },style:{fontSize:12,color:"var(--amber)",background:"rgba(245,158,11,0.12)",border:"1px solid rgba(245,158,11,0.3)",borderRadius:6,padding:"5px 13px",cursor:"pointer",fontFamily:"'Inter',sans-serif",fontWeight:700}},
-                    showPersonaSuggester?"Close":"Help me choose"
-                  )
+                React.createElement("select",{className:"wiz-select",value:showPersonaSuggester?"__help":(PERSONAS.indexOf(wiz.role)>=0?wiz.role:(wiz.role?"Others":"")),onChange:function(e){ var v=e.target.value; if(v==="__help"){ setShowPersonaSuggester(true); setPersonaSuggestion(""); setPersonaTask(""); } else if(v==="Others"){ setShowPersonaSuggester(false); wSet("role","Others"); } else { setShowPersonaSuggester(false); wSet("role",v); setCustomRole(""); } }},
+                  React.createElement("option",{value:"",disabled:true},"Select an expert persona"),
+                  React.createElement("option",{value:"__help"},"\u2728 Help me choose - describe your task"),
+                  React.createElement("optgroup",{label:"Business and Strategy"},PERSONAS.slice(0,10).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
+                  React.createElement("optgroup",{label:"Content and Communication"},PERSONAS.slice(10,20).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
+                  React.createElement("optgroup",{label:"Customer and HR"},PERSONAS.slice(20,30).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
+                  React.createElement("optgroup",{label:"Finance and Legal"},PERSONAS.slice(30,40).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
+                  React.createElement("optgroup",{label:"Education and Personal Growth"},PERSONAS.slice(40,50).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
+                  React.createElement("optgroup",{label:"Other"},React.createElement("option",{value:"Others"},"Others - I will describe my own"))
                 ),
-                showPersonaSuggester && React.createElement("div",{style:{background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-md)",padding:14,marginBottom:12}},
+                showPersonaSuggester && React.createElement("div",{style:{background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-md)",padding:14,marginTop:10,marginBottom:4}},
                   React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"var(--amber)",marginBottom:8}},"Describe what you want to achieve"),
                   React.createElement("textarea",{value:personaTask,onChange:function(e){ setPersonaTask(e.target.value); },placeholder:"e.g. Write Instagram captions for my jewellery business, plan a product launch...",rows:3,style:{minHeight:70,marginBottom:8,fontSize:12}}),
                   React.createElement("button",{className:"btn btn-primary btn-sm",onClick:suggestPersona,disabled:loadingPersona||!personaTask.trim(),style:{width:"100%",justifyContent:"center"}},
                     loadingPersona?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Finding your best expert..."):"Suggest Best Expert"
-                  ),
-                  loadingPersona && React.createElement("div",{style:{marginTop:12,padding:"18px 16px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-md)",display:"flex",alignItems:"center",gap:14}},
-                    React.createElement("div",{className:"spinner spinner-indigo",style:{width:22,height:22,borderWidth:3,flexShrink:0}}),
-                    React.createElement("div",null,
-                      React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--indigo-l)",marginBottom:3}},"Analysing your task..."),
-                      React.createElement("div",{style:{fontSize:12,color:"var(--text3)"}},"Selecting the best expert or team for you")
-                    )
                   ),
                   personaSuggestion && (function(){
                     var pm = personaSuggestion.match(/RECOMMENDED PERSONA:\s*([\s\S]*?)(?=WHY THIS WORKS:|$)/i);
@@ -1159,15 +1157,6 @@ export default function PromptCoach() {
                       )
                     );
                   })()
-                ),
-                React.createElement("select",{className:"wiz-select",value:PERSONAS.indexOf(wiz.role)>=0?wiz.role:(wiz.role?"Others":""),onChange:function(e){ var v=e.target.value; if(v==="Others"){wSet("role","Others");}else{wSet("role",v);setCustomRole("");} }},
-                  React.createElement("option",{value:"",disabled:true},"Select an expert persona"),
-                  React.createElement("optgroup",{label:"Business and Strategy"},PERSONAS.slice(0,10).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
-                  React.createElement("optgroup",{label:"Content and Communication"},PERSONAS.slice(10,20).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
-                  React.createElement("optgroup",{label:"Customer and HR"},PERSONAS.slice(20,30).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
-                  React.createElement("optgroup",{label:"Finance and Legal"},PERSONAS.slice(30,40).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
-                  React.createElement("optgroup",{label:"Education and Personal Growth"},PERSONAS.slice(40,50).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
-                  React.createElement("optgroup",{label:"Other"},React.createElement("option",{value:"Others"},"Others - I will describe my own"))
                 ),
                 wiz.role && wiz.role!=="Others" && React.createElement("div",{style:{display:"inline-flex",alignItems:"center",gap:8,padding:"5px 13px",borderRadius:999,background:"rgba(99,102,241,0.15)",border:"1px solid rgba(99,102,241,0.35)",fontSize:12,fontWeight:700,color:"var(--indigo-l)"}},
                   wiz.role,React.createElement("span",{style:{cursor:"pointer",opacity:0.7},onClick:function(){ wSet("role",""); }},"x")
@@ -1230,7 +1219,6 @@ export default function PromptCoach() {
 
             bMode==="improve" && React.createElement("div",{className:"card card-accent"},
               React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoImprove(16)),"Improve My Prompt"),
-              React.createElement("div",{className:"card-sub"},"Share a rough idea - we improve it, run it, and show you the real AI output."),
               React.createElement("div",{className:"section-label"},"Your prompt idea"),
               React.createElement("textarea",{value:bInput,onChange:function(e){ setBInput(e.target.value); },placeholder:"Paste your rough idea here - even 3 words is enough. Try: 'Help me write an email to my manager'",rows:3}),
               React.createElement("div",{className:"btn-row"},
@@ -1337,22 +1325,14 @@ export default function PromptCoach() {
               React.createElement("p",null,"Learn the 8 building blocks of a great prompt in plain English. Each lesson takes under 5 minutes.")
             ),
             React.createElement("div",{onClick:function(){ window.open("https://youtu.be/ezmuCprlTVE","_blank"); },style:{marginBottom:18,background:"var(--surface)",border:"1px solid var(--border)",borderRadius:"var(--r-lg)",overflow:"hidden",boxShadow:"var(--shadow-card)",cursor:"pointer"}},
-              React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,padding:"13px 16px",borderBottom:"1px solid var(--border)"}},
-                React.createElement("div",{style:{width:28,height:28,borderRadius:8,background:"rgba(244,63,94,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},
-                  React.createElement("div",{style:{width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderLeft:"10px solid var(--rose)",marginLeft:2}})
+              React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,padding:"14px 16px"}},
+                React.createElement("div",{style:{width:34,height:34,borderRadius:9,background:"rgba(244,63,94,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},
+                  React.createElement("div",{style:{width:0,height:0,borderTop:"7px solid transparent",borderBottom:"7px solid transparent",borderLeft:"12px solid var(--rose)",marginLeft:3}})
                 ),
-                React.createElement("div",{style:{flex:1}},
+                React.createElement("div",{style:{flex:1,minWidth:0}},
                   React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)"}},"Watch the Quick Guide")
-                )
-              ),
-              React.createElement("div",{style:{position:"relative",width:"100%",aspectRatio:"16 / 9",maxHeight:300,backgroundImage:"linear-gradient(rgba(7,9,15,0.35),rgba(7,9,15,0.55)),url('https://i.ytimg.com/vi/ezmuCprlTVE/hqdefault.jpg')",backgroundSize:"cover",backgroundPosition:"center"}},
-                React.createElement("div",{style:{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:12}},
-                  React.createElement("div",{style:{width:60,height:60,borderRadius:"50%",background:"var(--rose)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 30px rgba(244,63,94,0.45)",transition:"transform 0.2s"}},
-                    React.createElement("div",{style:{width:0,height:0,borderTop:"11px solid transparent",borderBottom:"11px solid transparent",borderLeft:"19px solid #fff",marginLeft:5}})
-                  ),
-                  React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"#fff",letterSpacing:"0.3px",textShadow:"0 1px 4px rgba(0,0,0,0.6)"}},"Tap to watch on YouTube")
                 ),
-                React.createElement("div",{style:{position:"absolute",top:10,right:12,fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"#fff",background:"rgba(0,0,0,0.55)",padding:"3px 8px",borderRadius:5}},"Video Guide")
+                React.createElement("div",{style:{display:"flex",alignItems:"center",gap:4,fontSize:12,fontWeight:600,color:"var(--rose)",flexShrink:0}},"YouTube",React.createElement("span",{style:{fontSize:13}},"\u2197"))
               )
             ),
             LESSONS.map(function(lesson){
