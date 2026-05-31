@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   :root {
     --bg:#07090f; --bg2:#0c0f1a; --surface:#0f1320; --surface2:#141827;
@@ -10,6 +10,8 @@ const STYLES = `
     --emerald:#10b981; --rose:#f43f5e; --amber:#f59e0b; --sky:#38bdf8;
     --text:#f1f5f9; --text2:#a9b6c9; --text3:#74839a;
     --r-sm:8px; --r-md:12px; --r-lg:16px;
+    --fs-2xs:11px; --fs-xs:12px; --fs-sm:14px; --fs-md:16px; --fs-lg:clamp(18px,1.8vw,22px); --fs-xl:clamp(22px,2.6vw,30px);
+    --lh-tight:1.2; --lh-snug:1.4; --lh-base:1.6; --lh-relaxed:1.75;
     --ease:cubic-bezier(0.4,0,0.2,1);
     --ease-out:cubic-bezier(0.16,1,0.3,1); --dur-fast:140ms; --dur-base:220ms; --dur-slow:360ms;
     --shadow-card:0 1px 3px rgba(0,0,0,0.4),0 4px 16px rgba(0,0,0,0.25);
@@ -20,7 +22,7 @@ const STYLES = `
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:rgba(99,102,241,0.35); border-radius:999px; }
   ::-webkit-scrollbar-thumb:hover { background:rgba(99,102,241,0.6); }
-  body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; letter-spacing:-0.011em; font-feature-settings:'cv11','ss01'; }
   body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 90% 55% at 15% -5%,rgba(99,102,241,0.06) 0%,transparent 55%); pointer-events:none; z-index:0; }
   @keyframes ambientShift { 0% { opacity:1; transform:scale(1) translateY(0); } 100% { opacity:0.75; transform:scale(1.04) translateY(-8px); } }
   html { background:#07090f; }
@@ -34,19 +36,19 @@ const STYLES = `
   .brand-name { font-size:clamp(18px,2.2vw,24px); font-weight:800; color:var(--text); letter-spacing:-0.5px; }
   .brand-name span { color:var(--indigo-l); }
   .hero { padding:2px 0 8px; }
-  .hero h1 { font-size:clamp(21px,2.6vw,30px); font-weight:800; line-height:1.15; letter-spacing:-0.8px; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:7px; }
-  .hero p { font-size:clamp(13px,1.2vw,15px); color:var(--text2); line-height:1.5; max-width:580px; }
+  .hero h1 { font-size:var(--fs-xl); font-weight:800; line-height:var(--lh-tight); letter-spacing:-0.03em; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:7px; }
+  .hero p { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); max-width:580px; }
   .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.45),0 8px 24px rgba(0,0,0,0.22); transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out); }
   .card::before { content:''; position:absolute; inset:0; background:linear-gradient(145deg,rgba(255,255,255,0.03) 0%,transparent 50%); pointer-events:none; }
   @media (hover:hover) { .card:hover { background:var(--surface2); border-color:var(--border2); transform:translateY(-1px); } }
   .card-accent { border-left:2px solid var(--indigo); box-shadow:var(--shadow-card),-2px 0 20px rgba(99,102,241,0.08); }
-  .card-title { font-size:clamp(16px,1.8vw,22px); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
+  .card-title { font-size:var(--fs-lg); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
   .card-title .icon { width:30px; height:30px; border-radius:9px; background:rgba(99,102,241,0.13); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; box-shadow:0 2px 8px rgba(99,102,241,0.15); }
-  .card-sub { font-size:clamp(13px,1.4vw,17px); color:var(--text2); line-height:1.6; margin-bottom:12px; }
-  textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; padding:13px 16px; resize:vertical; outline:none; line-height:1.6; min-height:84px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
+  .card-sub { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); margin-bottom:12px; }
+  textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Inter',sans-serif; font-size:14px; padding:13px 16px; resize:vertical; outline:none; line-height:1.6; min-height:84px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
   textarea::placeholder { color:var(--text3); }
   textarea:focus { border-color:rgba(99,102,241,0.7); box-shadow:0 0 0 4px rgba(99,102,241,0.15),0 2px 14px rgba(99,102,241,0.12); }
-  .btn { display:inline-flex; align-items:center; gap:7px; border:none; border-radius:var(--r-sm); font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:clamp(13px,1.3vw,16px); cursor:pointer; transition:all 0.18s var(--ease); white-space:nowrap; padding:12px 24px; position:relative; overflow:hidden; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:7px; border:none; border-radius:var(--r-sm); font-family:'Inter',sans-serif; font-weight:700; font-size:var(--fs-sm); cursor:pointer; transition:all 0.18s var(--ease); white-space:nowrap; padding:12px 24px; min-height:44px; position:relative; overflow:hidden; }
   .btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:background 0.15s; }
   .btn:active::after { background:rgba(255,255,255,0.08); }
   .btn-primary { background:radial-gradient(140px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.22),transparent 60%),linear-gradient(135deg,var(--indigo),var(--indigo-d)); color:#fff; box-shadow:var(--shadow-primary); }
@@ -58,11 +60,11 @@ const STYLES = `
   .btn-ghost:active { transform:scale(0.97); }
   .btn-sm { padding:7px 14px; font-size:12px; border-radius:8px; font-weight:600; }
   .btn-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px; }
-  .copy-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text2); font-size:11.5px; font-weight:600; padding:5px 12px; border-radius:7px; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; white-space:nowrap; }
+  .copy-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text2); font-size:var(--fs-xs); font-weight:600; padding:5px 12px; border-radius:7px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; white-space:nowrap; }
   .copy-btn:hover { color:var(--text); border-color:var(--border2); background:rgba(255,255,255,0.09); transform:translateY(-1px); }
   .copy-btn:active { transform:scale(0.94); }
   .copy-btn.done { color:var(--emerald); border-color:rgba(16,185,129,0.35); background:rgba(16,185,129,0.1); }
-  .output-block { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-top:14px; font-size:14px; line-height:1.65; color:var(--text2); white-space:pre-wrap; word-break:break-word; animation:aiReveal 0.5s cubic-bezier(0.22,1,0.36,1); box-shadow:inset 0 1px 0 rgba(255,255,255,0.04); }
+  .output-block { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-top:14px; font-size:var(--fs-sm); line-height:var(--lh-base); color:var(--text2); white-space:pre-wrap; word-break:break-word; animation:aiReveal 0.5s cubic-bezier(0.22,1,0.36,1); box-shadow:inset 0 1px 0 rgba(255,255,255,0.04); }
   .output-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px; }
   .output-label { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--indigo-l); }
   .spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,0.12); border-top-color:#fff; border-radius:50%; animation:spin 0.6s linear infinite; flex-shrink:0; }
@@ -81,7 +83,7 @@ const STYLES = `
     .shell { max-width:1340px; padding:0 40px 48px; }
     .app-layout { display:grid; grid-template-columns:232px 1fr; gap:44px; margin-top:20px; align-items:start; }
     .desktop-sidebar { display:flex; flex-direction:column; gap:6px; position:sticky; top:28px; height:fit-content; }
-    .sidebar-item { display:flex; align-items:center; gap:12px; padding:11px 14px; background:transparent; border:1px solid transparent; border-radius:var(--r-md); color:var(--text2); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out); text-align:left; width:100%; }
+    .sidebar-item { display:flex; align-items:center; gap:12px; padding:11px 14px; background:transparent; border:1px solid transparent; border-radius:var(--r-md); color:var(--text2); font-family:'Inter',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out); text-align:left; width:100%; }
     .sidebar-item:hover { color:var(--text); background:rgba(255,255,255,0.03); }
     .sidebar-item.active { color:var(--indigo-l); background:rgba(99,102,241,0.1); border-color:rgba(99,102,241,0.2); }
     .sidebar-item .nav-icon-wrap { width:auto; height:auto; border:none; background:none; box-shadow:none; }
@@ -118,11 +120,11 @@ const STYLES = `
   .drawer-backdrop { position:fixed; inset:0; background:rgba(3,4,7,0.45); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); z-index:200; animation:backdropIn 0.22s var(--ease-out); }
   .drawer-panel { position:fixed; top:0; left:0; height:100%; width:88%; max-width:320px; background:rgba(12,15,26,0.78); backdrop-filter:blur(30px) saturate(1.4); -webkit-backdrop-filter:blur(30px) saturate(1.4); border-right:1px solid rgba(255,255,255,0.08); z-index:201; display:flex; flex-direction:column; animation:slideInLeft 0.36s cubic-bezier(0.16,1,0.3,1); box-shadow:40px 0 80px rgba(0,0,0,0.55); overflow:hidden; }
   .drawer-scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; -webkit-mask-image:linear-gradient(to bottom, black 85%, transparent 100%); mask-image:linear-gradient(to bottom, black 85%, transparent 100%); }
-  .drawer-close-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text2); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; flex-shrink:0; }
+  .drawer-close-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text2); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif; transition:all 0.15s; flex-shrink:0; }
   .drawer-close-btn:hover { background:var(--surface2); color:var(--text); border-color:var(--border2); }
   @media (hover:hover) { .drawer-close-btn:hover { transform:rotate(90deg); } .menu-item-btn:hover { padding-left:20px; } }
   .drawer-close-btn:active { transform:scale(0.93); }
-  .menu-item-btn { width:100%; display:flex; align-items:center; gap:14px; padding:15px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); margin-bottom:10px; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; text-align:left; transition:all 0.15s; }
+  .menu-item-btn { width:100%; display:flex; align-items:center; gap:14px; padding:15px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); margin-bottom:10px; cursor:pointer; font-family:'Inter',sans-serif; text-align:left; transition:all 0.15s; }
   .menu-item-btn:hover { background:rgba(99,102,241,0.06); border-color:rgba(99,102,241,0.3); }
   .menu-item-btn:active { transform:scale(0.98); background:rgba(99,102,241,0.1); }
   .menu-item-btn.active-page { background:rgba(99,102,241,0.08); border-color:rgba(99,102,241,0.35); border-left:2px solid var(--indigo-l); }
@@ -138,7 +140,7 @@ const STYLES = `
     .ai-shimmer::before { display:none; }
     .ai-thinking span { animation:none; opacity:0.6; }
   }
-  .section-label { font-size:clamp(11px,1vw,13px); font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text2); margin-bottom:8px; }
+  .section-label { font-size:var(--fs-2xs); font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text2); margin-bottom:8px; }
   .tag { display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:999px; margin-right:6px; margin-bottom:6px; }
   .tag-weak { background:rgba(244,63,94,0.1); color:var(--rose); border:1px solid rgba(244,63,94,0.2); }
   .tag-good { background:rgba(16,185,129,0.1); color:var(--emerald); border:1px solid rgba(16,185,129,0.2); }
@@ -175,27 +177,34 @@ const STYLES = `
   .gen-load { display:flex; flex-direction:column; align-items:center; gap:16px; padding:56px 24px; color:var(--text2); font-size:13.5px; }
   .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:100; background:rgba(7,9,15,0.92); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border-top:1px solid var(--border); display:flex; padding:12px 8px 16px; gap:4px; justify-content:center; }
   @media (min-width:1024px) { .bottom-nav { display:none; } }
-  .nav-item { flex:1; max-width:160px; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px; border-radius:var(--r-sm); border:none; background:transparent; cursor:pointer; transition:color var(--dur-fast) var(--ease-out); color:var(--text2); font-family:'Plus Jakarta Sans',sans-serif; position:relative; }
+  .nav-item { flex:1; max-width:160px; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px; border-radius:var(--r-sm); border:none; background:transparent; cursor:pointer; transition:color var(--dur-fast) var(--ease-out); color:var(--text2); font-family:'Inter',sans-serif; position:relative; }
   .nav-item:hover { color:var(--text); }
   .nav-item:active { transform:scale(0.92); }
   .nav-item.active { color:var(--indigo-l); }
   .nav-item.active .nav-label { font-weight:800; color:var(--indigo-l); }
   .nav-item.active .nav-icon-wrap { background:rgba(99,102,241,0.22); border-color:rgba(99,102,241,0.45); box-shadow:0 3px 16px rgba(99,102,241,0.35); }
-  .nav-icon-wrap { width:clamp(56px,6.5vw,72px); height:clamp(34px,4vw,42px); border-radius:999px; border:1px solid transparent; display:flex; align-items:center; justify-content:center; transition:background var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out); }
-  .nav-icon-wrap svg { width:clamp(21px,2.4vw,25px); height:clamp(21px,2.4vw,25px); }
+  .nav-icon-wrap { width:clamp(46px,6.5vw,72px); height:clamp(32px,4vw,42px); border-radius:999px; border:1px solid transparent; display:flex; align-items:center; justify-content:center; transition:background var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out); }
+  .nav-icon-wrap svg { width:clamp(20px,2.4vw,25px); height:clamp(20px,2.4vw,25px); }
   .nav-label { font-size:clamp(11.5px,1.2vw,14px); font-weight:700; transition:all 0.2s; }
+  .nav-rate { color:var(--amber); }
+  .nav-rate .nav-icon-wrap svg { fill:rgba(245,158,11,0.18); }
+  @media (min-width:1024px) {
+    .sidebar-rate { color:var(--amber); margin-top:8px; border-color:rgba(245,158,11,0.22); background:rgba(245,158,11,0.06); }
+    .sidebar-rate:hover { color:var(--amber); background:rgba(245,158,11,0.12); border-color:rgba(245,158,11,0.35); }
+    .sidebar-rate .nav-icon-wrap svg { fill:rgba(245,158,11,0.2); }
+  }
   .lesson-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); margin-bottom:8px; overflow:hidden; cursor:pointer; transition:all 0.2s var(--ease); box-shadow:var(--shadow-card); }
   .lesson-block:hover { border-color:var(--border2); transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
   .lesson-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; gap:12px; }
   .lesson-icon { width:clamp(38px,4vw,50px); height:clamp(38px,4vw,50px); border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:clamp(19px,2vw,26px); flex-shrink:0; }
   .lesson-body { padding:16px 18px 20px; border-top:1px solid var(--border); animation:fadeDown 0.22s var(--ease); }
   .lib-cat-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
-  .lib-cat-btn { padding:6px 15px; border-radius:999px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; white-space:nowrap; }
+  .lib-cat-btn { padding:6px 15px; border-radius:999px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; white-space:nowrap; }
   .lib-cat-btn:hover { border-color:var(--border2); color:var(--text); }
   .lib-cat-btn.sel { background:rgba(99,102,241,0.2); border-color:rgba(99,102,241,0.5); color:var(--indigo-l); box-shadow:0 2px 10px rgba(99,102,241,0.15); }
   .lib-prompt-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-bottom:10px; transition:all 0.18s; box-shadow:var(--shadow-card); }
   .lib-prompt-card:hover { border-color:var(--border2); transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
-  .lib-prompt-title { font-size:clamp(13px,1.4vw,17px); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.2px; }
+  .lib-prompt-title { font-size:var(--fs-sm); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.2px; }
   .lib-prompt-preview { font-size:clamp(12px,1.2vw,15px); color:var(--text3); line-height:1.55; margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; cursor:pointer; transition:color var(--dur-fast) var(--ease-out); }
   .lib-prompt-preview:hover { color:var(--text2); }
   .lib-prompt-preview.expanded { display:block; -webkit-line-clamp:unset; overflow:visible; white-space:pre-wrap; color:var(--text2); background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-sm); padding:12px 14px; max-height:340px; overflow-y:auto; }
@@ -205,7 +214,7 @@ const STYLES = `
   .promo-banner { background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(99,102,241,0.06)); border:1px solid rgba(245,158,11,0.25); border-radius:var(--r-lg); padding:18px; margin-bottom:16px; }
   .hook-banner { background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(244,63,94,0.05)); border:1px solid rgba(99,102,241,0.18); border-radius:var(--r-md); padding:14px 16px; margin-bottom:18px; }
   .daily-card { background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(245,158,11,0.05)); border:1px solid rgba(99,102,241,0.22); border-radius:var(--r-lg); padding:20px; margin-bottom:16px; box-shadow:0 4px 20px rgba(99,102,241,0.08); }
-  .wiz-select { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; padding:12px 14px; outline:none; cursor:pointer; margin-bottom:8px; transition:border-color 0.2s; }
+  .wiz-select { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'Inter',sans-serif; font-size:13px; padding:12px 14px; outline:none; cursor:pointer; margin-bottom:8px; transition:border-color 0.2s; }
   .wiz-select:focus { border-color:rgba(99,102,241,0.5); }
   .wiz-row { display:flex; align-items:center; gap:9px; margin-bottom:9px; }
   .wiz-num { width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,var(--indigo),var(--indigo-d)); color:#fff; font-weight:800; font-size:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 2px 8px rgba(99,102,241,0.3); }
@@ -217,11 +226,11 @@ const STYLES = `
   .hist-item:hover { opacity:0.8; }
   .hist-item:last-child { border-bottom:none; }
   .hist-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
-  .model-select { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; padding:6px 10px; outline:none; cursor:pointer; }
+  .model-select { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'Inter',sans-serif; font-size:12px; padding:6px 10px; outline:none; cursor:pointer; }
   .version-tag { display:inline-flex; align-items:center; padding:2px 9px; border-radius:999px; font-size:10px; font-weight:700; background:rgba(99,102,241,0.12); color:var(--indigo-l); border:1px solid rgba(99,102,241,0.22); margin-right:6px; cursor:pointer; transition:all 0.15s; }
   .version-tag:hover { background:rgba(99,102,241,0.2); }
   .version-tag.active { background:rgba(99,102,241,0.3); border-color:var(--indigo-l); }
-  .apply-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.28); color:var(--amber); font-size:11.5px; font-weight:700; padding:6px 13px; border-radius:7px; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; }
+  .apply-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.28); color:var(--amber); font-size:11.5px; font-weight:700; padding:6px 13px; border-radius:7px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
   .apply-btn:hover { background:rgba(245,158,11,0.2); transform:translateY(-1px); }
   .apply-btn:active { transform:scale(0.96); }
   .mistake-row { display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); }
@@ -230,7 +239,7 @@ const STYLES = `
   .mistake-title { font-weight:700; font-size:13.5px; color:var(--text); margin-bottom:5px; }
   .mistake-bad { font-size:12.5px; color:var(--rose); margin-bottom:4px; word-break:break-word; }
   .mistake-good { font-size:12.5px; color:var(--emerald); word-break:break-word; }
-  .diff-btn { flex:1; padding:8px 4px; border-radius:var(--r-sm); border:1px solid var(--border); background:transparent; color:var(--text2); font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer; text-align:center; transition:all 0.15s; }
+  .diff-btn { flex:1; padding:8px 4px; border-radius:var(--r-sm); border:1px solid var(--border); background:transparent; color:var(--text2); font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; text-align:center; transition:all 0.15s; }
   .diff-btn.ab { border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.08); color:var(--emerald); }
   .diff-btn.ai { border-color:rgba(245,158,11,0.4); background:rgba(245,158,11,0.08); color:var(--amber); }
   .diff-btn.aa { border-color:rgba(244,63,94,0.4); background:rgba(244,63,94,0.08); color:var(--rose); }
@@ -353,6 +362,12 @@ const TABS = [
   { id:"library",  icon:navSvg([React.createElement("rect",{key:"a",x:3,y:3,width:7,height:7,rx:1}),React.createElement("rect",{key:"b",x:14,y:3,width:7,height:7,rx:1}),React.createElement("rect",{key:"c",x:14,y:14,width:7,height:7,rx:1}),React.createElement("rect",{key:"d",x:3,y:14,width:7,height:7,rx:1})]), label:"Browse" },
   { id:"practice", icon:navSvg([React.createElement("circle",{key:"a",cx:12,cy:12,r:10}),React.createElement("circle",{key:"b",cx:12,cy:12,r:6}),React.createElement("circle",{key:"c",cx:12,cy:12,r:2})]), label:"Practice" },
 ];
+
+// Where the "Rate Us" buttons send people. Change this one line to your Play Store
+// listing (once live) or a dedicated feedback form. Defaults to the existing form so it works now.
+var RATE_URL = "https://tally.so/r/rjvEep";
+var rateIcon = navSvg([React.createElement("path",{key:"s",d:"M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9.9l6.9-.8z"})]);
+
 
 const PROMPT_LIBRARY = [
     { cat:"Marketing", color:"rgba(99,102,241,0.15)", tc:"var(--indigo-l)", prompts:[
@@ -990,7 +1005,7 @@ export default function PromptCoach() {
 
   var numBall = function(n) { return React.createElement("div",{className:"wiz-num"},n); };
   var Chip = function(p) {
-    return React.createElement("button",{onClick:p.onClick,style:{padding:"5px 12px",borderRadius:999,border:"1px solid",borderColor:p.sel?(p.selBorder||"rgba(99,102,241,0.5)"):"var(--border)",background:p.sel?(p.selBg||"rgba(99,102,241,0.18)"):"var(--surface2)",color:p.sel?(p.selColor||"var(--indigo-l)"):"var(--text2)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",transition:"all 0.15s"}},p.label);
+    return React.createElement("button",{onClick:p.onClick,style:{padding:"5px 12px",borderRadius:999,border:"1px solid",borderColor:p.sel?(p.selBorder||"rgba(99,102,241,0.5)"):"var(--border)",background:p.sel?(p.selBg||"rgba(99,102,241,0.18)"):"var(--surface2)",color:p.sel?(p.selColor||"var(--indigo-l)"):"var(--text2)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}},p.label);
   };
 
   return (
@@ -1029,7 +1044,11 @@ export default function PromptCoach() {
                 React.createElement("div",{className:"nav-icon-wrap"},t.icon),
                 React.createElement("span",null,t.label)
               );
-            })
+            }),
+            React.createElement("button",{className:"sidebar-item sidebar-rate",onClick:function(){ window.open(RATE_URL,"_blank"); }},
+              React.createElement("div",{className:"nav-icon-wrap"},rateIcon),
+              React.createElement("span",null,"Rate Us")
+            )
           ),
 
         React.createElement("div", {key:animKey, className:"page-enter", style:{minWidth:0}},
@@ -1040,7 +1059,7 @@ export default function PromptCoach() {
               React.createElement("p",null,"Start with any rough idea - even 3 words is enough. We shape it into a prompt that gets you the result you actually wanted.")
             ),
             React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:12}},
-              React.createElement("button",{onClick:function(){ setShowHistory(!showHistory); },style:{display:"flex",alignItems:"center",gap:5,background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:history.length>0?"var(--indigo-l)":"var(--text3)",fontSize:11.5,fontWeight:600,padding:"5px 10px",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},
+              React.createElement("button",{onClick:function(){ setShowHistory(!showHistory); },style:{display:"flex",alignItems:"center",gap:5,background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:history.length>0?"var(--indigo-l)":"var(--text3)",fontSize:11.5,fontWeight:600,padding:"5px 10px",cursor:"pointer",fontFamily:"'Inter',sans-serif"}},
                 "History "+(history.length>0?"("+history.length+")":"")
               )
             ),
@@ -1050,7 +1069,7 @@ export default function PromptCoach() {
                   React.createElement("span",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Last 10 Prompts"),
                   React.createElement("span",{style:{fontSize:10,color:"var(--text3)",marginLeft:8}},"Saved across sessions")
                 ),
-                React.createElement("button",{onClick:clearHistory,style:{fontSize:11,color:"var(--rose)",background:"none",border:"none",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Clear All")
+                React.createElement("button",{onClick:clearHistory,style:{fontSize:11,color:"var(--rose)",background:"none",border:"none",cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Clear All")
               ),
               !historyLoaded && React.createElement("div",{style:{fontSize:12,color:"var(--text3)",textAlign:"center",padding:"12px 0"}},"Loading..."),
               historyLoaded && history.length===0 && React.createElement("div",{style:{fontSize:12,color:"var(--text3)",textAlign:"center",padding:"12px 0"}},"No history yet. Build or improve a prompt to start tracking."),
@@ -1067,7 +1086,7 @@ export default function PromptCoach() {
             ),
             React.createElement("div",{style:{display:"flex",gap:5,marginBottom:16,background:"var(--surface)",borderRadius:"var(--r-md)",padding:5,border:"1px solid var(--border)"}},
               [{id:"wizard",icon:"+",label:"Build",sub:"8 guided questions"},{id:"improve",icon:"W",label:"Improve",sub:"Upgrade a prompt"},{id:"compare",icon:"=",label:"Compare",sub:"A vs B side by side"}].map(function(m){
-                return React.createElement("button",{key:m.id,onClick:function(){ switchMode(m.id); },style:{flex:1,padding:"8px 2px",borderRadius:"var(--r-sm)",border:"none",cursor:"pointer",background:bMode===m.id?"linear-gradient(135deg,var(--indigo),var(--indigo-d))":"transparent",color:bMode===m.id?"#fff":"var(--text2)",fontFamily:"'Plus Jakarta Sans',sans-serif",textAlign:"center",transition:"all 0.18s",boxShadow:bMode===m.id?"0 4px 14px rgba(99,102,241,0.3)":"none"}},
+                return React.createElement("button",{key:m.id,onClick:function(){ switchMode(m.id); },style:{flex:1,padding:"8px 2px",borderRadius:"var(--r-sm)",border:"none",cursor:"pointer",background:bMode===m.id?"linear-gradient(135deg,var(--indigo),var(--indigo-d))":"transparent",color:bMode===m.id?"#fff":"var(--text2)",fontFamily:"'Inter',sans-serif",textAlign:"center",transition:"all 0.18s",boxShadow:bMode===m.id?"0 4px 14px rgba(99,102,241,0.3)":"none"}},
                   React.createElement("div",{style:{fontSize:"clamp(13px,1.3vw,16px)",fontWeight:700}},m.label),
                   React.createElement("div",{style:{fontSize:"clamp(11px,1.1vw,13px)",opacity:0.85,marginTop:2}},m.sub)
                 );
@@ -1080,7 +1099,7 @@ export default function PromptCoach() {
                 React.createElement("div",{className:"wiz-row"},numBall(1),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Role - What expert should AI be?")),
                 React.createElement("div",{style:{background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.18)",borderRadius:"var(--r-sm)",padding:"10px 13px",marginBottom:10}},
                   React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6,marginBottom:8}},"In case you don't find the role or persona you are looking for, or don't know who you want AI to act like - just write what you want to achieve and we will select the role or the team for you."),
-                  React.createElement("button",{onClick:function(){ setShowPersonaSuggester(!showPersonaSuggester); setPersonaSuggestion(""); setPersonaTask(""); },style:{fontSize:12,color:"var(--amber)",background:"rgba(245,158,11,0.12)",border:"1px solid rgba(245,158,11,0.3)",borderRadius:6,padding:"5px 13px",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",fontWeight:700}},
+                  React.createElement("button",{onClick:function(){ setShowPersonaSuggester(!showPersonaSuggester); setPersonaSuggestion(""); setPersonaTask(""); },style:{fontSize:12,color:"var(--amber)",background:"rgba(245,158,11,0.12)",border:"1px solid rgba(245,158,11,0.3)",borderRadius:6,padding:"5px 13px",cursor:"pointer",fontFamily:"'Inter',sans-serif",fontWeight:700}},
                     showPersonaSuggester?"Close":"Help me choose"
                   )
                 ),
@@ -1117,7 +1136,7 @@ export default function PromptCoach() {
                           React.createElement("div",{style:{fontSize:10,fontWeight:700,color:"var(--text3)",marginBottom:3}},"Simpler alternative"),
                           React.createElement("div",{style:{fontSize:12,color:"var(--text2)"}},alt)
                         ),
-                        React.createElement("button",{onClick:function(){ setCustomRole(alt); wSet("role","Others"); setShowPersonaSuggester(false); setPersonaTask(""); setPersonaSuggestion(""); },style:{padding:"4px 10px",borderRadius:6,border:"1px solid var(--border)",background:"var(--surface)",color:"var(--text2)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",flexShrink:0}},"Use This")
+                        React.createElement("button",{onClick:function(){ setCustomRole(alt); wSet("role","Others"); setShowPersonaSuggester(false); setPersonaTask(""); setPersonaSuggestion(""); },style:{padding:"4px 10px",borderRadius:6,border:"1px solid var(--border)",background:"var(--surface)",color:"var(--text2)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0}},"Use This")
                       )
                     );
                   })()
@@ -1134,7 +1153,7 @@ export default function PromptCoach() {
                 wiz.role && wiz.role!=="Others" && React.createElement("div",{style:{display:"inline-flex",alignItems:"center",gap:8,padding:"5px 13px",borderRadius:999,background:"rgba(99,102,241,0.15)",border:"1px solid rgba(99,102,241,0.35)",fontSize:12,fontWeight:700,color:"var(--indigo-l)"}},
                   wiz.role,React.createElement("span",{style:{cursor:"pointer",opacity:0.7},onClick:function(){ wSet("role",""); }},"x")
                 ),
-                wiz.role==="Others" && React.createElement("input",{type:"text",value:customRole,onChange:function(e){ setCustomRole(e.target.value); },placeholder:"e.g. Wedding photographer, Astrologer, Cricket coach...",style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,padding:"10px 13px",outline:"none",marginTop:8},autoFocus:true})
+                wiz.role==="Others" && React.createElement("input",{type:"text",value:customRole,onChange:function(e){ setCustomRole(e.target.value); },placeholder:"e.g. Wedding photographer, Astrologer, Cricket coach...",style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:13,padding:"10px 13px",outline:"none",marginTop:8},autoFocus:true})
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(2),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Objective - What exactly do you want AI to do? *")),
@@ -1158,7 +1177,7 @@ export default function PromptCoach() {
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(6),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Constraints - What should AI avoid? (optional)")),
-                React.createElement("input",{type:"text",value:wiz.constraints,onChange:function(e){ wSet("constraints",e.target.value); },placeholder:"e.g. No jargon, no passive voice, no bullet points over 5, avoid words like leverage or synergy...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,padding:"10px 13px",outline:"none"}})
+                React.createElement("input",{type:"text",value:wiz.constraints,onChange:function(e){ wSet("constraints",e.target.value); },placeholder:"e.g. No jargon, no passive voice, no bullet points over 5, avoid words like leverage or synergy...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:13,padding:"10px 13px",outline:"none"}})
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(7),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Example - Show AI what good looks like (optional)")),
@@ -1168,7 +1187,7 @@ export default function PromptCoach() {
                 React.createElement("div",{className:"wiz-row"},numBall(8),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Critique - Ask AI to review its own answer?")),
                 React.createElement("div",{style:{display:"flex",gap:8}},
                   [{v:true,label:"Yes - polish before delivering",c:"var(--emerald)",bg:"rgba(16,185,129,0.12)",bc:"rgba(16,185,129,0.4)"},{v:false,label:"No - use first answer",c:"var(--text2)",bg:"var(--surface2)",bc:"var(--border)"}].map(function(opt){
-                    return React.createElement("button",{key:String(opt.v),onClick:function(){ wSet("critique",opt.v); },style:{flex:1,padding:"9px 8px",borderRadius:"var(--r-sm)",border:"1px solid "+(wiz.critique===opt.v?opt.bc:"var(--border)"),background:wiz.critique===opt.v?opt.bg:"transparent",color:wiz.critique===opt.v?opt.c:"var(--text3)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:600,cursor:"pointer",transition:"all 0.15s",textAlign:"center"}},opt.label);
+                    return React.createElement("button",{key:String(opt.v),onClick:function(){ wSet("critique",opt.v); },style:{flex:1,padding:"9px 8px",borderRadius:"var(--r-sm)",border:"1px solid "+(wiz.critique===opt.v?opt.bc:"var(--border)"),background:wiz.critique===opt.v?opt.bg:"transparent",color:wiz.critique===opt.v?opt.c:"var(--text3)",fontFamily:"'Inter',sans-serif",fontSize:12,fontWeight:600,cursor:"pointer",transition:"all 0.15s",textAlign:"center"}},opt.label);
                   })
                 )
               ),
@@ -1183,7 +1202,7 @@ export default function PromptCoach() {
                   React.createElement("div",{className:"output-label"},"Your Ready-to-Use Prompt"),
                   React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
                     React.createElement(CopyBtn,{text:wizOut,label:"Copy Prompt"}),
-                    React.createElement("button",{onClick:function(){ savePrompt("My Prompt - "+new Date().toLocaleDateString("en-IN"), wizOut); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Save")
+                    React.createElement("button",{onClick:function(){ savePrompt("My Prompt - "+new Date().toLocaleDateString("en-IN"), wizOut); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save")
                   )
                 ),
                 wizOut
@@ -1220,7 +1239,7 @@ export default function PromptCoach() {
                       React.createElement("span",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Improved Prompt"),
                       React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
                         React.createElement(CopyBtn,{text:imp,label:"Copy Prompt"}),
-                        React.createElement("button",{onClick:function(){ savePrompt("Improved - "+bInput.slice(0,30), imp); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Save")
+                        React.createElement("button",{onClick:function(){ savePrompt("Improved - "+bInput.slice(0,30), imp); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save")
                       )
                     ),
                     React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},imp),
@@ -1357,8 +1376,8 @@ export default function PromptCoach() {
                       React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--emerald)",marginBottom:4}},"You just learned the most important framework in AI."),
                       React.createElement("div",{style:{fontSize:12,color:"var(--text2)",marginBottom:10}},"6 lessons left - each one builds on this foundation."),
                       React.createElement("div",{style:{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}},
-                        React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("wizard"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--emerald),#059669)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Try it in Build Mode"),
-                        React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"1px solid rgba(99,102,241,0.4)",background:"rgba(99,102,241,0.1)",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Get Pro Updates")
+                        React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("wizard"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--emerald),#059669)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Try it in Build Mode"),
+                        React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"1px solid rgba(99,102,241,0.4)",background:"rgba(99,102,241,0.1)",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Get Pro Updates")
                       )
                     )
                   ),
@@ -1476,10 +1495,10 @@ export default function PromptCoach() {
                 )
               ),
               React.createElement("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:12}},"Currently free while in beta. Pro plan launching at Rs 199/month."),
-              React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"11px 16px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--amber),#d97706)",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",boxShadow:"0 4px 14px rgba(245,158,11,0.3)"}},"Join the Waitlist - Get Early Access")
+              React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"11px 16px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--amber),#d97706)",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",boxShadow:"0 4px 14px rgba(245,158,11,0.3)"}},"Join the Waitlist - Get Early Access")
             ),
             saved.length>0 && React.createElement("div",{style:{marginBottom:14}},
-              React.createElement("button",{onClick:function(){ setShowSaved(!showSaved); },style:{display:"flex",alignItems:"center",gap:8,width:"100%",background:"rgba(16,185,129,0.08)",border:"1px solid rgba(16,185,129,0.25)",borderRadius:"var(--r-md)",padding:"12px 16px",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",transition:"all 0.15s"}},
+              React.createElement("button",{onClick:function(){ setShowSaved(!showSaved); },style:{display:"flex",alignItems:"center",gap:8,width:"100%",background:"rgba(16,185,129,0.08)",border:"1px solid rgba(16,185,129,0.25)",borderRadius:"var(--r-md)",padding:"12px 16px",cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}},
                 React.createElement("div",{style:{flex:1,textAlign:"left"}},
                   React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--emerald)"}},"My Saved Prompts ("+saved.length+")"),
                   React.createElement("div",{style:{fontSize:11,color:"var(--text3)",marginTop:2}},"Tap to "+(showSaved?"hide":"view")+" your saved prompts")
@@ -1494,7 +1513,7 @@ export default function PromptCoach() {
                         React.createElement("div",{className:"lib-prompt-title"},s.title),
                         React.createElement("div",{style:{fontSize:10,color:"var(--text3)"}},"Saved on "+s.date)
                       ),
-                      React.createElement("button",{onClick:function(){ deleteSaved(s.id); },style:{background:"rgba(244,63,94,0.1)",border:"1px solid rgba(244,63,94,0.2)",borderRadius:6,color:"var(--rose)",fontSize:11,fontWeight:700,padding:"3px 8px",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",flexShrink:0}},"Remove")
+                      React.createElement("button",{onClick:function(){ deleteSaved(s.id); },style:{background:"rgba(244,63,94,0.1)",border:"1px solid rgba(244,63,94,0.2)",borderRadius:6,color:"var(--rose)",fontSize:11,fontWeight:700,padding:"3px 8px",cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0}},"Remove")
                     ),
                     React.createElement("div",{className:"lib-prompt-preview"},s.prompt),
                     React.createElement("div",{className:"lib-actions"},React.createElement(CopyBtn,{text:s.prompt,label:"Copy Prompt"}))
@@ -1502,7 +1521,7 @@ export default function PromptCoach() {
                 })
               )
             ),
-            React.createElement("input",{type:"text",value:libSearch,onChange:function(e){ setLibSearch(e.target.value); },placeholder:"Search prompts...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",color:"var(--text)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,padding:"11px 15px",outline:"none",marginBottom:14}}),
+            React.createElement("input",{type:"text",value:libSearch,onChange:function(e){ setLibSearch(e.target.value); },placeholder:"Search prompts...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:13,padding:"11px 15px",outline:"none",marginBottom:14}}),
             React.createElement("div",{className:"lib-cat-row"},
               React.createElement("button",{className:"lib-cat-btn"+(libCat===-1?" sel":""),onClick:function(){ setLibCat(-1); }},"All"),
               PROMPT_LIBRARY.map(function(cat,i){
@@ -1529,11 +1548,11 @@ export default function PromptCoach() {
                   return React.createElement("div",{key:pi,className:"lib-prompt-card"},
                     React.createElement("div",{className:"lib-prompt-title"},p.title),
                     React.createElement("div",{className:"lib-prompt-preview"+(isExpanded?" expanded":""),title:"Click to "+(isExpanded?"collapse":"read the full prompt"),onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); }},p.prompt),
-                    React.createElement("button",{onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); },style:{background:"none",border:"none",color:"var(--indigo-l)",fontSize:11.5,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",padding:"0 0 10px",marginTop:-4}},isExpanded?"Show less":"Show full prompt"),
+                    React.createElement("button",{onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); },style:{background:"none",border:"none",color:"var(--indigo-l)",fontSize:11.5,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",padding:"0 0 10px",marginTop:-4}},isExpanded?"Show less":"Show full prompt"),
                     React.createElement("div",{className:"lib-actions"},
                       React.createElement(CopyBtn,{text:p.prompt,label:"Copy Prompt"}),
-                      !isSaved?React.createElement("button",{onClick:function(){ savePrompt(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Save"):React.createElement("span",{style:{padding:"5px 10px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11,fontWeight:700}},"Saved"),
-                      React.createElement("button",{onClick:function(){ isLearning?setLearnThis(null):getLearnThis(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(245,158,11,0.35)",background:isLearning?"rgba(245,158,11,0.15)":"rgba(245,158,11,0.08)",color:"var(--amber)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},isLearning?"Hide":"Why This Works")
+                      !isSaved?React.createElement("button",{onClick:function(){ savePrompt(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save"):React.createElement("span",{style:{padding:"5px 10px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11,fontWeight:700}},"Saved"),
+                      React.createElement("button",{onClick:function(){ isLearning?setLearnThis(null):getLearnThis(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(245,158,11,0.35)",background:isLearning?"rgba(245,158,11,0.15)":"rgba(245,158,11,0.08)",color:"var(--amber)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},isLearning?"Hide":"Why This Works")
                     ),
                     isLearning && React.createElement("div",{style:{marginTop:12}},
                       learnThis.loading?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,padding:"14px 16px",background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-sm)",fontSize:13,color:"var(--text2)"}},React.createElement("div",{className:"spinner",style:{borderColor:"rgba(245,158,11,0.2)",borderTopColor:"var(--amber)"}}),React.createElement("span",null,"Analysing the 8 building blocks...")):
@@ -1567,7 +1586,7 @@ export default function PromptCoach() {
                           tryIt && React.createElement("div",{style:{marginTop:10,padding:"10px 13px",background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:"var(--r-sm)"}},
                             React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:5}},"Try It Yourself"),
                             React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},tryIt),
-                            React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("improve"); setBInput(p.prompt); },style:{marginTop:8,padding:"6px 14px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.1)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Open in Builder")
+                            React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("improve"); setBInput(p.prompt); },style:{marginTop:8,padding:"6px 14px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.1)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Open in Builder")
                           )
                         );
                       })()
@@ -1617,7 +1636,7 @@ export default function PromptCoach() {
             React.createElement("div",{className:"card"},
               React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"P"),"Practice by Track"),
               React.createElement("div",{className:"card-sub"},"Pick your focus area - get 3 real scenarios from that world every time."),
-              React.createElement("select",{value:track,onChange:function(e){ setTrack(e.target.value); setExs([]); },style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,padding:"11px 13px",outline:"none",cursor:"pointer",marginBottom:12}},
+              React.createElement("select",{value:track,onChange:function(e){ setTrack(e.target.value); setExs([]); },style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:13,padding:"11px 13px",outline:"none",cursor:"pointer",marginBottom:12}},
                 TRACKS.map(function(t){ return React.createElement("option",{key:t.id,value:t.id},t.label+" - "+t.desc); })
               ),
               (function(){
@@ -1653,7 +1672,7 @@ export default function PromptCoach() {
                 fbs[i] && React.createElement(FeedbackCard,{text:fbs[i]}),
                 fbs[i] && React.createElement("div",{style:{marginTop:10,padding:"10px 13px",background:"rgba(99,102,241,0.07)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-sm)",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}},
                   React.createElement("span",{style:{fontSize:12,color:"var(--text2)"}},"Want to refine this prompt further?"),
-                  React.createElement("button",{onClick:function(){ setBInput(ans[i]); setTab("builder"); switchMode("improve"); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(99,102,241,0.3)",background:"rgba(99,102,241,0.1)",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Try this in Build Mode")
+                  React.createElement("button",{onClick:function(){ setBInput(ans[i]); setTab("builder"); switchMode("improve"); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(99,102,241,0.3)",background:"rgba(99,102,241,0.1)",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Try this in Build Mode")
                 ),
                 showIdeal[i] && ex.ideal && React.createElement("div",{className:"ideal-block"},
                   React.createElement("div",{className:"ideal-header"},React.createElement("div",{className:"ideal-label"},"Ideal Prompt"),React.createElement(CopyBtn,{text:ex.ideal,label:"Copy Ideal"})),
@@ -1707,11 +1726,11 @@ export default function PromptCoach() {
                 React.createElement("div",{style:{marginTop:24,padding:"14px 16px",background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:"var(--r-md)"}},
                   React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"var(--emerald)",marginBottom:4}},"Free while in Beta"),
                   React.createElement("div",{style:{fontSize:11.5,color:"var(--text2)",lineHeight:1.6,marginBottom:10}},"PromptCoach is completely free to use. Pro plan launching at Rs 199/month."),
-                  React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"9px 14px",borderRadius:"var(--r-sm)",border:"1px solid rgba(16,185,129,0.35)",background:"rgba(16,185,129,0.12)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Join the Waitlist")
+                  React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"9px 14px",borderRadius:"var(--r-sm)",border:"1px solid rgba(16,185,129,0.35)",background:"rgba(16,185,129,0.12)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Join the Waitlist")
                 )
               ),
               menuPage==="about" && React.createElement("div",null,
-                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",marginBottom:20,padding:0}},"< Back"),
+                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
                 React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"About Us"),
                 React.createElement("div",{style:{display:"flex",alignItems:"center",gap:14,marginBottom:20,padding:"16px",background:"var(--surface)",borderRadius:"var(--r-lg)",border:"1px solid var(--border)"}},
                   React.createElement("div",{style:{width:52,height:52,borderRadius:16,background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0,boxShadow:"var(--shadow-primary)",color:"#fff",fontWeight:800}},"B"),
@@ -1732,7 +1751,7 @@ export default function PromptCoach() {
                 })
               ),
               menuPage==="guide_menu" && React.createElement("div",null,
-                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",marginBottom:20,padding:0}},"< Back"),
+                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
                 React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"Guide to the App"),
                 [{icon:"L",tab:"Learn",color:"rgba(99,102,241,0.12)",tc:"var(--indigo-l)",border:"rgba(99,102,241,0.25)",tagline:"Start here. Always.",what:"The Learn tab teaches you the 8 building blocks of a great prompt - the same framework used by AI professionals.",how:"Tap any lesson to expand it. Start with Lesson 1 (The 8 Building Blocks). Each lesson takes under 5 minutes.",tip:"Finish Lesson 1 before using any other tab - it makes everything else 10x more useful."},
                  {icon:"B",tab:"Build",color:"rgba(16,185,129,0.08)",tc:"var(--emerald)",border:"rgba(16,185,129,0.2)",tagline:"Where you create your prompts.",what:"Build has 3 modes - Build (guided 8-question wizard), Improve (paste any rough idea and we upgrade it), and Compare (test two prompts side by side).",how:"New to prompting? Use Build mode. Have a rough idea? Use Improve. Compare lets you test two prompts side by side.",tip:"In the Role block, tap Help me choose and describe your task - we will suggest the best expert or team."},
@@ -1774,7 +1793,11 @@ export default function PromptCoach() {
             React.createElement("div",{className:"nav-icon-wrap"},t.icon),
             React.createElement("div",{className:"nav-label"},t.label)
           );
-        })
+        }),
+        React.createElement("button",{className:"nav-item nav-rate",onClick:function(){ window.open(RATE_URL,"_blank"); }},
+          React.createElement("div",{className:"nav-icon-wrap"},rateIcon),
+          React.createElement("div",{className:"nav-label"},"Rate Us")
+        )
       )
     )
   );
