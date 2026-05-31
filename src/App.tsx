@@ -521,7 +521,7 @@ async function callClaude(messages, system, maxTokens) {
   const res = await fetch("/api/claude", {
     method:"POST",
     headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: maxTokens||450, system, messages }),
+    body:JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: maxTokens||1024, system, messages }),
   });
   const data = await res.json();
   return data.content?.map(function(b){ return b.text||""; }).join("") || "Error. Please try again.";
@@ -788,7 +788,7 @@ export default function PromptCoach() {
     if (side==="A") { setLoadingCmpA(true); setCmpOutA(""); }
     else { setLoadingCmpB(true); setCmpOutB(""); }
     try {
-      var result = await callClaude([{role:"user",content:prompt}], "You are a helpful AI assistant. Answer the prompt directly.", 600);
+      var result = await callClaude([{role:"user",content:prompt}], "You are a helpful AI assistant. Answer the prompt directly.", 2000);
       if (side==="A") setCmpOutA(result); else setCmpOutB(result);
     } finally {
       if (side==="A") setLoadingCmpA(false); else setLoadingCmpB(false);
@@ -808,7 +808,7 @@ export default function PromptCoach() {
       var critLine  = wiz.critique ? "After writing, re-read and fix anything that does not match. Give final version only." : "";
       var sys = "You are a world-class prompt engineer. Build a complete professional AI prompt from the user answers. Follow the 8-block structure. Return ONLY the finished prompt.";
       var msg = "Build a prompt:\n1. ROLE: "+finalRole+"\n2. OBJECTIVE: "+wiz.objective+"\n3. CONTEXT: "+(wiz.context||"Not provided")+"\n4. TONE: "+(wiz.tone||"Professional")+"\n5. FORMAT: "+(wiz.format||"Clear and well-structured")+"\n6. CONSTRAINTS: "+(wiz.constraints||"Avoid jargon")+"\n7. EXAMPLE: "+(wiz.example||"Not provided")+"\n8. CRITIQUE: "+(critLine||"Not required");
-      var result = await callClaude([{role:"user",content:msg}], sys, 1200);
+      var result = await callClaude([{role:"user",content:msg}], sys, 1500);
       setWizOut(result);
       addToHistory("Built: "+wiz.objective.slice(0,30), result, "");
     } finally { setLoadingWiz(false); }
@@ -819,7 +819,7 @@ export default function PromptCoach() {
     setLoadingB(true); setBOutput(""); setBAnswer("");
     try {
       var sys2 = "You are a prompt engineer. Improve the given prompt to include: Role, Objective, Context, Tone, Format, Constraints, and a Critique instruction.\nReply in this exact format:\n\nIMPROVED PROMPT:\n[improved prompt]\n\nWHAT WAS MISSING:\n- [issue]\n\nWHY ITS BETTER:\n- [improvement]";
-      var improved = await callClaude([{role:"user",content:"Improve: \""+bInput+"\""}], sys2, 1200);
+      var improved = await callClaude([{role:"user",content:"Improve: \""+bInput+"\""}], sys2, 2000);
       setBOutput(improved);
       var s = improved.indexOf("IMPROVED PROMPT:");
       if (s !== -1) {
@@ -828,7 +828,7 @@ export default function PromptCoach() {
         var cleanPrompt = e===-1 ? after.trim() : after.slice(0,e).trim();
         if (cleanPrompt) {
           saveVersion(bInput, cleanPrompt);
-          var answer = await callClaude([{role:"user",content:cleanPrompt}], "You are a helpful AI assistant. Answer the prompt directly.", 600);
+          var answer = await callClaude([{role:"user",content:cleanPrompt}], "You are a helpful AI assistant. Answer the prompt directly.", 2000);
           setBAnswer(answer);
           addToHistory("Improved: "+bInput.slice(0,30), cleanPrompt, answer);
         }
