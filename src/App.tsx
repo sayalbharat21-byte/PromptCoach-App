@@ -664,27 +664,27 @@ function FeedbackCard(props) {
   return (
     React.createElement("div", { style:{background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:16,marginTop:12,animation:"fadeUp 0.3s"} },
       React.createElement("div", { style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,paddingBottom:12,borderBottom:"1px solid var(--border)",flexWrap:"wrap",gap:8} },
-        React.createElement("span", { style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"} }, "8-Block Evaluation"),
+        React.createElement("span", { style:{fontSize:11,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"} }, "8-Block Evaluation"),
         React.createElement(CopyBtn, { text:text })
       ),
       present.length > 0 && React.createElement("div", { style:{marginBottom:12} },
-        React.createElement("div", { style:{fontSize:10,fontWeight:700,textTransform:"uppercase",color:"var(--emerald)",marginBottom:7} }, "Present in your prompt"),
+        React.createElement("div", { style:{fontSize:11,fontWeight:700,textTransform:"uppercase",color:"var(--emerald)",marginBottom:7} }, "Present in your prompt"),
         React.createElement("div", { style:{display:"flex",flexWrap:"wrap",gap:6} },
           present.map(function(b){ return React.createElement("span", { key:b, style:{padding:"4px 11px",borderRadius:999,fontSize:12,fontWeight:700,background:"rgba(16,185,129,0.12)",color:"var(--emerald)",border:"1px solid rgba(16,185,129,0.25)"} }, b); })
         )
       ),
       missing.length > 0 && React.createElement("div", { style:{marginBottom:14} },
-        React.createElement("div", { style:{fontSize:10,fontWeight:700,textTransform:"uppercase",color:"var(--rose)",marginBottom:7} }, "Missing from your prompt"),
+        React.createElement("div", { style:{fontSize:11,fontWeight:700,textTransform:"uppercase",color:"var(--rose)",marginBottom:7} }, "Missing from your prompt"),
         React.createElement("div", { style:{display:"flex",flexWrap:"wrap",gap:6} },
           missing.map(function(b){ return React.createElement("span", { key:b, style:{padding:"4px 11px",borderRadius:999,fontSize:12,fontWeight:700,background:"rgba(244,63,94,0.1)",color:"var(--rose)",border:"1px solid rgba(244,63,94,0.2)"} }, b); })
         )
       ),
       React.createElement("div", { style:{height:1,background:"var(--border)",margin:"12px 0"} }),
-      bestPart && React.createElement("div", { style:{marginBottom:10,fontSize:13,lineHeight:1.6} },
+      bestPart && React.createElement("div", { style:{marginBottom:10,fontSize:14,lineHeight:1.6} },
         React.createElement("strong", { style:{color:"var(--text)"} }, "Well done: "),
         React.createElement("span", { style:{color:"var(--text2)"} }, bestPart)
       ),
-      topTip && React.createElement("div", { style:{padding:"10px 13px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-sm)",fontSize:13,lineHeight:1.6} },
+      topTip && React.createElement("div", { style:{padding:"10px 13px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-sm)",fontSize:14,lineHeight:1.6} },
         React.createElement("strong", { style:{color:"var(--indigo-l)"} }, "Top tip: "),
         React.createElement("span", { style:{color:"var(--text2)"} }, topTip)
       )
@@ -1026,7 +1026,7 @@ export default function PromptCoach() {
             React.createElement("span", {className:"burger-line burger-line-bot"})
           ),
           React.createElement("div", {className:"brand"},
-            React.createElement("div",{className:"brand-icon",style:{fontFamily:"serif",fontSize:14,fontWeight:900,letterSpacing:"-1px",color:"#fff"}},"PC"),
+            React.createElement("div",{className:"brand-icon",style:{fontFamily:"'Inter',sans-serif",fontSize:14,fontWeight:800,letterSpacing:"-0.5px",color:"#fff"}},"PC"),
             React.createElement("div", null,
               React.createElement("div",{className:"brand-name"},"Prompt",React.createElement("span",null,"Coach")),
               React.createElement("div",{style:{fontSize:"clamp(11px,1vw,14px)",color:"var(--text2)",letterSpacing:"0.3px",marginTop:1,fontWeight:500}},"The AI expert in your pocket")
@@ -1059,7 +1059,7 @@ export default function PromptCoach() {
               React.createElement("p",null,"Start with any rough idea - even 3 words is enough. We shape it into a prompt that gets you the result you actually wanted.")
             ),
             React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:12}},
-              React.createElement("button",{onClick:function(){ setShowHistory(!showHistory); },style:{display:"flex",alignItems:"center",gap:5,background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:history.length>0?"var(--indigo-l)":"var(--text3)",fontSize:11.5,fontWeight:600,padding:"5px 10px",cursor:"pointer",fontFamily:"'Inter',sans-serif"}},
+              React.createElement("button",{onClick:function(){ setShowHistory(!showHistory); },style:{display:"flex",alignItems:"center",gap:5,background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:history.length>0?"var(--indigo-l)":"var(--text3)",fontSize:12,fontWeight:600,padding:"5px 10px",cursor:"pointer",fontFamily:"'Inter',sans-serif"}},
                 "History "+(history.length>0?"("+history.length+")":"")
               )
             ),
@@ -1067,7 +1067,7 @@ export default function PromptCoach() {
               React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}},
                 React.createElement("div",null,
                   React.createElement("span",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Last 10 Prompts"),
-                  React.createElement("span",{style:{fontSize:10,color:"var(--text3)",marginLeft:8}},"Saved across sessions")
+                  React.createElement("span",{style:{fontSize:11,color:"var(--text3)",marginLeft:8}},"Saved across sessions")
                 ),
                 React.createElement("button",{onClick:clearHistory,style:{fontSize:11,color:"var(--rose)",background:"none",border:"none",cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Clear All")
               ),
@@ -1080,7 +1080,7 @@ export default function PromptCoach() {
                     React.createElement("div",{style:{fontSize:12,fontWeight:600,color:"var(--text)",marginBottom:2}},h.label),
                     React.createElement("div",{style:{fontSize:11,color:"var(--text3)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},h.prompt.slice(0,55),"...")
                   ),
-                  React.createElement("span",{style:{fontSize:10,color:"var(--text3)",flexShrink:0}},h.time)
+                  React.createElement("span",{style:{fontSize:11,color:"var(--text3)",flexShrink:0}},h.time)
                 );
               })
             ),
@@ -1112,8 +1112,8 @@ export default function PromptCoach() {
                   loadingPersona && React.createElement("div",{style:{marginTop:12,padding:"18px 16px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-md)",display:"flex",alignItems:"center",gap:14}},
                     React.createElement("div",{className:"spinner spinner-indigo",style:{width:22,height:22,borderWidth:3,flexShrink:0}}),
                     React.createElement("div",null,
-                      React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--indigo-l)",marginBottom:3}},"Analysing your task..."),
-                      React.createElement("div",{style:{fontSize:11.5,color:"var(--text3)"}},"Selecting the best expert or team for you")
+                      React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--indigo-l)",marginBottom:3}},"Analysing your task..."),
+                      React.createElement("div",{style:{fontSize:12,color:"var(--text3)"}},"Selecting the best expert or team for you")
                     )
                   ),
                   personaSuggestion && (function(){
@@ -1122,18 +1122,18 @@ export default function PromptCoach() {
                     var am = personaSuggestion.match(/ALTERNATIVE:\s*([\s\S]*?)$/i);
                     var persona = pm?pm[1].trim():""; var why=wm?wm[1].trim():""; var alt=am?am[1].trim():"";
                     if (!persona) {
-                      return React.createElement("div",{style:{marginTop:12,background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:12,fontSize:12.5,color:"var(--text2)",lineHeight:1.65,whiteSpace:"pre-wrap",wordBreak:"break-word"}}, personaSuggestion);
+                      return React.createElement("div",{style:{marginTop:12,background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:12,fontSize:12,color:"var(--text2)",lineHeight:1.65,whiteSpace:"pre-wrap",wordBreak:"break-word"}}, personaSuggestion);
                     }
                     return React.createElement("div",{style:{marginTop:12}},
                       React.createElement("div",{style:{background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:12,marginBottom:8}},
-                        React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:6}},"Recommended Expert"),
-                        React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--text)",marginBottom:6}},persona),
+                        React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:6}},"Recommended Expert"),
+                        React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)",marginBottom:6}},persona),
                         React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6,marginBottom:10}},why),
                         React.createElement("button",{className:"btn btn-primary btn-sm",onClick:applyPersonaSuggestion},"Use This Expert")
                       ),
                       alt && React.createElement("div",{style:{background:"var(--surface2)",borderRadius:"var(--r-sm)",padding:"10px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap"}},
                         React.createElement("div",null,
-                          React.createElement("div",{style:{fontSize:10,fontWeight:700,color:"var(--text3)",marginBottom:3}},"Simpler alternative"),
+                          React.createElement("div",{style:{fontSize:11,fontWeight:700,color:"var(--text3)",marginBottom:3}},"Simpler alternative"),
                           React.createElement("div",{style:{fontSize:12,color:"var(--text2)"}},alt)
                         ),
                         React.createElement("button",{onClick:function(){ setCustomRole(alt); wSet("role","Others"); setShowPersonaSuggester(false); setPersonaTask(""); setPersonaSuggestion(""); },style:{padding:"4px 10px",borderRadius:6,border:"1px solid var(--border)",background:"var(--surface)",color:"var(--text2)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0}},"Use This")
@@ -1153,7 +1153,7 @@ export default function PromptCoach() {
                 wiz.role && wiz.role!=="Others" && React.createElement("div",{style:{display:"inline-flex",alignItems:"center",gap:8,padding:"5px 13px",borderRadius:999,background:"rgba(99,102,241,0.15)",border:"1px solid rgba(99,102,241,0.35)",fontSize:12,fontWeight:700,color:"var(--indigo-l)"}},
                   wiz.role,React.createElement("span",{style:{cursor:"pointer",opacity:0.7},onClick:function(){ wSet("role",""); }},"x")
                 ),
-                wiz.role==="Others" && React.createElement("input",{type:"text",value:customRole,onChange:function(e){ setCustomRole(e.target.value); },placeholder:"e.g. Wedding photographer, Astrologer, Cricket coach...",style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:13,padding:"10px 13px",outline:"none",marginTop:8},autoFocus:true})
+                wiz.role==="Others" && React.createElement("input",{type:"text",value:customRole,onChange:function(e){ setCustomRole(e.target.value); },placeholder:"e.g. Wedding photographer, Astrologer, Cricket coach...",style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"10px 13px",outline:"none",marginTop:8},autoFocus:true})
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(2),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Objective - What exactly do you want AI to do? *")),
@@ -1177,7 +1177,7 @@ export default function PromptCoach() {
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(6),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Constraints - What should AI avoid? (optional)")),
-                React.createElement("input",{type:"text",value:wiz.constraints,onChange:function(e){ wSet("constraints",e.target.value); },placeholder:"e.g. No jargon, no passive voice, no bullet points over 5, avoid words like leverage or synergy...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:13,padding:"10px 13px",outline:"none"}})
+                React.createElement("input",{type:"text",value:wiz.constraints,onChange:function(e){ wSet("constraints",e.target.value); },placeholder:"e.g. No jargon, no passive voice, no bullet points over 5, avoid words like leverage or synergy...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"10px 13px",outline:"none"}})
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(7),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Example - Show AI what good looks like (optional)")),
@@ -1202,7 +1202,7 @@ export default function PromptCoach() {
                   React.createElement("div",{className:"output-label"},"Your Ready-to-Use Prompt"),
                   React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
                     React.createElement(CopyBtn,{text:wizOut,label:"Copy Prompt"}),
-                    React.createElement("button",{onClick:function(){ savePrompt("My Prompt - "+new Date().toLocaleDateString("en-IN"), wizOut); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save")
+                    React.createElement("button",{onClick:function(){ savePrompt("My Prompt - "+new Date().toLocaleDateString("en-IN"), wizOut); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save")
                   )
                 ),
                 wizOut
@@ -1227,7 +1227,7 @@ export default function PromptCoach() {
                 var mis = misMatch?misMatch[1].trim():""; var why=whyMatch?whyMatch[1].trim():"";
                 return React.createElement("div",{className:"ai-reveal",style:{marginTop:14}},
                   versions.length>0 && React.createElement("div",{style:{marginBottom:12,padding:"10px 13px",background:"var(--surface2)",borderRadius:"var(--r-sm)",border:"1px solid var(--border)"}},
-                    React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:7}},"Version History"),
+                    React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:7}},"Version History"),
                     React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
                       versions.map(function(v,vi){
                         return React.createElement("button",{key:v.v,onClick:function(){ setActiveVersion(vi); setBInput(v.prompt); },className:"version-tag"+(activeVersion===vi?" active":"")},"V"+v.v+" - "+v.time);
@@ -1236,25 +1236,25 @@ export default function PromptCoach() {
                   ),
                   React.createElement("div",{className:"ai-shimmer",style:{background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:16,marginBottom:12}},
                     React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,paddingBottom:12,borderBottom:"1px solid var(--border)",flexWrap:"wrap",gap:8}},
-                      React.createElement("span",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Improved Prompt"),
+                      React.createElement("span",{style:{fontSize:11,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Improved Prompt"),
                       React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
                         React.createElement(CopyBtn,{text:imp,label:"Copy Prompt"}),
-                        React.createElement("button",{onClick:function(){ savePrompt("Improved - "+bInput.slice(0,30), imp); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save")
+                        React.createElement("button",{onClick:function(){ savePrompt("Improved - "+bInput.slice(0,30), imp); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save")
                       )
                     ),
-                    React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},imp),
+                    React.createElement("div",{style:{fontSize:14,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},imp),
                     React.createElement("div",{style:{marginTop:12,display:"flex",gap:8,flexWrap:"wrap"}},
                       React.createElement("button",{className:"apply-btn",onClick:function(){ setBInput(imp); runBuilder(); }},"Refine Further"),
                       React.createElement("button",{className:"apply-btn",style:{background:"rgba(99,102,241,0.1)",borderColor:"rgba(99,102,241,0.3)",color:"var(--indigo-l)"},onClick:function(){ setCmpA(bInput); setCmpB(imp); switchMode("compare"); }},"Compare Original vs Improved")
                     )
                   ),
                   mis && React.createElement("div",{style:{background:"rgba(244,63,94,0.05)",border:"1px solid rgba(244,63,94,0.18)",borderRadius:"var(--r-md)",padding:14,marginBottom:12}},
-                    React.createElement("div",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--rose)",marginBottom:10}},"What was Missing"),
-                    React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap"}},mis)
+                    React.createElement("div",{style:{fontSize:11,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--rose)",marginBottom:10}},"What was Missing"),
+                    React.createElement("div",{style:{fontSize:14,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap"}},mis)
                   ),
                   why && React.createElement("div",{style:{background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-md)",padding:14}},
-                    React.createElement("div",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:10}},"Why it is Better"),
-                    React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap"}},why)
+                    React.createElement("div",{style:{fontSize:11,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:10}},"Why it is Better"),
+                    React.createElement("div",{style:{fontSize:14,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap"}},why)
                   )
                 );
               })()
@@ -1272,7 +1272,7 @@ export default function PromptCoach() {
               ),
               React.createElement("div",{className:"compare-grid",style:{display:"flex",gap:8,marginBottom:8}},
                 React.createElement("div",{style:{flex:1}},
-                  React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:6}},"Prompt A"),
+                  React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:6}},"Prompt A"),
                   React.createElement("textarea",{value:cmpA,onChange:function(e){ setCmpA(e.target.value); },placeholder:"Write your first prompt here...",rows:5,style:{minHeight:100}}),
                   React.createElement("div",{style:{marginTop:6,display:"flex",gap:6}},
                     React.createElement("button",{className:"btn btn-primary btn-sm",onClick:function(){ runCompare("A"); },disabled:loadingCmpA||!cmpA.trim()},
@@ -1282,7 +1282,7 @@ export default function PromptCoach() {
                   )
                 ),
                 React.createElement("div",{style:{flex:1}},
-                  React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:6}},"Prompt B"),
+                  React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:6}},"Prompt B"),
                   React.createElement("textarea",{value:cmpB,onChange:function(e){ setCmpB(e.target.value); },placeholder:"Write your second prompt here...",rows:5,style:{minHeight:100}}),
                   React.createElement("div",{style:{marginTop:6,display:"flex",gap:6}},
                     React.createElement("button",{className:"btn btn-primary btn-sm",onClick:function(){ runCompare("B"); },disabled:loadingCmpB||!cmpB.trim()},
@@ -1296,13 +1296,13 @@ export default function PromptCoach() {
                 React.createElement("div",{style:{height:1,background:"var(--border)",margin:"16px 0"}}),
                 React.createElement("div",{className:"compare-grid",style:{display:"flex",gap:8}},
                   React.createElement("div",{style:{flex:1,background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-md)",padding:12}},
-                    React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:8}},"Output A"),
+                    React.createElement("div",{style:{fontSize:11,fontWeight:800,textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:8}},"Output A"),
                     loadingCmpA?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,color:"var(--text2)",fontSize:12}},React.createElement("div",{className:"spinner spinner-indigo"}),"Generating..."):
                     React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.7,whiteSpace:"pre-wrap",wordBreak:"break-word"}},cmpOutA||"Run Prompt A to see output"),
                     cmpOutA&&React.createElement("div",{style:{marginTop:8}},React.createElement(CopyBtn,{text:cmpOutA,label:"Copy"}))
                   ),
                   React.createElement("div",{style:{flex:1,background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:"var(--r-md)",padding:12}},
-                    React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--emerald)",marginBottom:8}},"Output B"),
+                    React.createElement("div",{style:{fontSize:11,fontWeight:800,textTransform:"uppercase",color:"var(--emerald)",marginBottom:8}},"Output B"),
                     loadingCmpB?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,color:"var(--text2)",fontSize:12}},React.createElement("div",{className:"spinner",style:{borderColor:"rgba(16,185,129,0.2)",borderTopColor:"var(--emerald)"}}),"Generating..."):
                     React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.7,whiteSpace:"pre-wrap",wordBreak:"break-word"}},cmpOutB||"Run Prompt B to see output"),
                     cmpOutB&&React.createElement("div",{style:{marginTop:8}},React.createElement(CopyBtn,{text:cmpOutB,label:"Copy"}))
@@ -1323,7 +1323,7 @@ export default function PromptCoach() {
                   React.createElement("div",{style:{width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderLeft:"10px solid var(--rose)",marginLeft:2}})
                 ),
                 React.createElement("div",{style:{flex:1}},
-                  React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--text)"}},"Watch the Quick Guide"),
+                  React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)"}},"Watch the Quick Guide"),
                   React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},"A quick walkthrough of how PromptCoach works")
                 )
               ),
@@ -1334,7 +1334,7 @@ export default function PromptCoach() {
                   ),
                   React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"#fff",letterSpacing:"0.3px",textShadow:"0 1px 4px rgba(0,0,0,0.6)"}},"Tap to watch on YouTube")
                 ),
-                React.createElement("div",{style:{position:"absolute",top:10,right:12,fontSize:9,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"#fff",background:"rgba(0,0,0,0.55)",padding:"3px 8px",borderRadius:5}},"Video Guide")
+                React.createElement("div",{style:{position:"absolute",top:10,right:12,fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"#fff",background:"rgba(0,0,0,0.55)",padding:"3px 8px",borderRadius:5}},"Video Guide")
               )
             ),
             LESSONS.map(function(lesson){
@@ -1344,16 +1344,16 @@ export default function PromptCoach() {
                   React.createElement("div",{style:{display:"flex",alignItems:"center",gap:12,minWidth:0}},
                     React.createElement("div",{className:"lesson-icon",style:{background:lesson.bg}},lesson.emoji),
                     React.createElement("div",{style:{minWidth:0}},
-                      React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:lesson.tc,marginBottom:2}},"Lesson "+lesson.num),
+                      React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:lesson.tc,marginBottom:2}},"Lesson "+lesson.num),
                       React.createElement("div",{style:{fontWeight:700,fontSize:14,color:"var(--text)",marginBottom:2}},lesson.label),
-                      React.createElement("div",{style:{fontSize:11.5,color:"var(--text3)"}},lesson.sub)
+                      React.createElement("div",{style:{fontSize:12,color:"var(--text3)"}},lesson.sub)
                     )
                   ),
                   React.createElement("div",{style:{fontSize:14,color:"var(--text3)",flexShrink:0,transition:"transform 0.2s",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}},"v")
                 ),
                 isOpen && React.createElement("div",{className:"lesson-body",onClick:function(e){ e.stopPropagation(); }},
                   lesson.num===1 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Every powerful prompt is built from the same 8 blocks. Tap each to expand."),
+                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Every powerful prompt is built from the same 8 blocks. Tap each to expand."),
                     ELEMENTS.map(function(el,i){
                       return React.createElement("div",{key:i,className:"el-card"+(openEl===i?" open":""),onClick:function(e){ e.stopPropagation(); setOpenEl(openEl===i?null:i); }},
                         React.createElement("div",{className:"el-header"},
@@ -1373,7 +1373,7 @@ export default function PromptCoach() {
                     }),
                     React.createElement("div",{style:{marginTop:16,padding:"14px 16px",background:"linear-gradient(135deg,rgba(16,185,129,0.1),rgba(99,102,241,0.06))",border:"1px solid rgba(16,185,129,0.25)",borderRadius:"var(--r-md)",textAlign:"center"}},
                       React.createElement("div",{style:{fontSize:18,marginBottom:6}},"(!)"),
-                      React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--emerald)",marginBottom:4}},"You just learned the most important framework in AI."),
+                      React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--emerald)",marginBottom:4}},"You just learned the most important framework in AI."),
                       React.createElement("div",{style:{fontSize:12,color:"var(--text2)",marginBottom:10}},"6 lessons left - each one builds on this foundation."),
                       React.createElement("div",{style:{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}},
                         React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("wizard"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--emerald),#059669)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Try it in Build Mode"),
@@ -1382,7 +1382,7 @@ export default function PromptCoach() {
                     )
                   ),
                   lesson.num===2 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"This is what a fully built prompt looks like - every block filled in for a real business scenario."),
+                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"This is what a fully built prompt looks like - every block filled in for a real business scenario."),
                     FORMULA_ROWS.map(function(row){
                       return React.createElement("div",{key:row.n,style:{display:"flex",gap:12,padding:"11px 0",borderBottom:row.n<8?"1px solid var(--border)":"none",alignItems:"flex-start"}},
                         React.createElement("div",{style:{width:24,height:24,borderRadius:"50%",background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",color:"#fff",fontWeight:800,fontSize:11,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}},row.n),
@@ -1398,23 +1398,23 @@ export default function PromptCoach() {
                     React.createElement("div",{style:{marginTop:14}},React.createElement(CopyBtn,{text:"THE MASTER FORMULA\n1. ROLE - You are a [expert].\n2. OBJECTIVE - Write/Create [specific task].\n3. CONTEXT - My situation: [describe].\n4. TONE - Sound [tone].\n5. FORMAT - [length, structure].\n6. CONSTRAINTS - Avoid: [list].\n7. EXAMPLE - Style: [your example].\n8. CRITIQUE - Re-read and fix. Final version only.",label:"Copy Full Formula"}))
                   ),
                   lesson.num===3 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Start rough and add one block at a time. Each step makes your prompt meaningfully better."),
+                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Start rough and add one block at a time. Each step makes your prompt meaningfully better."),
                     [["Write","Get your rough idea out first"],["Add Role","You are a [expert] at the very start"],["Add Objective","State exactly what you want - specific and clear"],["Add Context","Your business, your customers, the situation"],["Add Tone","Friendly / formal / direct"],["Add Format","Bullets, numbered list, word count"],["Add Constraints","What to avoid: jargon, passive voice"]].map(function(item,i){
                       return React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:12,padding:"11px 0",borderBottom:i<6?"1px solid var(--border)":"none"}},
                         React.createElement("div",{style:{width:26,height:26,borderRadius:"50%",background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",color:"#fff",fontWeight:800,fontSize:11,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},i+1),
-                        React.createElement("div",{style:{fontSize:13}},React.createElement("strong",{style:{color:"var(--text)"}},item[0]),React.createElement("span",{style:{color:"var(--text2)"}}," - "+item[1]))
+                        React.createElement("div",{style:{fontSize:14}},React.createElement("strong",{style:{color:"var(--text)"}},item[0]),React.createElement("span",{style:{color:"var(--text2)"}}," - "+item[1]))
                       );
                     })
                   ),
                   lesson.num===4 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Add any of these lines to your prompt and the quality jumps immediately."),
+                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Add any of these lines to your prompt and the quality jumps immediately."),
                     [{move:"Think step by step",when:"Decisions, analysis, planning",why:"Forces AI to reason carefully before answering.",use:"Think step by step before giving your final answer."},
                      {move:"Give me 3 versions",when:"Emails, proposals, presentations",why:"You get options - the 2nd or 3rd version is almost always sharper.",use:"Give me 3 versions: one concise for a busy executive, one detailed for a technical team, one persuasive for a client pitch."},
                      {move:"Explain your reasoning",when:"Advice, recommendations, strategy",why:"Makes AI show its thinking so you can challenge it.",use:"After your answer, briefly explain why you made these choices."}].map(function(pm,i){
                       return React.createElement("div",{key:i,style:{padding:"14px 0",borderBottom:i<2?"1px solid var(--border)":"none"}},
                         React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},
                           React.createElement("div",{style:{width:20,height:20,borderRadius:6,background:"rgba(16,185,129,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:"var(--emerald)",flexShrink:0}},i+1),
-                          React.createElement("span",{style:{fontWeight:700,fontSize:13.5,color:"var(--text)"}},pm.move)
+                          React.createElement("span",{style:{fontWeight:700,fontSize:14,color:"var(--text)"}},pm.move)
                         ),
                         React.createElement("div",{style:{fontSize:12,color:"var(--text2)",marginBottom:5,lineHeight:1.55}},pm.why),
                         React.createElement("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:8}},"Best for: "+pm.when),
@@ -1429,7 +1429,7 @@ export default function PromptCoach() {
                     [["One prompt, one goal","Never ask for 5 things at once. Split complex tasks into separate prompts."],["Longer is not better","A focused 3-line prompt beats a rambling 10-liner. Clarity wins."],["Your first prompt is a draft","Always follow up. Refine, redirect, or ask for 3 variations."],["Context is your superpower","The more AI knows about your world, the more relevant its answer."],["Save what works","When a prompt gives great results, save it as your personal template."]].map(function(item,i){
                       return React.createElement("div",{key:i,style:{display:"flex",gap:12,padding:"12px 0",borderBottom:i<4?"1px solid var(--border)":"none"}},
                         React.createElement("div",{style:{width:22,height:22,borderRadius:6,background:"rgba(245,158,11,0.15)",color:"var(--amber)",fontWeight:800,fontSize:11,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}},i+1),
-                        React.createElement("div",null,React.createElement("div",{style:{fontWeight:700,fontSize:13,color:"var(--text)",marginBottom:3}},item[0]),React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.55}},item[1]))
+                        React.createElement("div",null,React.createElement("div",{style:{fontWeight:700,fontSize:14,color:"var(--text)",marginBottom:3}},item[0]),React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.55}},item[1]))
                       );
                     })
                   ),
@@ -1446,7 +1446,7 @@ export default function PromptCoach() {
                     })
                   ),
                   lesson.num===7 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Same task. One prompt gets a useless answer. One gets a result you can actually use."),
+                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Same task. One prompt gets a useless answer. One gets a result you can actually use."),
                     [{task:"Write a performance review",
                       bad:"Help me write a performance review.",
                       good:"You are an experienced people manager at a mid-size technology company.\nWrite a structured annual performance review for a senior software engineer who exceeded targets this year.\nContext: The engineer delivered 3 major features on time, mentored 2 junior developers, but needs to improve documentation.\nTone: Professional, balanced, growth-focused.\nFormat: 4 sections - Key Achievements, Areas of Strength, Development Areas, Goals for Next Year. Each 3-4 sentences.\nAvoid: Vague language, generic praise, no specific examples.\nAfter writing, check: Is every point specific enough? Fix if not.",
@@ -1460,16 +1460,16 @@ export default function PromptCoach() {
                       good:"You are a senior project manager at a consulting firm.\nWrite a concise stakeholder update email for a digital transformation project that is 2 weeks behind schedule.\nContext: Delay is due to a vendor missing a delivery. Stakeholders include the CFO, CTO, and two external partners. They expect directness and solutions.\nTone: Transparent, accountable, solution-focused. Senior executive level.\nFormat: Subject line, 3 paragraphs - current status, root cause, recovery plan with revised timeline.\nAvoid: Burying the delay, passive voice, vague recovery plans.\nAfter writing, check: Will the CFO know the issue and solution within 10 seconds?",
                       blocks:["Role","Objective","Context","Tone","Format","Constraints","Critique"]}].map(function(ex,idx){
                       return React.createElement("div",{key:idx,style:{marginBottom:14,background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",overflow:"hidden"}},
-                        React.createElement("div",{style:{padding:"10px 14px",borderBottom:"1px solid var(--border)",background:"var(--surface)"}},React.createElement("span",{style:{fontSize:13,fontWeight:700,color:"var(--text)"}},ex.task)),
+                        React.createElement("div",{style:{padding:"10px 14px",borderBottom:"1px solid var(--border)",background:"var(--surface)"}},React.createElement("span",{style:{fontSize:14,fontWeight:700,color:"var(--text)"}},ex.task)),
                         React.createElement("div",{style:{padding:"12px 14px",borderBottom:"1px solid var(--border)",background:"rgba(244,63,94,0.04)"}},
-                          React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--rose)",marginBottom:7}},"What most people write"),
-                          React.createElement("div",{style:{fontSize:13,color:"rgba(244,63,94,0.85)",fontFamily:"'JetBrains Mono',monospace",padding:"9px 12px",background:"rgba(244,63,94,0.07)",borderRadius:"var(--r-sm)"}},ex.bad)
+                          React.createElement("div",{style:{fontSize:11,fontWeight:800,textTransform:"uppercase",color:"var(--rose)",marginBottom:7}},"What most people write"),
+                          React.createElement("div",{style:{fontSize:14,color:"rgba(244,63,94,0.85)",fontFamily:"'JetBrains Mono',monospace",padding:"9px 12px",background:"rgba(244,63,94,0.07)",borderRadius:"var(--r-sm)"}},ex.bad)
                         ),
                         React.createElement("div",{style:{padding:"12px 14px",background:"rgba(16,185,129,0.04)"}},
-                          React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--emerald)",marginBottom:7}},"What Prompt Coach builds"),
+                          React.createElement("div",{style:{fontSize:11,fontWeight:800,textTransform:"uppercase",color:"var(--emerald)",marginBottom:7}},"What Prompt Coach builds"),
                           React.createElement("div",{style:{fontSize:12,color:"var(--text2)",fontFamily:"'JetBrains Mono',monospace",lineHeight:1.8,padding:"9px 12px",background:"rgba(16,185,129,0.07)",borderRadius:"var(--r-sm)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},ex.good),
                           React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:5,marginTop:10}},
-                            ex.blocks.map(function(b){ return React.createElement("span",{key:b,style:{padding:"2px 9px",borderRadius:999,fontSize:10,fontWeight:700,background:"rgba(16,185,129,0.12)",color:"var(--emerald)"}},b); })
+                            ex.blocks.map(function(b){ return React.createElement("span",{key:b,style:{padding:"2px 9px",borderRadius:999,fontSize:11,fontWeight:700,background:"rgba(16,185,129,0.12)",color:"var(--emerald)"}},b); })
                           ),
                           React.createElement("div",{style:{marginTop:10,display:"flex",justifyContent:"flex-end"}},React.createElement(CopyBtn,{text:ex.good,label:"Copy This Prompt"}))
                         )
@@ -1490,17 +1490,17 @@ export default function PromptCoach() {
             React.createElement("div",{className:"promo-banner"},
               React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
                 React.createElement("div",null,
-                  React.createElement("div",{style:{fontSize:13,fontWeight:800,color:"var(--amber)"}},"Prompt Coach Pro - Coming Soon"),
-                  React.createElement("div",{style:{fontSize:11.5,color:"var(--text2)",marginTop:2}},"500+ premium prompts, AI generator, team sharing, and advanced templates.")
+                  React.createElement("div",{style:{fontSize:14,fontWeight:800,color:"var(--amber)"}},"Prompt Coach Pro - Coming Soon"),
+                  React.createElement("div",{style:{fontSize:12,color:"var(--text2)",marginTop:2}},"500+ premium prompts, AI generator, team sharing, and advanced templates.")
                 )
               ),
               React.createElement("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:12}},"Currently free while in beta. Pro plan launching at Rs 199/month."),
-              React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"11px 16px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--amber),#d97706)",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",boxShadow:"0 4px 14px rgba(245,158,11,0.3)"}},"Join the Waitlist - Get Early Access")
+              React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"11px 16px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--amber),#d97706)",color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",boxShadow:"0 4px 14px rgba(245,158,11,0.3)"}},"Join the Waitlist - Get Early Access")
             ),
             saved.length>0 && React.createElement("div",{style:{marginBottom:14}},
               React.createElement("button",{onClick:function(){ setShowSaved(!showSaved); },style:{display:"flex",alignItems:"center",gap:8,width:"100%",background:"rgba(16,185,129,0.08)",border:"1px solid rgba(16,185,129,0.25)",borderRadius:"var(--r-md)",padding:"12px 16px",cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}},
                 React.createElement("div",{style:{flex:1,textAlign:"left"}},
-                  React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--emerald)"}},"My Saved Prompts ("+saved.length+")"),
+                  React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--emerald)"}},"My Saved Prompts ("+saved.length+")"),
                   React.createElement("div",{style:{fontSize:11,color:"var(--text3)",marginTop:2}},"Tap to "+(showSaved?"hide":"view")+" your saved prompts")
                 ),
                 React.createElement("span",{style:{fontSize:14,color:"var(--text3)"}},"v")
@@ -1511,7 +1511,7 @@ export default function PromptCoach() {
                     React.createElement("div",{style:{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8,marginBottom:6}},
                       React.createElement("div",null,
                         React.createElement("div",{className:"lib-prompt-title"},s.title),
-                        React.createElement("div",{style:{fontSize:10,color:"var(--text3)"}},"Saved on "+s.date)
+                        React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},"Saved on "+s.date)
                       ),
                       React.createElement("button",{onClick:function(){ deleteSaved(s.id); },style:{background:"rgba(244,63,94,0.1)",border:"1px solid rgba(244,63,94,0.2)",borderRadius:6,color:"var(--rose)",fontSize:11,fontWeight:700,padding:"3px 8px",cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0}},"Remove")
                     ),
@@ -1521,7 +1521,7 @@ export default function PromptCoach() {
                 })
               )
             ),
-            React.createElement("input",{type:"text",value:libSearch,onChange:function(e){ setLibSearch(e.target.value); },placeholder:"Search prompts...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:13,padding:"11px 15px",outline:"none",marginBottom:14}}),
+            React.createElement("input",{type:"text",value:libSearch,onChange:function(e){ setLibSearch(e.target.value); },placeholder:"Search prompts...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"11px 15px",outline:"none",marginBottom:14}}),
             React.createElement("div",{className:"lib-cat-row"},
               React.createElement("button",{className:"lib-cat-btn"+(libCat===-1?" sel":""),onClick:function(){ setLibCat(-1); }},"All"),
               PROMPT_LIBRARY.map(function(cat,i){
@@ -1548,14 +1548,14 @@ export default function PromptCoach() {
                   return React.createElement("div",{key:pi,className:"lib-prompt-card"},
                     React.createElement("div",{className:"lib-prompt-title"},p.title),
                     React.createElement("div",{className:"lib-prompt-preview"+(isExpanded?" expanded":""),title:"Click to "+(isExpanded?"collapse":"read the full prompt"),onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); }},p.prompt),
-                    React.createElement("button",{onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); },style:{background:"none",border:"none",color:"var(--indigo-l)",fontSize:11.5,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",padding:"0 0 10px",marginTop:-4}},isExpanded?"Show less":"Show full prompt"),
+                    React.createElement("button",{onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); },style:{background:"none",border:"none",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",padding:"0 0 10px",marginTop:-4}},isExpanded?"Show less":"Show full prompt"),
                     React.createElement("div",{className:"lib-actions"},
                       React.createElement(CopyBtn,{text:p.prompt,label:"Copy Prompt"}),
-                      !isSaved?React.createElement("button",{onClick:function(){ savePrompt(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save"):React.createElement("span",{style:{padding:"5px 10px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11,fontWeight:700}},"Saved"),
-                      React.createElement("button",{onClick:function(){ isLearning?setLearnThis(null):getLearnThis(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(245,158,11,0.35)",background:isLearning?"rgba(245,158,11,0.15)":"rgba(245,158,11,0.08)",color:"var(--amber)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},isLearning?"Hide":"Why This Works")
+                      !isSaved?React.createElement("button",{onClick:function(){ savePrompt(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save"):React.createElement("span",{style:{padding:"5px 10px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11,fontWeight:700}},"Saved"),
+                      React.createElement("button",{onClick:function(){ isLearning?setLearnThis(null):getLearnThis(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(245,158,11,0.35)",background:isLearning?"rgba(245,158,11,0.15)":"rgba(245,158,11,0.08)",color:"var(--amber)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},isLearning?"Hide":"Why This Works")
                     ),
                     isLearning && React.createElement("div",{style:{marginTop:12}},
-                      learnThis.loading?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,padding:"14px 16px",background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-sm)",fontSize:13,color:"var(--text2)"}},React.createElement("div",{className:"spinner",style:{borderColor:"rgba(245,158,11,0.2)",borderTopColor:"var(--amber)"}}),React.createElement("span",null,"Analysing the 8 building blocks...")):
+                      learnThis.loading?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,padding:"14px 16px",background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-sm)",fontSize:14,color:"var(--text2)"}},React.createElement("div",{className:"spinner",style:{borderColor:"rgba(245,158,11,0.2)",borderTopColor:"var(--amber)"}}),React.createElement("span",null,"Analysing the 8 building blocks...")):
                       (function(){
                         var bd = learnThis.breakdown;
                         var BLOCKS = ["Role","Objective","Context","Tone","Format","Constraints","Example","Critique"];
@@ -1564,7 +1564,7 @@ export default function PromptCoach() {
                         var tm = bd.match(/TRY IT YOURSELF:\s*([\s\S]*?)$/i);
                         var blocksText = bm?bm[1].trim():""; var lesson2=lm?lm[1].trim():""; var tryIt=tm?tm[1].trim():"";
                         return React.createElement("div",{style:{background:"rgba(245,158,11,0.05)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-md)",padding:14}},
-                          React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:12}},"8-Block Breakdown"),
+                          React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:12}},"8-Block Breakdown"),
                           BLOCKS.map(function(block){
                             var pattern = new RegExp(block+":\\s*([^\\n]+)","i");
                             var m2 = blocksText.match(pattern);
@@ -1580,12 +1580,12 @@ export default function PromptCoach() {
                             );
                           }),
                           lesson2 && React.createElement("div",{style:{marginTop:12,padding:"10px 13px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-sm)"}},
-                            React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:5}},"Key Lesson"),
-                            React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},lesson2)
+                            React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:5}},"Key Lesson"),
+                            React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6}},lesson2)
                           ),
                           tryIt && React.createElement("div",{style:{marginTop:10,padding:"10px 13px",background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:"var(--r-sm)"}},
-                            React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:5}},"Try It Yourself"),
-                            React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},tryIt),
+                            React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:5}},"Try It Yourself"),
+                            React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6}},tryIt),
                             React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("improve"); setBInput(p.prompt); },style:{marginTop:8,padding:"6px 14px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.1)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Open in Builder")
                           )
                         );
@@ -1614,7 +1614,7 @@ export default function PromptCoach() {
               React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10,flexWrap:"wrap",gap:8}},
                 React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
                   React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:10,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)"}},"Today's Challenge"),
+                    React.createElement("div",{style:{fontSize:11,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)"}},"Today's Challenge"),
                     React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)",marginTop:2}},todayChallenge.title)
                   )
                 ),
@@ -1622,7 +1622,7 @@ export default function PromptCoach() {
               ),
               React.createElement("div",{style:{fontSize:12,color:"var(--text3)"}},"Hint: "+todayChallenge.hint),
               showDaily && React.createElement("div",{style:{marginTop:14}},
-                React.createElement("div",{style:{background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:"12px 14px",fontSize:13,color:"var(--text)",lineHeight:1.65,marginBottom:12,borderLeft:"2px solid var(--amber)"}},todayChallenge.scenario),
+                React.createElement("div",{style:{background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:"12px 14px",fontSize:14,color:"var(--text)",lineHeight:1.65,marginBottom:12,borderLeft:"2px solid var(--amber)"}},todayChallenge.scenario),
                 React.createElement("div",{className:"section-label",style:{marginBottom:7}},"Your prompt attempt"),
                 React.createElement("textarea",{value:dailyAns,onChange:function(e){ setDailyAns(e.target.value); },placeholder:"Write your best prompt for today's challenge...",rows:5}),
                 React.createElement("div",{className:"btn-row"},
@@ -1636,7 +1636,7 @@ export default function PromptCoach() {
             React.createElement("div",{className:"card"},
               React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"P"),"Practice by Track"),
               React.createElement("div",{className:"card-sub"},"Pick your focus area - get 3 real scenarios from that world every time."),
-              React.createElement("select",{value:track,onChange:function(e){ setTrack(e.target.value); setExs([]); },style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:13,padding:"11px 13px",outline:"none",cursor:"pointer",marginBottom:12}},
+              React.createElement("select",{value:track,onChange:function(e){ setTrack(e.target.value); setExs([]); },style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"11px 13px",outline:"none",cursor:"pointer",marginBottom:12}},
                 TRACKS.map(function(t){ return React.createElement("option",{key:t.id,value:t.id},t.label+" - "+t.desc); })
               ),
               (function(){
@@ -1658,7 +1658,7 @@ export default function PromptCoach() {
               return React.createElement("div",{key:i,className:"ex-card"},
                 React.createElement("div",{className:"ex-num"},React.createElement("div",{className:"ex-num-pill"},i+1),"Exercise "+(i+1)+" of "+exs.length),
                 React.createElement("div",{className:"ex-scenario"},ex.scenario),
-                ex.hint && React.createElement("div",{style:{fontSize:11.5,color:"var(--text3)",marginBottom:12}},"Hint: "+ex.hint),
+                ex.hint && React.createElement("div",{style:{fontSize:12,color:"var(--text3)",marginBottom:12}},"Hint: "+ex.hint),
                 React.createElement("div",{className:"section-label",style:{marginBottom:7}},"Your prompt attempt"),
                 React.createElement("textarea",{value:ans[i],onChange:function(e){ var a=ans.slice(); a[i]=e.target.value; setAns(a); },placeholder:"Write your best prompt here...",rows:5}),
                 React.createElement("div",{className:"btn-row"},
@@ -1698,8 +1698,8 @@ export default function PromptCoach() {
             React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10}},
               React.createElement("div",{style:{width:32,height:32,borderRadius:9,background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,color:"#fff",boxShadow:"var(--shadow-primary)"}},"PC"),
               React.createElement("div",null,
-                React.createElement("div",{style:{fontSize:15,fontWeight:800,color:"var(--text)",letterSpacing:"-0.4px"}},"Prompt",React.createElement("span",{style:{color:"var(--indigo-l)"}},"Coach")),
-                React.createElement("div",{style:{fontSize:9,color:"var(--text3)"}},"The AI expert in your pocket")
+                React.createElement("div",{style:{fontSize:16,fontWeight:800,color:"var(--text)",letterSpacing:"-0.4px"}},"Prompt",React.createElement("span",{style:{color:"var(--indigo-l)"}},"Coach")),
+                React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},"The AI expert in your pocket")
               )
             ),
             React.createElement("button",{className:"drawer-close-btn",onClick:function(){ setShowMenu(false); setMenuPage("home"); },"aria-label":"Close navigation menu"},
@@ -1712,7 +1712,7 @@ export default function PromptCoach() {
           React.createElement("div",{className:"drawer-scroll"},
             React.createElement("div",{style:{padding:"16px 20px"}},
               menuPage==="home" && React.createElement("div",null,
-                React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:14}},"Menu"),
+                React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:14}},"Menu"),
                 [{icon:"A",label:"About Us",sub:"Who built PromptCoach",page:"about"},{icon:"G",label:"Guide to the App",sub:"How to use all 4 tabs",page:"guide_menu"}].map(function(item){
                   return React.createElement("button",{key:item.page,className:"menu-item-btn"+(menuPage===item.page?" active-page":""),onClick:function(){ setMenuPage(menuPage===item.page?"home":item.page); }},
                     React.createElement("div",{style:{width:38,height:38,borderRadius:11,background:"rgba(99,102,241,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}},item.icon),
@@ -1725,17 +1725,17 @@ export default function PromptCoach() {
                 }),
                 React.createElement("div",{style:{marginTop:24,padding:"14px 16px",background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:"var(--r-md)"}},
                   React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"var(--emerald)",marginBottom:4}},"Free while in Beta"),
-                  React.createElement("div",{style:{fontSize:11.5,color:"var(--text2)",lineHeight:1.6,marginBottom:10}},"PromptCoach is completely free to use. Pro plan launching at Rs 199/month."),
+                  React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6,marginBottom:10}},"PromptCoach is completely free to use. Pro plan launching at Rs 199/month."),
                   React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"9px 14px",borderRadius:"var(--r-sm)",border:"1px solid rgba(16,185,129,0.35)",background:"rgba(16,185,129,0.12)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Join the Waitlist")
                 )
               ),
               menuPage==="about" && React.createElement("div",null,
-                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
-                React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"About Us"),
+                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
+                React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"About Us"),
                 React.createElement("div",{style:{display:"flex",alignItems:"center",gap:14,marginBottom:20,padding:"16px",background:"var(--surface)",borderRadius:"var(--r-lg)",border:"1px solid var(--border)"}},
                   React.createElement("div",{style:{width:52,height:52,borderRadius:16,background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0,boxShadow:"var(--shadow-primary)",color:"#fff",fontWeight:800}},"B"),
                   React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:15,fontWeight:800,color:"var(--text)",marginBottom:2}},"Bharat"),
+                    React.createElement("div",{style:{fontSize:16,fontWeight:800,color:"var(--text)",marginBottom:2}},"Bharat"),
                     React.createElement("div",{style:{fontSize:12,color:"var(--indigo-l)",fontWeight:600}},"Creator, PromptCoach")
                   )
                 ),
@@ -1745,14 +1745,14 @@ export default function PromptCoach() {
                  {heading:"A note from me",body:"This is a work in progress, built with genuine care. Every lesson, every example, every feature has been thought through for someone who is using AI for the first time or wants to finally get it right. If something does not work or could be better, I want to know."},
                 ].map(function(section,i){
                   return React.createElement("div",{key:i,style:{marginBottom:18}},
-                    React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--text)",marginBottom:6}},section.heading),
-                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.75}},section.body)
+                    React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)",marginBottom:6}},section.heading),
+                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.75}},section.body)
                   );
                 })
               ),
               menuPage==="guide_menu" && React.createElement("div",null,
-                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
-                React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"Guide to the App"),
+                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
+                React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"Guide to the App"),
                 [{icon:"L",tab:"Learn",color:"rgba(99,102,241,0.12)",tc:"var(--indigo-l)",border:"rgba(99,102,241,0.25)",tagline:"Start here. Always.",what:"The Learn tab teaches you the 8 building blocks of a great prompt - the same framework used by AI professionals.",how:"Tap any lesson to expand it. Start with Lesson 1 (The 8 Building Blocks). Each lesson takes under 5 minutes.",tip:"Finish Lesson 1 before using any other tab - it makes everything else 10x more useful."},
                  {icon:"B",tab:"Build",color:"rgba(16,185,129,0.08)",tc:"var(--emerald)",border:"rgba(16,185,129,0.2)",tagline:"Where you create your prompts.",what:"Build has 3 modes - Build (guided 8-question wizard), Improve (paste any rough idea and we upgrade it), and Compare (test two prompts side by side).",how:"New to prompting? Use Build mode. Have a rough idea? Use Improve. Compare lets you test two prompts side by side.",tip:"In the Role block, tap Help me choose and describe your task - we will suggest the best expert or team."},
                  {icon:"P",tab:"Browse",color:"rgba(245,158,11,0.08)",tc:"var(--amber)",border:"rgba(245,158,11,0.2)",tagline:"Ready-made expert prompts.",what:"The Browse tab has professionally crafted prompts across 9 categories - Marketing, Sales, HR, Finance, Customer Service, and more.",how:"Pick a category, find a prompt, tap Copy to use it. Tap Why This Works to see the 8-block breakdown.",tip:"Tap Why This Works on at least 3 prompts. It is the fastest way to learn what makes a prompt powerful."},
@@ -1763,20 +1763,20 @@ export default function PromptCoach() {
                       React.createElement("div",{style:{width:34,height:34,borderRadius:10,background:"rgba(0,0,0,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}},item.icon),
                       React.createElement("div",null,
                         React.createElement("div",{style:{fontSize:14,fontWeight:800,color:item.tc}},item.tab),
-                        React.createElement("div",{style:{fontSize:11.5,color:"var(--text2)",fontStyle:"italic"}},item.tagline)
+                        React.createElement("div",{style:{fontSize:12,color:"var(--text2)",fontStyle:"italic"}},item.tagline)
                       )
                     ),
                     React.createElement("div",{style:{marginBottom:8}},
-                      React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:3}},"What it is"),
-                      React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},item.what)
+                      React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:3}},"What it is"),
+                      React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6}},item.what)
                     ),
                     React.createElement("div",{style:{marginBottom:8}},
-                      React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:3}},"How to use it"),
-                      React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},item.how)
+                      React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:3}},"How to use it"),
+                      React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6}},item.how)
                     ),
                     React.createElement("div",{style:{padding:"8px 11px",background:"rgba(0,0,0,0.15)",borderRadius:"var(--r-sm)",borderLeft:"2px solid "+item.border}},
-                      React.createElement("span",{style:{fontSize:10.5,fontWeight:800,color:item.tc}},"Tip: "),
-                      React.createElement("span",{style:{fontSize:11.5,color:"var(--text2)",lineHeight:1.55}},item.tip)
+                      React.createElement("span",{style:{fontSize:11,fontWeight:800,color:item.tc}},"Tip: "),
+                      React.createElement("span",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.55}},item.tip)
                     )
                   );
                 })
