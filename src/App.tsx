@@ -76,6 +76,18 @@ const STYLES = `
   @keyframes backdropIn  { from{opacity:0} to{opacity:1} }
   @keyframes scaleIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
   .page-enter { animation:fadeUp 0.28s var(--ease); }
+  .desktop-sidebar { display:none; }
+  @media (min-width:1024px) {
+    .shell { max-width:1340px; padding:0 40px 48px; }
+    .app-layout { display:grid; grid-template-columns:232px 1fr; gap:44px; margin-top:20px; align-items:start; }
+    .desktop-sidebar { display:flex; flex-direction:column; gap:6px; position:sticky; top:28px; height:fit-content; }
+    .sidebar-item { display:flex; align-items:center; gap:12px; padding:11px 14px; background:transparent; border:1px solid transparent; border-radius:var(--r-md); color:var(--text2); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out); text-align:left; width:100%; }
+    .sidebar-item:hover { color:var(--text); background:rgba(255,255,255,0.03); }
+    .sidebar-item.active { color:var(--indigo-l); background:rgba(99,102,241,0.1); border-color:rgba(99,102,241,0.2); }
+    .sidebar-item .nav-icon-wrap { width:auto; height:auto; border:none; background:none; box-shadow:none; }
+    .sidebar-item .nav-icon-wrap svg { width:19px; height:19px; }
+    .bottom-nav { display:none; }
+  }
   @keyframes aiReveal { from{opacity:0;transform:translateY(14px) scale(0.99);filter:blur(8px)} to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)} }
   @keyframes aiShimmer { from{left:-60%} to{left:140%} }
   @keyframes aiDot { 0%,80%,100%{opacity:0.3;transform:translateY(0)} 40%{opacity:1;transform:translateY(-3px)} }
@@ -1004,7 +1016,19 @@ export default function PromptCoach() {
 
         ),
 
-        React.createElement("div", {key:animKey, className:"page-enter"},
+        React.createElement("div", {className:"app-layout"},
+
+          React.createElement("aside", {className:"desktop-sidebar"},
+            React.createElement("div",{className:"section-label",style:{paddingLeft:14,marginBottom:10,opacity:0.7}},"Workspace"),
+            TABS.map(function(t){
+              return React.createElement("button",{key:t.id,className:"sidebar-item"+(tab===t.id?" active":""),onClick:function(){ go(t.id); }},
+                React.createElement("div",{className:"nav-icon-wrap"},t.icon),
+                React.createElement("span",null,t.label)
+              );
+            })
+          ),
+
+        React.createElement("div", {key:animKey, className:"page-enter", style:{minWidth:0}},
 
           tab==="builder" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
@@ -1729,6 +1753,7 @@ export default function PromptCoach() {
               )
             )
           )
+        )
         )
       ),
 
