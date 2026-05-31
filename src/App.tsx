@@ -196,7 +196,9 @@ const STYLES = `
   .lib-prompt-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-bottom:10px; transition:all 0.18s; box-shadow:var(--shadow-card); }
   .lib-prompt-card:hover { border-color:var(--border2); transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
   .lib-prompt-title { font-size:clamp(13px,1.4vw,17px); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.2px; }
-  .lib-prompt-preview { font-size:clamp(12px,1.2vw,15px); color:var(--text3); line-height:1.55; margin-bottom:12px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .lib-prompt-preview { font-size:clamp(12px,1.2vw,15px); color:var(--text3); line-height:1.55; margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; cursor:pointer; transition:color var(--dur-fast) var(--ease-out); }
+  .lib-prompt-preview:hover { color:var(--text2); }
+  .lib-prompt-preview.expanded { display:block; -webkit-line-clamp:unset; overflow:visible; white-space:pre-wrap; color:var(--text2); background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-sm); padding:12px 14px; max-height:340px; overflow-y:auto; }
   .lib-actions { display:flex; gap:6px; flex-wrap:wrap; }
   .saved-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:999px; background:rgba(16,185,129,0.12); color:var(--emerald); border:1px solid rgba(16,185,129,0.25); font-size:10px; font-weight:700; }
   .mono-box { background:var(--bg2); border-radius:var(--r-sm); padding:11px 14px; font-size:12px; color:var(--text2); font-family:'JetBrains Mono',monospace; line-height:1.75; white-space:pre-wrap; word-break:break-word; margin-bottom:10px; border:1px solid var(--border); border-left:2px solid var(--indigo); }
@@ -768,6 +770,7 @@ export default function PromptCoach() {
   var [learnThis, setLearnThis]   = useState(null);
   var [saved, setSaved]           = useState([]);
   var [showSaved, setShowSaved]   = useState(false);
+  var [expandedPrompt, setExpandedPrompt] = useState(null);
 
   async function getLearnThis(title, prompt) {
     setLearnThis({title:title, prompt:prompt, loading:true, breakdown:""});
@@ -1522,9 +1525,11 @@ export default function PromptCoach() {
                 filtered.map(function(p,pi){
                   var isSaved = saved.some(function(s){ return s.prompt===p.prompt; });
                   var isLearning = learnThis && learnThis.title===p.title && learnThis.prompt===p.prompt;
+                  var isExpanded = expandedPrompt===p.title;
                   return React.createElement("div",{key:pi,className:"lib-prompt-card"},
                     React.createElement("div",{className:"lib-prompt-title"},p.title),
-                    React.createElement("div",{className:"lib-prompt-preview"},p.prompt),
+                    React.createElement("div",{className:"lib-prompt-preview"+(isExpanded?" expanded":""),title:"Click to "+(isExpanded?"collapse":"read the full prompt"),onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); }},p.prompt),
+                    React.createElement("button",{onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); },style:{background:"none",border:"none",color:"var(--indigo-l)",fontSize:11.5,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",padding:"0 0 10px",marginTop:-4}},isExpanded?"Show less":"Show full prompt"),
                     React.createElement("div",{className:"lib-actions"},
                       React.createElement(CopyBtn,{text:p.prompt,label:"Copy Prompt"}),
                       !isSaved?React.createElement("button",{onClick:function(){ savePrompt(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Save"):React.createElement("span",{style:{padding:"5px 10px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11,fontWeight:700}},"Saved"),
