@@ -45,6 +45,15 @@ const STYLES = `
   .card-title { font-size:var(--fs-lg); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
   .card-title .icon { width:30px; height:30px; border-radius:9px; background:rgba(99,102,241,0.13); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; box-shadow:0 2px 8px rgba(99,102,241,0.15); }
   .card-sub { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); margin-bottom:12px; }
+  @media (max-width:600px) {
+    .hero { padding:0 0 6px; }
+    .hero h1 { font-size:19px; font-weight:700; line-height:1.18; margin-bottom:6px; }
+    .hero p { font-size:13px; line-height:1.45; }
+    .card { padding:14px; margin-bottom:10px; }
+    .card-title { font-size:16px; }
+    .card-sub { font-size:12.5px; line-height:1.5; margin-bottom:10px; }
+    .output-block { font-size:13px; line-height:1.55; }
+  }
   textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Inter',sans-serif; font-size:14px; padding:13px 16px; resize:vertical; outline:none; line-height:1.6; min-height:84px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
   textarea::placeholder { color:var(--text3); }
   textarea:focus { border-color:rgba(99,102,241,0.7); box-shadow:0 0 0 4px rgba(99,102,241,0.15),0 2px 14px rgba(99,102,241,0.12); }
