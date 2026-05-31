@@ -35,9 +35,9 @@ const STYLES = `
   .brand-icon:hover { transform:scale(1.05) rotate(-3deg); }
   .brand-name { font-size:clamp(18px,2.2vw,24px); font-weight:800; color:var(--text); letter-spacing:-0.5px; }
   .brand-name span { color:var(--indigo-l); }
-  .hero { padding:2px 0 8px; }
+  .hero { padding:2px 0 8px; text-align:center; }
   .hero h1 { font-size:var(--fs-xl); font-weight:800; line-height:var(--lh-tight); letter-spacing:-0.03em; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:7px; }
-  .hero p { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); max-width:580px; }
+  .hero p { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); max-width:580px; margin:0 auto; }
   .h1-short { display:none; }
   @media (max-width:600px) { .h1-full { display:none; } .h1-short { display:inline; } }
   .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.45),0 8px 24px rgba(0,0,0,0.22); transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out); }
@@ -1342,8 +1342,7 @@ export default function PromptCoach() {
                   React.createElement("div",{style:{width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderLeft:"10px solid var(--rose)",marginLeft:2}})
                 ),
                 React.createElement("div",{style:{flex:1}},
-                  React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)"}},"Watch the Quick Guide"),
-                  React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},"A quick walkthrough of how PromptCoach works")
+                  React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)"}},"Watch the Quick Guide")
                 )
               ),
               React.createElement("div",{style:{position:"relative",width:"100%",aspectRatio:"16 / 9",maxHeight:300,backgroundImage:"linear-gradient(rgba(7,9,15,0.35),rgba(7,9,15,0.55)),url('https://i.ytimg.com/vi/ezmuCprlTVE/hqdefault.jpg')",backgroundSize:"cover",backgroundPosition:"center"}},
@@ -1364,8 +1363,7 @@ export default function PromptCoach() {
                     React.createElement("div",{className:"lesson-icon",style:{background:lesson.bg}},lesson.emoji),
                     React.createElement("div",{style:{minWidth:0}},
                       React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:lesson.tc,marginBottom:2}},"Lesson "+lesson.num),
-                      React.createElement("div",{style:{fontWeight:700,fontSize:14,color:"var(--text)",marginBottom:2}},lesson.label),
-                      React.createElement("div",{style:{fontSize:12,color:"var(--text3)"}},lesson.sub)
+                      React.createElement("div",{style:{fontWeight:700,fontSize:14,color:"var(--text)"}},lesson.label)
                     )
                   ),
                   React.createElement("div",{style:{fontSize:14,color:"var(--text3)",flexShrink:0,transition:"transform 0.2s",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}},"v")
