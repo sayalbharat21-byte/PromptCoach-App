@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   :root {
     --bg:#07090f; --bg2:#0c0f1a; --surface:#0f1320; --surface2:#141827;
-    --border:rgba(255,255,255,0.09); --border2:rgba(255,255,255,0.14);
+    --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
     --indigo:#6366f1; --indigo-l:#818cf8; --indigo-d:#4338ca;
     --emerald:#10b981; --rose:#f43f5e; --amber:#f59e0b; --sky:#38bdf8;
-    --text:#f1f5f9; --text2:#a9b6c9; --text3:#74839a;
-    --r-sm:8px; --r-md:12px; --r-lg:16px;
-    --fs-2xs:11px; --fs-xs:12px; --fs-sm:14px; --fs-md:16px; --fs-lg:clamp(18px,1.8vw,22px); --fs-xl:clamp(22px,2.6vw,30px);
-    --lh-tight:1.2; --lh-snug:1.4; --lh-base:1.6; --lh-relaxed:1.75;
+    --text:#f1f5f9; --text2:#94a3b8; --text3:#475569;
+    --r-sm:9px; --r-md:14px; --r-lg:20px;
     --ease:cubic-bezier(0.4,0,0.2,1);
-    --ease-out:cubic-bezier(0.16,1,0.3,1); --dur-fast:140ms; --dur-base:220ms; --dur-slow:360ms;
     --shadow-card:0 1px 3px rgba(0,0,0,0.4),0 4px 16px rgba(0,0,0,0.25);
     --shadow-primary:0 4px 20px rgba(99,102,241,0.35),0 1px 4px rgba(99,102,241,0.2);
     --shadow-primary-hover:0 8px 30px rgba(99,102,241,0.5),0 2px 8px rgba(99,102,241,0.3);
@@ -22,48 +19,38 @@ const STYLES = `
   ::-webkit-scrollbar-track { background:transparent; }
   ::-webkit-scrollbar-thumb { background:rgba(99,102,241,0.35); border-radius:999px; }
   ::-webkit-scrollbar-thumb:hover { background:rgba(99,102,241,0.6); }
-  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; letter-spacing:-0.011em; font-feature-settings:'cv11','ss01'; }
-  body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 90% 55% at 15% -5%,rgba(99,102,241,0.06) 0%,transparent 55%); pointer-events:none; z-index:0; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 90% 60% at 15% -5%,rgba(99,102,241,0.16) 0%,transparent 55%),radial-gradient(ellipse 60% 40% at 85% 105%,rgba(16,185,129,0.08) 0%,transparent 55%),radial-gradient(ellipse 50% 50% at 50% 50%,rgba(99,102,241,0.03) 0%,transparent 70%); pointer-events:none; z-index:0; }
+  @media (min-width:768px) and (hover:hover) { body::before { animation:ambientShift 12s ease-in-out infinite alternate; } }
   @keyframes ambientShift { 0% { opacity:1; transform:scale(1) translateY(0); } 100% { opacity:0.75; transform:scale(1.04) translateY(-8px); } }
   html { background:#07090f; }
   #root { min-height:100vh; display:block; }
   html, body { margin:0; padding:0; overflow-x:hidden; }
-  .shell { position:relative; z-index:1; max-width:1120px; margin:0 auto; padding:0 28px 96px; min-height:100vh; }
+  .shell { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 28px 80px; min-height:100vh; }
   .top-bar { display:flex; align-items:center; justify-content:space-between; padding:16px 0 18px; }
   .brand { display:flex; align-items:center; gap:13px; }
   .brand-icon { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--indigo),var(--indigo-d)); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:var(--shadow-primary); transition:transform 0.2s var(--ease),box-shadow 0.2s; }
   .brand-icon:hover { transform:scale(1.05) rotate(-3deg); }
   .brand-name { font-size:clamp(18px,2.2vw,24px); font-weight:800; color:var(--text); letter-spacing:-0.5px; }
   .brand-name span { color:var(--indigo-l); }
-  .hero { padding:2px 0 8px; text-align:center; }
-  .hero h1 { font-size:var(--fs-xl); font-weight:800; line-height:var(--lh-tight); letter-spacing:-0.03em; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:7px; }
-  .hero p { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); max-width:580px; margin:0 auto; }
-  .h1-short { display:none; }
-  @media (max-width:600px) { .h1-full { display:none; } .h1-short { display:inline; } }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.45),0 8px 24px rgba(0,0,0,0.22); transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out); }
+  .hero { padding:2px 0 16px; }
+  .hero h1 { font-size:clamp(24px,3.5vw,44px); font-weight:800; line-height:1.1; letter-spacing:-1.5px; background:linear-gradient(135deg,#ffffff 0%,rgba(241,245,249,0.9) 40%,rgba(129,140,248,0.85) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:14px; }
+  .hero p { font-size:clamp(14px,1.4vw,17px); color:var(--text2); line-height:1.6; max-width:580px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:var(--shadow-card); transition:border-color 0.2s,box-shadow 0.2s; }
   .card::before { content:''; position:absolute; inset:0; background:linear-gradient(145deg,rgba(255,255,255,0.03) 0%,transparent 50%); pointer-events:none; }
-  @media (hover:hover) { .card:hover { background:var(--surface2); border-color:var(--border2); transform:translateY(-1px); } }
+  .card:hover { border-color:var(--border2); }
   .card-accent { border-left:2px solid var(--indigo); box-shadow:var(--shadow-card),-2px 0 20px rgba(99,102,241,0.08); }
-  .card-title { font-size:var(--fs-lg); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
+  .card-title { font-size:clamp(16px,1.8vw,22px); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
   .card-title .icon { width:30px; height:30px; border-radius:9px; background:rgba(99,102,241,0.13); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; box-shadow:0 2px 8px rgba(99,102,241,0.15); }
-  .card-sub { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); margin-bottom:12px; }
-  @media (max-width:600px) {
-    .hero { padding:0 0 6px; }
-    .hero h1 { font-size:19px; font-weight:700; line-height:1.18; margin-bottom:0; }
-    .hero p { display:none; }
-    .card { padding:14px; margin-bottom:10px; }
-    .card-title { font-size:16px; }
-    .card-sub { font-size:12.5px; line-height:1.5; margin-bottom:10px; }
-    .output-block { font-size:13px; line-height:1.55; }
-  }
-  textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Inter',sans-serif; font-size:14px; padding:13px 16px; resize:vertical; outline:none; line-height:1.6; min-height:84px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
+  .card-sub { font-size:clamp(13px,1.4vw,17px); color:var(--text2); line-height:1.65; margin-bottom:16px; }
+  textarea { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-md); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; padding:14px 16px; resize:vertical; outline:none; line-height:1.7; min-height:108px; word-break:break-word; overflow-wrap:break-word; transition:border-color 0.2s,box-shadow 0.2s; }
   textarea::placeholder { color:var(--text3); }
-  textarea:focus { border-color:rgba(99,102,241,0.7); box-shadow:0 0 0 4px rgba(99,102,241,0.15),0 2px 14px rgba(99,102,241,0.12); }
-  .btn { display:inline-flex; align-items:center; justify-content:center; gap:7px; border:none; border-radius:var(--r-sm); font-family:'Inter',sans-serif; font-weight:700; font-size:var(--fs-sm); cursor:pointer; transition:all 0.18s var(--ease); white-space:nowrap; padding:12px 24px; min-height:44px; position:relative; overflow:hidden; }
+  textarea:focus { border-color:rgba(99,102,241,0.6); box-shadow:0 0 0 3px rgba(99,102,241,0.12),0 2px 12px rgba(99,102,241,0.1); }
+  .btn { display:inline-flex; align-items:center; gap:7px; border:none; border-radius:var(--r-sm); font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:clamp(13px,1.3vw,16px); cursor:pointer; transition:all 0.18s var(--ease); white-space:nowrap; padding:12px 24px; position:relative; overflow:hidden; }
   .btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:background 0.15s; }
   .btn:active::after { background:rgba(255,255,255,0.08); }
-  .btn-primary { background:radial-gradient(140px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.22),transparent 60%),linear-gradient(135deg,var(--indigo),var(--indigo-d)); color:#fff; box-shadow:var(--shadow-primary); }
-  .btn-primary:hover:not(:disabled) { transform:translateY(-2px); filter:brightness(1.08); box-shadow:var(--shadow-primary-hover); }
+  .btn-primary { background:linear-gradient(135deg,var(--indigo),var(--indigo-d)); color:#fff; box-shadow:var(--shadow-primary); }
+  .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:var(--shadow-primary-hover); }
   .btn-primary:active:not(:disabled) { transform:scale(0.97) translateY(0); box-shadow:0 2px 8px rgba(99,102,241,0.3); }
   .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
   .btn-ghost { background:rgba(255,255,255,0.05); color:var(--text2); border:1px solid var(--border); }
@@ -71,11 +58,11 @@ const STYLES = `
   .btn-ghost:active { transform:scale(0.97); }
   .btn-sm { padding:7px 14px; font-size:12px; border-radius:8px; font-weight:600; }
   .btn-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px; }
-  .copy-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text2); font-size:var(--fs-xs); font-weight:600; padding:5px 12px; border-radius:7px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; white-space:nowrap; }
+  .copy-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text2); font-size:11.5px; font-weight:600; padding:5px 12px; border-radius:7px; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; white-space:nowrap; }
   .copy-btn:hover { color:var(--text); border-color:var(--border2); background:rgba(255,255,255,0.09); transform:translateY(-1px); }
   .copy-btn:active { transform:scale(0.94); }
   .copy-btn.done { color:var(--emerald); border-color:rgba(16,185,129,0.35); background:rgba(16,185,129,0.1); }
-  .output-block { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-top:14px; font-size:var(--fs-sm); line-height:var(--lh-base); color:var(--text2); white-space:pre-wrap; word-break:break-word; animation:aiReveal 0.5s cubic-bezier(0.22,1,0.36,1); box-shadow:inset 0 1px 0 rgba(255,255,255,0.04); }
+  .output-block { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-top:14px; font-size:13px; line-height:1.85; color:var(--text2); white-space:pre-wrap; word-break:break-word; animation:fadeUp 0.3s var(--ease); box-shadow:inset 0 1px 0 rgba(255,255,255,0.04); }
   .output-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px; }
   .output-label { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--indigo-l); }
   .spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,0.12); border-top-color:#fff; border-radius:50%; animation:spin 0.6s linear infinite; flex-shrink:0; }
@@ -89,33 +76,6 @@ const STYLES = `
   @keyframes backdropIn  { from{opacity:0} to{opacity:1} }
   @keyframes scaleIn { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
   .page-enter { animation:fadeUp 0.28s var(--ease); }
-  .desktop-sidebar { display:none; }
-  @media (min-width:1024px) {
-    .shell { max-width:1340px; padding:0 40px 48px; }
-    .app-layout { display:grid; grid-template-columns:232px 1fr; gap:44px; margin-top:20px; align-items:start; }
-    .desktop-sidebar { display:flex; flex-direction:column; gap:6px; position:sticky; top:28px; height:fit-content; }
-    .sidebar-item { display:flex; align-items:center; gap:12px; padding:11px 14px; background:transparent; border:1px solid transparent; border-radius:var(--r-md); color:var(--text2); font-family:'Inter',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out); text-align:left; width:100%; }
-    .sidebar-item:hover { color:var(--text); background:rgba(255,255,255,0.03); }
-    .sidebar-item.active { color:var(--indigo-l); background:rgba(99,102,241,0.1); border-color:rgba(99,102,241,0.2); }
-    .sidebar-item .nav-icon-wrap { width:auto; height:auto; border:none; background:none; box-shadow:none; }
-    .sidebar-item .nav-icon-wrap svg { width:19px; height:19px; }
-  }
-  @keyframes aiReveal { from{opacity:0;transform:translateY(14px) scale(0.99);filter:blur(8px)} to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)} }
-  @keyframes aiShimmer { from{left:-60%} to{left:140%} }
-  @keyframes aiDot { 0%,80%,100%{opacity:0.3;transform:translateY(0)} 40%{opacity:1;transform:translateY(-3px)} }
-  .ai-reveal > div { animation:aiReveal 0.55s cubic-bezier(0.22,1,0.36,1) both; }
-  .ai-reveal > div:nth-child(2){ animation-delay:0.10s; }
-  .ai-reveal > div:nth-child(3){ animation-delay:0.20s; }
-  .ai-reveal > div:nth-child(4){ animation-delay:0.30s; }
-  .ai-shimmer { position:relative; overflow:hidden; }
-  .ai-shimmer::after { content:''; position:absolute; top:0; left:-60%; width:55%; height:100%; pointer-events:none; background:linear-gradient(90deg,transparent,rgba(129,140,248,0.13),transparent); animation:aiShimmer 1.2s ease-out 0.2s 1 both; }
-  @property --auraA { syntax:'<angle>'; inherits:false; initial-value:0deg; }
-  @keyframes auraTrace { to { --auraA:360deg; } }
-  .ai-shimmer::before { content:''; position:absolute; inset:0; border-radius:inherit; padding:1px; pointer-events:none; z-index:1; background:conic-gradient(from var(--auraA),transparent 0deg,var(--indigo-l) 55deg,transparent 130deg); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude; animation:auraTrace 1.3s var(--ease-out) 0.15s 1 both; }
-  .ai-thinking { display:inline-flex; align-items:center; gap:5px; }
-  .ai-thinking span { width:5px; height:5px; border-radius:50%; background:currentColor; animation:aiDot 1.1s ease-in-out infinite; }
-  .ai-thinking span:nth-child(2){ animation-delay:0.16s; }
-  .ai-thinking span:nth-child(3){ animation-delay:0.32s; }
 
   /* Hamburger lines */
   .burger-line { display:block; width:clamp(22px,2vw,28px); height:2.5px; background:var(--text2); border-radius:1px; transition:transform 0.22s ease-in-out, opacity 0.22s ease-in-out, width 0.22s ease-in-out, background 0.2s; }
@@ -128,14 +88,13 @@ const STYLES = `
   .burger-btn.open .burger-line-bot { transform:translateY(-7px) rotate(-45deg); }
 
   /* Drawer */
-  .drawer-backdrop { position:fixed; inset:0; background:rgba(3,4,7,0.45); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); z-index:200; animation:backdropIn 0.22s var(--ease-out); }
-  .drawer-panel { position:fixed; top:0; left:0; height:100%; width:88%; max-width:320px; background:rgba(12,15,26,0.78); backdrop-filter:blur(30px) saturate(1.4); -webkit-backdrop-filter:blur(30px) saturate(1.4); border-right:1px solid rgba(255,255,255,0.08); z-index:201; display:flex; flex-direction:column; animation:slideInLeft 0.36s cubic-bezier(0.16,1,0.3,1); box-shadow:40px 0 80px rgba(0,0,0,0.55); overflow:hidden; }
+  .drawer-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:200; animation:backdropIn 0.2s ease-out; }
+  .drawer-panel { position:fixed; top:0; left:0; height:100%; width:88%; max-width:320px; background:var(--bg2); border-right:1px solid var(--border2); z-index:201; display:flex; flex-direction:column; animation:slideInLeft 0.24s cubic-bezier(0.4,0,0.2,1); overflow:hidden; }
   .drawer-scroll { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; -webkit-mask-image:linear-gradient(to bottom, black 85%, transparent 100%); mask-image:linear-gradient(to bottom, black 85%, transparent 100%); }
-  .drawer-close-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text2); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif; transition:all 0.15s; flex-shrink:0; }
+  .drawer-close-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--surface); color:var(--text2); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; flex-shrink:0; }
   .drawer-close-btn:hover { background:var(--surface2); color:var(--text); border-color:var(--border2); }
-  @media (hover:hover) { .drawer-close-btn:hover { transform:rotate(90deg); } .menu-item-btn:hover { padding-left:20px; } }
   .drawer-close-btn:active { transform:scale(0.93); }
-  .menu-item-btn { width:100%; display:flex; align-items:center; gap:14px; padding:15px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); margin-bottom:10px; cursor:pointer; font-family:'Inter',sans-serif; text-align:left; transition:all 0.15s; }
+  .menu-item-btn { width:100%; display:flex; align-items:center; gap:14px; padding:15px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); margin-bottom:10px; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; text-align:left; transition:all 0.15s; }
   .menu-item-btn:hover { background:rgba(99,102,241,0.06); border-color:rgba(99,102,241,0.3); }
   .menu-item-btn:active { transform:scale(0.98); background:rgba(99,102,241,0.1); }
   .menu-item-btn.active-page { background:rgba(99,102,241,0.08); border-color:rgba(99,102,241,0.35); border-left:2px solid var(--indigo-l); }
@@ -146,12 +105,8 @@ const STYLES = `
     .drawer-backdrop { animation:none; }
     .burger-line { transition:none; }
     .page-enter { animation:none; }
-    .ai-reveal > div { animation:none; }
-    .ai-shimmer::after { display:none; }
-    .ai-shimmer::before { display:none; }
-    .ai-thinking span { animation:none; opacity:0.6; }
   }
-  .section-label { font-size:var(--fs-2xs); font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text2); margin-bottom:8px; }
+  .section-label { font-size:clamp(11px,1vw,13px); font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text3); margin-bottom:8px; }
   .tag { display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:999px; margin-right:6px; margin-bottom:6px; }
   .tag-weak { background:rgba(244,63,94,0.1); color:var(--rose); border:1px solid rgba(244,63,94,0.2); }
   .tag-good { background:rgba(16,185,129,0.1); color:var(--emerald); border:1px solid rgba(16,185,129,0.2); }
@@ -183,65 +138,53 @@ const STYLES = `
   .session-stat-label { font-size:10px; color:var(--text3); margin-top:3px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; }
   .session-divider { width:1px; height:38px; background:var(--border); }
   .empty { text-align:center; padding:56px 24px; }
-  .empty-icon { color:var(--indigo-l); margin-bottom:16px; opacity:0.6; animation:pulse 3s ease-in-out infinite; }
+  .empty-icon { font-size:48px; margin-bottom:16px; opacity:0.6; animation:pulse 3s ease-in-out infinite; }
   .empty p { font-size:14px; color:var(--text2); max-width:280px; margin:0 auto; line-height:1.7; }
   .gen-load { display:flex; flex-direction:column; align-items:center; gap:16px; padding:56px 24px; color:var(--text2); font-size:13.5px; }
   .bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:100; background:rgba(7,9,15,0.92); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border-top:1px solid var(--border); display:flex; padding:12px 8px 16px; gap:4px; justify-content:center; }
-  @media (min-width:1024px) { .bottom-nav { display:none; } }
-  .nav-item { flex:1; max-width:160px; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px; border-radius:var(--r-sm); border:none; background:transparent; cursor:pointer; transition:color var(--dur-fast) var(--ease-out); color:var(--text2); font-family:'Inter',sans-serif; position:relative; }
-  .nav-item:hover { color:var(--text); }
+  .nav-item { flex:1; max-width:160px; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 4px; border-radius:var(--r-sm); border:none; background:transparent; cursor:pointer; transition:all 0.2s var(--ease); color:var(--text3); font-family:'Plus Jakarta Sans',sans-serif; position:relative; }
+  .nav-item:hover { color:var(--text2); }
   .nav-item:active { transform:scale(0.92); }
   .nav-item.active { color:var(--indigo-l); }
   .nav-item.active .nav-label { font-weight:800; color:var(--indigo-l); }
-  .nav-item.active .nav-icon-wrap { background:rgba(99,102,241,0.22); border-color:rgba(99,102,241,0.45); box-shadow:0 3px 16px rgba(99,102,241,0.35); }
-  .nav-icon-wrap { width:clamp(46px,6.5vw,72px); height:clamp(32px,4vw,42px); border-radius:999px; border:1px solid transparent; display:flex; align-items:center; justify-content:center; transition:background var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out); }
-  .nav-icon-wrap svg { width:clamp(20px,2.4vw,25px); height:clamp(20px,2.4vw,25px); }
-  .nav-label { font-size:clamp(11.5px,1.2vw,14px); font-weight:700; transition:all 0.2s; }
-  .nav-rate { color:var(--amber); }
-  .nav-rate .nav-icon-wrap svg { fill:rgba(245,158,11,0.18); }
-  @media (min-width:1024px) {
-    .sidebar-rate { color:var(--amber); margin-top:8px; border-color:rgba(245,158,11,0.22); background:rgba(245,158,11,0.06); }
-    .sidebar-rate:hover { color:var(--amber); background:rgba(245,158,11,0.12); border-color:rgba(245,158,11,0.35); }
-    .sidebar-rate .nav-icon-wrap svg { fill:rgba(245,158,11,0.2); }
-  }
+  .nav-item.active .nav-icon-wrap { background:rgba(99,102,241,0.18); border-color:rgba(99,102,241,0.35); box-shadow:0 2px 12px rgba(99,102,241,0.25); }
+  .nav-icon-wrap { width:clamp(44px,5vw,56px); height:clamp(28px,3vw,36px); border-radius:999px; border:1px solid transparent; display:flex; align-items:center; justify-content:center; font-size:16px; transition:all 0.2s var(--ease); }
+  .nav-label { font-size:clamp(10px,1vw,13px); font-weight:600; transition:all 0.2s; }
   .lesson-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); margin-bottom:8px; overflow:hidden; cursor:pointer; transition:all 0.2s var(--ease); box-shadow:var(--shadow-card); }
   .lesson-block:hover { border-color:var(--border2); transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
   .lesson-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; gap:12px; }
   .lesson-icon { width:clamp(38px,4vw,50px); height:clamp(38px,4vw,50px); border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:clamp(19px,2vw,26px); flex-shrink:0; }
   .lesson-body { padding:16px 18px 20px; border-top:1px solid var(--border); animation:fadeDown 0.22s var(--ease); }
   .lib-cat-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
-  .lib-cat-btn { padding:6px 15px; border-radius:999px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; white-space:nowrap; }
+  .lib-cat-btn { padding:6px 15px; border-radius:999px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; white-space:nowrap; }
   .lib-cat-btn:hover { border-color:var(--border2); color:var(--text); }
   .lib-cat-btn.sel { background:rgba(99,102,241,0.2); border-color:rgba(99,102,241,0.5); color:var(--indigo-l); box-shadow:0 2px 10px rgba(99,102,241,0.15); }
   .lib-prompt-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:16px; margin-bottom:10px; transition:all 0.18s; box-shadow:var(--shadow-card); }
   .lib-prompt-card:hover { border-color:var(--border2); transform:translateY(-1px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
-  .lib-prompt-title { font-size:var(--fs-sm); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.2px; }
-  .lib-prompt-preview { font-size:clamp(12px,1.2vw,15px); color:var(--text3); line-height:1.55; margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; cursor:pointer; transition:color var(--dur-fast) var(--ease-out); }
-  .lib-prompt-preview:hover { color:var(--text2); }
-  .lib-prompt-preview.expanded { display:block; -webkit-line-clamp:unset; overflow:visible; white-space:pre-wrap; color:var(--text2); background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-sm); padding:12px 14px; max-height:340px; overflow-y:auto; }
+  .lib-prompt-title { font-size:clamp(13px,1.4vw,17px); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.2px; }
+  .lib-prompt-preview { font-size:clamp(12px,1.2vw,15px); color:var(--text3); line-height:1.55; margin-bottom:12px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .lib-actions { display:flex; gap:6px; flex-wrap:wrap; }
   .saved-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:999px; background:rgba(16,185,129,0.12); color:var(--emerald); border:1px solid rgba(16,185,129,0.25); font-size:10px; font-weight:700; }
   .mono-box { background:var(--bg2); border-radius:var(--r-sm); padding:11px 14px; font-size:12px; color:var(--text2); font-family:'JetBrains Mono',monospace; line-height:1.75; white-space:pre-wrap; word-break:break-word; margin-bottom:10px; border:1px solid var(--border); border-left:2px solid var(--indigo); }
   .promo-banner { background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(99,102,241,0.06)); border:1px solid rgba(245,158,11,0.25); border-radius:var(--r-lg); padding:18px; margin-bottom:16px; }
   .hook-banner { background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(244,63,94,0.05)); border:1px solid rgba(99,102,241,0.18); border-radius:var(--r-md); padding:14px 16px; margin-bottom:18px; }
   .daily-card { background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(245,158,11,0.05)); border:1px solid rgba(99,102,241,0.22); border-radius:var(--r-lg); padding:20px; margin-bottom:16px; box-shadow:0 4px 20px rgba(99,102,241,0.08); }
-  .wiz-select { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'Inter',sans-serif; font-size:13px; padding:12px 14px; outline:none; cursor:pointer; margin-bottom:8px; transition:border-color 0.2s; }
+  .wiz-select { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; padding:12px 14px; outline:none; cursor:pointer; margin-bottom:8px; transition:border-color 0.2s; }
   .wiz-select:focus { border-color:rgba(99,102,241,0.5); }
   .wiz-row { display:flex; align-items:center; gap:9px; margin-bottom:9px; }
   .wiz-num { width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,var(--indigo),var(--indigo-d)); color:#fff; font-weight:800; font-size:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 2px 8px rgba(99,102,241,0.3); }
   .wiz-chip-row { display:flex; flex-wrap:wrap; gap:7px; }
   .cert-wrap { background:linear-gradient(135deg,#0d1025 0%,#111a2e 50%,#0a1520 100%); border:2px solid rgba(245,158,11,0.5); border-radius:var(--r-lg); padding:28px 22px; margin-top:16px; position:relative; overflow:hidden; text-align:center; animation:scaleIn 0.4s var(--ease); box-shadow:0 8px 40px rgba(245,158,11,0.1); }
   .compare-col { flex:1; min-width:0; background:var(--surface); border:1px solid var(--border); border-radius:var(--r-md); padding:14px; }
-  @media (max-width:640px) { .compare-grid { flex-direction:column; } }
   .hist-item { display:flex; align-items:flex-start; gap:10px; padding:11px 0; border-bottom:1px solid var(--border); cursor:pointer; transition:opacity 0.15s; }
   .hist-item:hover { opacity:0.8; }
   .hist-item:last-child { border-bottom:none; }
   .hist-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
-  .model-select { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'Inter',sans-serif; font-size:12px; padding:6px 10px; outline:none; cursor:pointer; }
+  .model-select { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; padding:6px 10px; outline:none; cursor:pointer; }
   .version-tag { display:inline-flex; align-items:center; padding:2px 9px; border-radius:999px; font-size:10px; font-weight:700; background:rgba(99,102,241,0.12); color:var(--indigo-l); border:1px solid rgba(99,102,241,0.22); margin-right:6px; cursor:pointer; transition:all 0.15s; }
   .version-tag:hover { background:rgba(99,102,241,0.2); }
   .version-tag.active { background:rgba(99,102,241,0.3); border-color:var(--indigo-l); }
-  .apply-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.28); color:var(--amber); font-size:11.5px; font-weight:700; padding:6px 13px; border-radius:7px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+  .apply-btn { display:inline-flex; align-items:center; gap:5px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.28); color:var(--amber); font-size:11.5px; font-weight:700; padding:6px 13px; border-radius:7px; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.15s; }
   .apply-btn:hover { background:rgba(245,158,11,0.2); transform:translateY(-1px); }
   .apply-btn:active { transform:scale(0.96); }
   .mistake-row { display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--border); }
@@ -250,7 +193,7 @@ const STYLES = `
   .mistake-title { font-weight:700; font-size:13.5px; color:var(--text); margin-bottom:5px; }
   .mistake-bad { font-size:12.5px; color:var(--rose); margin-bottom:4px; word-break:break-word; }
   .mistake-good { font-size:12.5px; color:var(--emerald); word-break:break-word; }
-  .diff-btn { flex:1; padding:8px 4px; border-radius:var(--r-sm); border:1px solid var(--border); background:transparent; color:var(--text2); font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; text-align:center; transition:all 0.15s; }
+  .diff-btn { flex:1; padding:8px 4px; border-radius:var(--r-sm); border:1px solid var(--border); background:transparent; color:var(--text2); font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer; text-align:center; transition:all 0.15s; }
   .diff-btn.ab { border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.08); color:var(--emerald); }
   .diff-btn.ai { border-color:rgba(245,158,11,0.4); background:rgba(245,158,11,0.08); color:var(--amber); }
   .diff-btn.aa { border-color:rgba(244,63,94,0.4); background:rgba(244,63,94,0.08); color:var(--rose); }
@@ -364,29 +307,12 @@ const TRACKS = [
   { id:"personal",    label:"🌱 Personal Growth",         desc:"Goals, habits, communication" },
   { id:"students",    label:"🎓 Students",                desc:"Study plans, essays, research" },
 ];
-var navSvg = function(children) {
-  return React.createElement("svg",{width:24,height:24,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},children);
-};
 const TABS = [
-  { id:"guide",    icon:navSvg([React.createElement("path",{key:"a",d:"M2 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H2z"}),React.createElement("path",{key:"b",d:"M22 4h-6a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H22z"})]), label:"Learn" },
-  { id:"builder",  icon:navSvg([React.createElement("path",{key:"a",d:"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"})]), label:"Build" },
-  { id:"library",  icon:navSvg([React.createElement("rect",{key:"a",x:3,y:3,width:7,height:7,rx:1}),React.createElement("rect",{key:"b",x:14,y:3,width:7,height:7,rx:1}),React.createElement("rect",{key:"c",x:14,y:14,width:7,height:7,rx:1}),React.createElement("rect",{key:"d",x:3,y:14,width:7,height:7,rx:1})]), label:"Browse" },
-  { id:"practice", icon:navSvg([React.createElement("circle",{key:"a",cx:12,cy:12,r:10}),React.createElement("circle",{key:"b",cx:12,cy:12,r:6}),React.createElement("circle",{key:"c",cx:12,cy:12,r:2})]), label:"Practice" },
+  { id:"guide",    icon:"📖", label:"Learn"     },
+  { id:"builder",  icon:"✦",  label:"Build"     },
+  { id:"library",  icon:"📚", label:"Browse"    },
+  { id:"practice", icon:"✏",  label:"Practice"  },
 ];
-
-// Where the "Rate Us" buttons send people. Change this one line to your Play Store
-// listing (once live) or a dedicated feedback form. Defaults to the existing form so it works now.
-var RATE_URL = "https://tally.so/r/rjvEep";
-var rateIcon = navSvg([React.createElement("path",{key:"s",d:"M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9.9l6.9-.8z"})]);
-var cardSvg = function(size, children) {
-  return React.createElement("svg",{width:size,height:size,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"},children);
-};
-// Card-title icons (replace old placeholder letters +, W, =, P)
-var icoBuild   = function(s){ return cardSvg(s,[React.createElement("path",{key:"a",d:"M12 2v4M12 18v4M2 12h4M18 12h4"}),React.createElement("path",{key:"b",d:"M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"})]); };
-var icoImprove = function(s){ return cardSvg(s,[React.createElement("path",{key:"a",d:"M5 3v4M3 5h4M6 17v4M4 19h4"}),React.createElement("path",{key:"b",d:"M13 4l3 3L7 16l-3.5.5L4 13z"}),React.createElement("path",{key:"c",d:"M19 11l1.5 3 3 1.5-3 1.5L19 21l-1.5-3-3-1.5 3-1.5z"})]); };
-var icoCompare = function(s){ return cardSvg(s,[React.createElement("rect",{key:"a",x:3,y:4,width:7,height:16,rx:1}),React.createElement("rect",{key:"b",x:14,y:4,width:7,height:16,rx:1})]); };
-var icoPractice= function(s){ return cardSvg(s,[React.createElement("circle",{key:"a",cx:12,cy:12,r:9}),React.createElement("circle",{key:"b",cx:12,cy:12,r:5}),React.createElement("circle",{key:"c",cx:12,cy:12,r:1.5})]); };
-
 
 const PROMPT_LIBRARY = [
     { cat:"Marketing", color:"rgba(99,102,241,0.15)", tc:"var(--indigo-l)", prompts:[
@@ -593,42 +519,23 @@ const PROMPT_LIBRARY = [
 
 /* ── API ── */
 async function callClaude(messages, system, maxTokens) {
-  async function attempt(timeoutMs) {
-    var ctrl = new AbortController();
-    var timer = setTimeout(function(){ ctrl.abort(); }, timeoutMs);
-    try {
-      const res = await fetch("/api/claude", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body:JSON.stringify({ model: "claude-haiku-4-5-20251001", max_tokens: maxTokens||1024, system, messages }),
-        signal: ctrl.signal,
-      });
-      const data = await res.json();
-      if (!res.ok || (data && data.error)) {
-        var msg = (data && data.error && (data.error.message || data.error)) || ("request failed ("+res.status+")");
-        var e = new Error(msg); e.handled = true; throw e;
-      }
-      return (data.content && data.content.map(function(b){ return b.text||""; }).join("")) || "";
-    } finally { clearTimeout(timer); }
-  }
   try {
-    var out = await attempt(28000);
-    return out || "No response was returned. Please try again.";
-  } catch (e1) {
-    if (e1 && e1.handled) {
-      console.error("Claude API error:", e1.message);
-      return "[The AI request failed: "+e1.message+"] Please try again in a moment.";
+    const res = await fetch("/api/claude", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({ model:"claude-haiku-4-5-20251001", max_tokens:maxTokens||450, system, messages }),
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      console.error("API error:", res.status, err);
+      return "Error "+res.status+". Please try again.";
     }
-    // Network error or timeout (often a cold start) - wait briefly and retry once.
-    console.warn("Claude call failed, retrying once:", e1 && e1.message);
-    await new Promise(function(r){ setTimeout(r, 800); });
-    try {
-      var out2 = await attempt(28000);
-      return out2 || "No response was returned. Please try again.";
-    } catch (e2) {
-      console.error("Claude call failed after retry:", e2 && e2.message);
-      return "[Could not reach the AI - this is usually a network or server issue.] Please check your connection and try again.";
-    }
+    const data = await res.json();
+    if (data.error) { console.error("Claude error:", data.error); return "Error: "+data.error.message; }
+    return data.content?.map(function(b){ return b.text||""; }).join("") || "Error. Please try again.";
+  } catch(e) {
+    console.error("Fetch error:", e);
+    return "Network error. Please try again.";
   }
 }
 
@@ -683,27 +590,27 @@ function FeedbackCard(props) {
   return (
     React.createElement("div", { style:{background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:16,marginTop:12,animation:"fadeUp 0.3s"} },
       React.createElement("div", { style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,paddingBottom:12,borderBottom:"1px solid var(--border)",flexWrap:"wrap",gap:8} },
-        React.createElement("span", { style:{fontSize:11,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"} }, "8-Block Evaluation"),
+        React.createElement("span", { style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"} }, "8-Block Evaluation"),
         React.createElement(CopyBtn, { text:text })
       ),
       present.length > 0 && React.createElement("div", { style:{marginBottom:12} },
-        React.createElement("div", { style:{fontSize:11,fontWeight:700,textTransform:"uppercase",color:"var(--emerald)",marginBottom:7} }, "Present in your prompt"),
+        React.createElement("div", { style:{fontSize:10,fontWeight:700,textTransform:"uppercase",color:"var(--emerald)",marginBottom:7} }, "Present in your prompt"),
         React.createElement("div", { style:{display:"flex",flexWrap:"wrap",gap:6} },
           present.map(function(b){ return React.createElement("span", { key:b, style:{padding:"4px 11px",borderRadius:999,fontSize:12,fontWeight:700,background:"rgba(16,185,129,0.12)",color:"var(--emerald)",border:"1px solid rgba(16,185,129,0.25)"} }, b); })
         )
       ),
       missing.length > 0 && React.createElement("div", { style:{marginBottom:14} },
-        React.createElement("div", { style:{fontSize:11,fontWeight:700,textTransform:"uppercase",color:"var(--rose)",marginBottom:7} }, "Missing from your prompt"),
+        React.createElement("div", { style:{fontSize:10,fontWeight:700,textTransform:"uppercase",color:"var(--rose)",marginBottom:7} }, "Missing from your prompt"),
         React.createElement("div", { style:{display:"flex",flexWrap:"wrap",gap:6} },
           missing.map(function(b){ return React.createElement("span", { key:b, style:{padding:"4px 11px",borderRadius:999,fontSize:12,fontWeight:700,background:"rgba(244,63,94,0.1)",color:"var(--rose)",border:"1px solid rgba(244,63,94,0.2)"} }, b); })
         )
       ),
       React.createElement("div", { style:{height:1,background:"var(--border)",margin:"12px 0"} }),
-      bestPart && React.createElement("div", { style:{marginBottom:10,fontSize:14,lineHeight:1.6} },
+      bestPart && React.createElement("div", { style:{marginBottom:10,fontSize:13,lineHeight:1.6} },
         React.createElement("strong", { style:{color:"var(--text)"} }, "Well done: "),
         React.createElement("span", { style:{color:"var(--text2)"} }, bestPart)
       ),
-      topTip && React.createElement("div", { style:{padding:"10px 13px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-sm)",fontSize:14,lineHeight:1.6} },
+      topTip && React.createElement("div", { style:{padding:"10px 13px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-sm)",fontSize:13,lineHeight:1.6} },
         React.createElement("strong", { style:{color:"var(--indigo-l)"} }, "Top tip: "),
         React.createElement("span", { style:{color:"var(--text2)"} }, topTip)
       )
@@ -723,19 +630,7 @@ const LESSONS = [
   ];
 
 export default function PromptCoach() {
-  useEffect(function(){
-    function onMove(e){
-      if (e.pointerType && e.pointerType !== "mouse") return;
-      var btn = e.target && e.target.closest ? e.target.closest(".btn-primary") : null;
-      if (!btn) return;
-      var r = btn.getBoundingClientRect();
-      btn.style.setProperty("--mx", (e.clientX - r.left) + "px");
-      btn.style.setProperty("--my", (e.clientY - r.top) + "px");
-    }
-    document.addEventListener("pointermove", onMove);
-    return function(){ document.removeEventListener("pointermove", onMove); };
-  }, []);
-  var [tab, setTab]               = useState("builder");
+  var [tab, setTab]               = useState("guide");
   var [animKey, setAnimKey]       = useState(0);
   var [practiceCount, setPracticeCount] = useState(0);
 
@@ -804,7 +699,6 @@ export default function PromptCoach() {
   var [learnThis, setLearnThis]   = useState(null);
   var [saved, setSaved]           = useState([]);
   var [showSaved, setShowSaved]   = useState(false);
-  var [expandedPrompt, setExpandedPrompt] = useState(null);
 
   async function getLearnThis(title, prompt) {
     setLearnThis({title:title, prompt:prompt, loading:true, breakdown:""});
@@ -906,7 +800,7 @@ export default function PromptCoach() {
     if (side==="A") { setLoadingCmpA(true); setCmpOutA(""); }
     else { setLoadingCmpB(true); setCmpOutB(""); }
     try {
-      var result = await callClaude([{role:"user",content:prompt}], "You are a helpful AI assistant. Answer the prompt directly.", 2000);
+      var result = await callClaude([{role:"user",content:prompt}], "You are a helpful AI assistant. Answer the prompt directly.", 600);
       if (side==="A") setCmpOutA(result); else setCmpOutB(result);
     } finally {
       if (side==="A") setLoadingCmpA(false); else setLoadingCmpB(false);
@@ -926,7 +820,7 @@ export default function PromptCoach() {
       var critLine  = wiz.critique ? "After writing, re-read and fix anything that does not match. Give final version only." : "";
       var sys = "You are a world-class prompt engineer. Build a complete professional AI prompt from the user answers. Follow the 8-block structure. Return ONLY the finished prompt.";
       var msg = "Build a prompt:\n1. ROLE: "+finalRole+"\n2. OBJECTIVE: "+wiz.objective+"\n3. CONTEXT: "+(wiz.context||"Not provided")+"\n4. TONE: "+(wiz.tone||"Professional")+"\n5. FORMAT: "+(wiz.format||"Clear and well-structured")+"\n6. CONSTRAINTS: "+(wiz.constraints||"Avoid jargon")+"\n7. EXAMPLE: "+(wiz.example||"Not provided")+"\n8. CRITIQUE: "+(critLine||"Not required");
-      var result = await callClaude([{role:"user",content:msg}], sys, 1500);
+      var result = await callClaude([{role:"user",content:msg}], sys, 1200);
       setWizOut(result);
       addToHistory("Built: "+wiz.objective.slice(0,30), result, "");
     } finally { setLoadingWiz(false); }
@@ -937,7 +831,7 @@ export default function PromptCoach() {
     setLoadingB(true); setBOutput(""); setBAnswer("");
     try {
       var sys2 = "You are a prompt engineer. Improve the given prompt to include: Role, Objective, Context, Tone, Format, Constraints, and a Critique instruction.\nReply in this exact format:\n\nIMPROVED PROMPT:\n[improved prompt]\n\nWHAT WAS MISSING:\n- [issue]\n\nWHY ITS BETTER:\n- [improvement]";
-      var improved = await callClaude([{role:"user",content:"Improve: \""+bInput+"\""}], sys2, 3000);
+      var improved = await callClaude([{role:"user",content:"Improve: \""+bInput+"\""}], sys2, 1200);
       setBOutput(improved);
       var s = improved.indexOf("IMPROVED PROMPT:");
       if (s !== -1) {
@@ -946,7 +840,9 @@ export default function PromptCoach() {
         var cleanPrompt = e===-1 ? after.trim() : after.slice(0,e).trim();
         if (cleanPrompt) {
           saveVersion(bInput, cleanPrompt);
-          addToHistory("Improved: "+bInput.slice(0,30), cleanPrompt, "");
+          var answer = await callClaude([{role:"user",content:cleanPrompt}], "You are a helpful AI assistant. Answer the prompt directly.", 600);
+          setBAnswer(answer);
+          addToHistory("Improved: "+bInput.slice(0,30), cleanPrompt, answer);
         }
       }
     } finally { setLoadingB(false); }
@@ -1024,7 +920,7 @@ export default function PromptCoach() {
 
   var numBall = function(n) { return React.createElement("div",{className:"wiz-num"},n); };
   var Chip = function(p) {
-    return React.createElement("button",{onClick:p.onClick,style:{padding:"5px 12px",borderRadius:999,border:"1px solid",borderColor:p.sel?(p.selBorder||"rgba(99,102,241,0.5)"):"var(--border)",background:p.sel?(p.selBg||"rgba(99,102,241,0.18)"):"var(--surface2)",color:p.sel?(p.selColor||"var(--indigo-l)"):"var(--text2)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}},p.label);
+    return React.createElement("button",{onClick:p.onClick,style:{padding:"5px 12px",borderRadius:999,border:"1px solid",borderColor:p.sel?(p.selBorder||"rgba(99,102,241,0.5)"):"var(--border)",background:p.sel?(p.selBg||"rgba(99,102,241,0.18)"):"var(--surface2)",color:p.sel?(p.selColor||"var(--indigo-l)"):"var(--text2)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",transition:"all 0.15s"}},p.label);
   };
 
   return (
@@ -1045,7 +941,7 @@ export default function PromptCoach() {
             React.createElement("span", {className:"burger-line burger-line-bot"})
           ),
           React.createElement("div", {className:"brand"},
-            React.createElement("div",{className:"brand-icon",style:{fontFamily:"'Inter',sans-serif",fontSize:14,fontWeight:800,letterSpacing:"-0.5px",color:"#fff"}},"PC"),
+            React.createElement("div",{className:"brand-icon",style:{fontFamily:"serif",fontSize:14,fontWeight:900,letterSpacing:"-1px",color:"#fff"}},"PC"),
             React.createElement("div", null,
               React.createElement("div",{className:"brand-name"},"Prompt",React.createElement("span",null,"Coach")),
               React.createElement("div",{style:{fontSize:"clamp(11px,1vw,14px)",color:"var(--text2)",letterSpacing:"0.3px",marginTop:1,fontWeight:500}},"The AI expert in your pocket")
@@ -1054,50 +950,25 @@ export default function PromptCoach() {
 
         ),
 
-        React.createElement("div", {className:"app-layout"},
-
-          React.createElement("aside", {className:"desktop-sidebar"},
-            React.createElement("div",{className:"section-label",style:{paddingLeft:14,marginBottom:10,opacity:0.7}},"Workspace"),
-            TABS.map(function(t){
-              return React.createElement("button",{key:t.id,className:"sidebar-item"+(tab===t.id?" active":""),onClick:function(){ go(t.id); }},
-                React.createElement("div",{className:"nav-icon-wrap"},t.icon),
-                React.createElement("span",null,t.label)
-              );
-            }),
-            React.createElement("button",{className:"sidebar-item sidebar-rate",onClick:function(){ window.open(RATE_URL,"_blank"); }},
-              React.createElement("div",{className:"nav-icon-wrap"},rateIcon),
-              React.createElement("span",null,"Rate Us")
-            )
-          ),
-
-        React.createElement("div", {key:animKey, className:"page-enter", style:{minWidth:0}},
+        React.createElement("div", {key:animKey, className:"page-enter"},
 
           tab==="builder" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
-              React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"Tell Us What You Need. We'll Build the Prompt With You."),React.createElement("span",{className:"h1-short"},"Build Your Perfect Prompt.")),
+              React.createElement("h1",null,"Tell Us What You Need. We'll Build the Prompt With You."),
               React.createElement("p",null,"Start with any rough idea - even 3 words is enough. We shape it into a prompt that gets you the result you actually wanted.")
             ),
-            React.createElement("div",{style:{display:"flex",gap:8,marginBottom:8,alignItems:"stretch"}},
-              React.createElement("div",{style:{display:"flex",gap:5,flex:1,background:"var(--surface)",borderRadius:"var(--r-md)",padding:5,border:"1px solid var(--border)"}},
-              [{id:"wizard",label:"Build",sub:"8 guided questions"},{id:"improve",label:"Improve",sub:"Upgrade a prompt"}].map(function(m){
-                return React.createElement("button",{key:m.id,onClick:function(){ switchMode(m.id); },style:{flex:1,padding:"8px 2px",borderRadius:"var(--r-sm)",border:"none",cursor:"pointer",background:bMode===m.id?"linear-gradient(135deg,var(--indigo),var(--indigo-d))":"transparent",color:bMode===m.id?"#fff":"var(--text2)",fontFamily:"'Inter',sans-serif",textAlign:"center",transition:"all 0.18s",boxShadow:bMode===m.id?"0 4px 14px rgba(99,102,241,0.3)":"none"}},
-                  React.createElement("div",{style:{fontSize:"clamp(13px,1.3vw,16px)",fontWeight:700}},m.label),
-                  React.createElement("div",{style:{fontSize:"clamp(11px,1.1vw,13px)",opacity:0.85,marginTop:2}},m.sub)
-                );
-              })
-              ),
-              React.createElement("button",{onClick:function(){ setShowHistory(!showHistory); },title:"Recent prompts",style:{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:2,background:showHistory?"rgba(99,102,241,0.12)":"var(--surface)",border:"1px solid "+(showHistory?"rgba(99,102,241,0.3)":"var(--border)"),borderRadius:"var(--r-md)",color:history.length>0?"var(--indigo-l)":"var(--text3)",fontSize:11,fontWeight:600,padding:"0 12px",cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0}},
-                React.createElement("span",{style:{fontSize:15}},"\u21BA"),
-                React.createElement("span",null,"History"+(history.length>0?" ("+history.length+")":""))
+            React.createElement("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:12}},
+              React.createElement("button",{onClick:function(){ setShowHistory(!showHistory); },style:{display:"flex",alignItems:"center",gap:5,background:"var(--surface2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:history.length>0?"var(--indigo-l)":"var(--text3)",fontSize:11.5,fontWeight:600,padding:"5px 10px",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},
+                "History "+(history.length>0?"("+history.length+")":"")
               )
             ),
             showHistory && React.createElement("div",{style:{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:14,marginBottom:14}},
               React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}},
                 React.createElement("div",null,
                   React.createElement("span",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Last 10 Prompts"),
-                  React.createElement("span",{style:{fontSize:11,color:"var(--text3)",marginLeft:8}},"Saved across sessions")
+                  React.createElement("span",{style:{fontSize:10,color:"var(--text3)",marginLeft:8}},"Saved across sessions")
                 ),
-                React.createElement("button",{onClick:clearHistory,style:{fontSize:11,color:"var(--rose)",background:"none",border:"none",cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Clear All")
+                React.createElement("button",{onClick:clearHistory,style:{fontSize:11,color:"var(--rose)",background:"none",border:"none",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Clear All")
               ),
               !historyLoaded && React.createElement("div",{style:{fontSize:12,color:"var(--text3)",textAlign:"center",padding:"12px 0"}},"Loading..."),
               historyLoaded && history.length===0 && React.createElement("div",{style:{fontSize:12,color:"var(--text3)",textAlign:"center",padding:"12px 0"}},"No history yet. Build or improve a prompt to start tracking."),
@@ -1108,18 +979,66 @@ export default function PromptCoach() {
                     React.createElement("div",{style:{fontSize:12,fontWeight:600,color:"var(--text)",marginBottom:2}},h.label),
                     React.createElement("div",{style:{fontSize:11,color:"var(--text3)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},h.prompt.slice(0,55),"...")
                   ),
-                  React.createElement("span",{style:{fontSize:11,color:"var(--text3)",flexShrink:0}},h.time)
+                  React.createElement("span",{style:{fontSize:10,color:"var(--text3)",flexShrink:0}},h.time)
+                );
+              })
+            ),
+            React.createElement("div",{style:{display:"flex",gap:5,marginBottom:16,background:"var(--surface)",borderRadius:"var(--r-md)",padding:5,border:"1px solid var(--border)"}},
+              [{id:"wizard",icon:"+",label:"Build",sub:"8 guided questions"},{id:"improve",icon:"W",label:"Improve",sub:"Upgrade a prompt"},{id:"compare",icon:"=",label:"Compare",sub:"A vs B side by side"}].map(function(m){
+                return React.createElement("button",{key:m.id,onClick:function(){ switchMode(m.id); },style:{flex:1,padding:"8px 2px",borderRadius:"var(--r-sm)",border:"none",cursor:"pointer",background:bMode===m.id?"linear-gradient(135deg,var(--indigo),var(--indigo-d))":"transparent",color:bMode===m.id?"#fff":"var(--text2)",fontFamily:"'Plus Jakarta Sans',sans-serif",textAlign:"center",transition:"all 0.18s",boxShadow:bMode===m.id?"0 4px 14px rgba(99,102,241,0.3)":"none"}},
+                  React.createElement("div",{style:{fontSize:"clamp(13px,1.3vw,16px)",fontWeight:700}},m.label),
+                  React.createElement("div",{style:{fontSize:"clamp(11px,1.1vw,13px)",opacity:0.85,marginTop:2}},m.sub)
                 );
               })
             ),
             bMode==="wizard" && React.createElement("div",{className:"card card-accent"},
-              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoBuild(16)),"Prompt Builder - 8 Building Blocks"),
+              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"+"),"Prompt Builder - 8 Building Blocks"),
               React.createElement("div",{className:"card-sub"},"Answer 8 simple questions. We write the expert prompt for you."),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(1),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Role - What expert should AI be?")),
-                React.createElement("select",{className:"wiz-select",value:showPersonaSuggester?"__help":(PERSONAS.indexOf(wiz.role)>=0?wiz.role:(wiz.role?"Others":"")),onChange:function(e){ var v=e.target.value; if(v==="__help"){ setShowPersonaSuggester(true); setPersonaSuggestion(""); setPersonaTask(""); } else if(v==="Others"){ setShowPersonaSuggester(false); wSet("role","Others"); } else { setShowPersonaSuggester(false); wSet("role",v); setCustomRole(""); } }},
+                React.createElement("div",{style:{background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.18)",borderRadius:"var(--r-sm)",padding:"10px 13px",marginBottom:10}},
+                  React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6,marginBottom:8}},"In case you don't find the role or persona you are looking for, or don't know who you want AI to act like - just write what you want to achieve and we will select the role or the team for you."),
+                  React.createElement("button",{onClick:function(){ setShowPersonaSuggester(!showPersonaSuggester); setPersonaSuggestion(""); setPersonaTask(""); },style:{fontSize:12,color:"var(--amber)",background:"rgba(245,158,11,0.12)",border:"1px solid rgba(245,158,11,0.3)",borderRadius:6,padding:"5px 13px",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",fontWeight:700}},
+                    showPersonaSuggester?"Close":"Help me choose"
+                  )
+                ),
+                showPersonaSuggester && React.createElement("div",{style:{background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-md)",padding:14,marginBottom:12}},
+                  React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"var(--amber)",marginBottom:8}},"Describe what you want to achieve"),
+                  React.createElement("textarea",{value:personaTask,onChange:function(e){ setPersonaTask(e.target.value); },placeholder:"e.g. Write Instagram captions for my jewellery business, plan a product launch...",rows:3,style:{minHeight:70,marginBottom:8,fontSize:12}}),
+                  React.createElement("button",{className:"btn btn-primary btn-sm",onClick:suggestPersona,disabled:loadingPersona||!personaTask.trim(),style:{width:"100%",justifyContent:"center"}},
+                    loadingPersona?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Finding your best expert..."):"Suggest Best Expert"
+                  ),
+                  loadingPersona && React.createElement("div",{style:{marginTop:12,padding:"18px 16px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-md)",display:"flex",alignItems:"center",gap:14}},
+                    React.createElement("div",{className:"spinner spinner-indigo",style:{width:22,height:22,borderWidth:3,flexShrink:0}}),
+                    React.createElement("div",null,
+                      React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--indigo-l)",marginBottom:3}},"Analysing your task..."),
+                      React.createElement("div",{style:{fontSize:11.5,color:"var(--text3)"}},"Selecting the best expert or team for you")
+                    )
+                  ),
+                  personaSuggestion && (function(){
+                    var pm = personaSuggestion.match(/RECOMMENDED PERSONA:\s*([\s\S]*?)(?=WHY THIS WORKS:|$)/i);
+                    var wm = personaSuggestion.match(/WHY THIS WORKS:\s*([\s\S]*?)(?=ALTERNATIVE:|$)/i);
+                    var am = personaSuggestion.match(/ALTERNATIVE:\s*([\s\S]*?)$/i);
+                    var persona = pm?pm[1].trim():""; var why=wm?wm[1].trim():""; var alt=am?am[1].trim():"";
+                    return React.createElement("div",{style:{marginTop:12}},
+                      React.createElement("div",{style:{background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:12,marginBottom:8}},
+                        React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:6}},"Recommended Expert"),
+                        React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--text)",marginBottom:6}},persona),
+                        React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6,marginBottom:10}},why),
+                        React.createElement("button",{className:"btn btn-primary btn-sm",onClick:applyPersonaSuggestion},"Use This Expert")
+                      ),
+                      alt && React.createElement("div",{style:{background:"var(--surface2)",borderRadius:"var(--r-sm)",padding:"10px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap"}},
+                        React.createElement("div",null,
+                          React.createElement("div",{style:{fontSize:10,fontWeight:700,color:"var(--text3)",marginBottom:3}},"Simpler alternative"),
+                          React.createElement("div",{style:{fontSize:12,color:"var(--text2)"}},alt)
+                        ),
+                        React.createElement("button",{onClick:function(){ setCustomRole(alt); wSet("role","Others"); setShowPersonaSuggester(false); setPersonaTask(""); setPersonaSuggestion(""); },style:{padding:"4px 10px",borderRadius:6,border:"1px solid var(--border)",background:"var(--surface)",color:"var(--text2)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",flexShrink:0}},"Use This")
+                      )
+                    );
+                  })()
+                ),
+                React.createElement("select",{className:"wiz-select",value:PERSONAS.indexOf(wiz.role)>=0?wiz.role:(wiz.role?"Others":""),onChange:function(e){ var v=e.target.value; if(v==="Others"){wSet("role","Others");}else{wSet("role",v);setCustomRole("");} }},
                   React.createElement("option",{value:"",disabled:true},"Select an expert persona"),
-                  React.createElement("option",{value:"__help"},"\u2728 Help me choose - describe your task"),
                   React.createElement("optgroup",{label:"Business and Strategy"},PERSONAS.slice(0,10).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
                   React.createElement("optgroup",{label:"Content and Communication"},PERSONAS.slice(10,20).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
                   React.createElement("optgroup",{label:"Customer and HR"},PERSONAS.slice(20,30).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
@@ -1127,41 +1046,10 @@ export default function PromptCoach() {
                   React.createElement("optgroup",{label:"Education and Personal Growth"},PERSONAS.slice(40,50).map(function(p){ return React.createElement("option",{key:p,value:p},p); })),
                   React.createElement("optgroup",{label:"Other"},React.createElement("option",{value:"Others"},"Others - I will describe my own"))
                 ),
-                showPersonaSuggester && React.createElement("div",{style:{background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-md)",padding:14,marginTop:10,marginBottom:4}},
-                  React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"var(--amber)",marginBottom:8}},"Describe what you want to achieve"),
-                  React.createElement("textarea",{value:personaTask,onChange:function(e){ setPersonaTask(e.target.value); },placeholder:"e.g. Write Instagram captions for my jewellery business, plan a product launch...",rows:3,style:{minHeight:70,marginBottom:8,fontSize:12}}),
-                  React.createElement("button",{className:"btn btn-primary btn-sm",onClick:suggestPersona,disabled:loadingPersona||!personaTask.trim(),style:{width:"100%",justifyContent:"center"}},
-                    loadingPersona?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Finding your best expert..."):"Suggest Best Expert"
-                  ),
-                  personaSuggestion && (function(){
-                    var pm = personaSuggestion.match(/RECOMMENDED PERSONA:\s*([\s\S]*?)(?=WHY THIS WORKS:|$)/i);
-                    var wm = personaSuggestion.match(/WHY THIS WORKS:\s*([\s\S]*?)(?=ALTERNATIVE:|$)/i);
-                    var am = personaSuggestion.match(/ALTERNATIVE:\s*([\s\S]*?)$/i);
-                    var persona = pm?pm[1].trim():""; var why=wm?wm[1].trim():""; var alt=am?am[1].trim():"";
-                    if (!persona) {
-                      return React.createElement("div",{style:{marginTop:12,background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:12,fontSize:12,color:"var(--text2)",lineHeight:1.65,whiteSpace:"pre-wrap",wordBreak:"break-word"}}, personaSuggestion);
-                    }
-                    return React.createElement("div",{style:{marginTop:12}},
-                      React.createElement("div",{style:{background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:12,marginBottom:8}},
-                        React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:6}},"Recommended Expert"),
-                        React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)",marginBottom:6}},persona),
-                        React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6,marginBottom:10}},why),
-                        React.createElement("button",{className:"btn btn-primary btn-sm",onClick:applyPersonaSuggestion},"Use This Expert")
-                      ),
-                      alt && React.createElement("div",{style:{background:"var(--surface2)",borderRadius:"var(--r-sm)",padding:"10px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap"}},
-                        React.createElement("div",null,
-                          React.createElement("div",{style:{fontSize:11,fontWeight:700,color:"var(--text3)",marginBottom:3}},"Simpler alternative"),
-                          React.createElement("div",{style:{fontSize:12,color:"var(--text2)"}},alt)
-                        ),
-                        React.createElement("button",{onClick:function(){ setCustomRole(alt); wSet("role","Others"); setShowPersonaSuggester(false); setPersonaTask(""); setPersonaSuggestion(""); },style:{padding:"4px 10px",borderRadius:6,border:"1px solid var(--border)",background:"var(--surface)",color:"var(--text2)",fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0}},"Use This")
-                      )
-                    );
-                  })()
-                ),
                 wiz.role && wiz.role!=="Others" && React.createElement("div",{style:{display:"inline-flex",alignItems:"center",gap:8,padding:"5px 13px",borderRadius:999,background:"rgba(99,102,241,0.15)",border:"1px solid rgba(99,102,241,0.35)",fontSize:12,fontWeight:700,color:"var(--indigo-l)"}},
                   wiz.role,React.createElement("span",{style:{cursor:"pointer",opacity:0.7},onClick:function(){ wSet("role",""); }},"x")
                 ),
-                wiz.role==="Others" && React.createElement("input",{type:"text",value:customRole,onChange:function(e){ setCustomRole(e.target.value); },placeholder:"e.g. Wedding photographer, Astrologer, Cricket coach...",style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"10px 13px",outline:"none",marginTop:8},autoFocus:true})
+                wiz.role==="Others" && React.createElement("input",{type:"text",value:customRole,onChange:function(e){ setCustomRole(e.target.value); },placeholder:"e.g. Wedding photographer, Astrologer, Cricket coach...",style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,padding:"10px 13px",outline:"none",marginTop:8},autoFocus:true})
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(2),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Objective - What exactly do you want AI to do? *")),
@@ -1185,7 +1073,7 @@ export default function PromptCoach() {
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(6),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Constraints - What should AI avoid? (optional)")),
-                React.createElement("input",{type:"text",value:wiz.constraints,onChange:function(e){ wSet("constraints",e.target.value); },placeholder:"e.g. No jargon, no passive voice, no bullet points over 5, avoid words like leverage or synergy...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"10px 13px",outline:"none"}})
+                React.createElement("input",{type:"text",value:wiz.constraints,onChange:function(e){ wSet("constraints",e.target.value); },placeholder:"e.g. No jargon, no passive voice, no bullet points over 5, avoid words like leverage or synergy...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,padding:"10px 13px",outline:"none"}})
               ),
               React.createElement("div",{style:{marginBottom:16}},
                 React.createElement("div",{className:"wiz-row"},numBall(7),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Example - Show AI what good looks like (optional)")),
@@ -1195,7 +1083,7 @@ export default function PromptCoach() {
                 React.createElement("div",{className:"wiz-row"},numBall(8),React.createElement("div",{className:"section-label",style:{marginBottom:0}},"Critique - Ask AI to review its own answer?")),
                 React.createElement("div",{style:{display:"flex",gap:8}},
                   [{v:true,label:"Yes - polish before delivering",c:"var(--emerald)",bg:"rgba(16,185,129,0.12)",bc:"rgba(16,185,129,0.4)"},{v:false,label:"No - use first answer",c:"var(--text2)",bg:"var(--surface2)",bc:"var(--border)"}].map(function(opt){
-                    return React.createElement("button",{key:String(opt.v),onClick:function(){ wSet("critique",opt.v); },style:{flex:1,padding:"9px 8px",borderRadius:"var(--r-sm)",border:"1px solid "+(wiz.critique===opt.v?opt.bc:"var(--border)"),background:wiz.critique===opt.v?opt.bg:"transparent",color:wiz.critique===opt.v?opt.c:"var(--text3)",fontFamily:"'Inter',sans-serif",fontSize:12,fontWeight:600,cursor:"pointer",transition:"all 0.15s",textAlign:"center"}},opt.label);
+                    return React.createElement("button",{key:String(opt.v),onClick:function(){ wSet("critique",opt.v); },style:{flex:1,padding:"9px 8px",borderRadius:"var(--r-sm)",border:"1px solid "+(wiz.critique===opt.v?opt.bc:"var(--border)"),background:wiz.critique===opt.v?opt.bg:"transparent",color:wiz.critique===opt.v?opt.c:"var(--text3)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:600,cursor:"pointer",transition:"all 0.15s",textAlign:"center"}},opt.label);
                   })
                 )
               ),
@@ -1210,7 +1098,7 @@ export default function PromptCoach() {
                   React.createElement("div",{className:"output-label"},"Your Ready-to-Use Prompt"),
                   React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
                     React.createElement(CopyBtn,{text:wizOut,label:"Copy Prompt"}),
-                    React.createElement("button",{onClick:function(){ savePrompt("My Prompt - "+new Date().toLocaleDateString("en-IN"), wizOut); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save")
+                    React.createElement("button",{onClick:function(){ savePrompt("My Prompt - "+new Date().toLocaleDateString("en-IN"), wizOut); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Save")
                   )
                 ),
                 wizOut
@@ -1218,12 +1106,13 @@ export default function PromptCoach() {
             ),
 
             bMode==="improve" && React.createElement("div",{className:"card card-accent"},
-              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoImprove(16)),"Improve My Prompt"),
+              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"W"),"Improve My Prompt"),
+              React.createElement("div",{className:"card-sub"},"Share a rough idea - we improve it, run it, and show you the real AI output."),
               React.createElement("div",{className:"section-label"},"Your prompt idea"),
-              React.createElement("textarea",{value:bInput,onChange:function(e){ setBInput(e.target.value); },placeholder:"Paste your rough idea here - even 3 words is enough. Try: 'Help me write an email to my manager'",rows:3}),
+              React.createElement("textarea",{value:bInput,onChange:function(e){ setBInput(e.target.value); },placeholder:"Paste your rough idea here - even 3 words is enough. Try: 'Help me write an email to my manager'",rows:4}),
               React.createElement("div",{className:"btn-row"},
                 React.createElement("button",{className:"btn btn-primary",onClick:runBuilder,disabled:loadingB||!bInput.trim()},
-                  loadingB?React.createElement(React.Fragment,null,React.createElement("span",{className:"ai-thinking"},React.createElement("span",{key:"1"}),React.createElement("span",{key:"2"}),React.createElement("span",{key:"3"})),"Improving..."):"Improve My Prompt"
+                  loadingB?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Improving..."):"Improve My Prompt"
                 ),
                 bInput && React.createElement("button",{className:"btn btn-ghost",onClick:function(){ setBInput(""); setBOutput(""); setBAnswer(""); }},"Clear")
               ),
@@ -1232,57 +1121,123 @@ export default function PromptCoach() {
                 var misMatch = bOutput.match(/WHAT WAS MISSING:\s*([\s\S]*?)(?=WHY ITS BETTER:|$)/i);
                 var whyMatch = bOutput.match(/WHY ITS BETTER:\s*([\s\S]*?)$/i);
                 var mis = misMatch?misMatch[1].trim():""; var why=whyMatch?whyMatch[1].trim():"";
-                return React.createElement("div",{className:"ai-reveal",style:{marginTop:14}},
+                return React.createElement("div",{style:{marginTop:14}},
                   versions.length>0 && React.createElement("div",{style:{marginBottom:12,padding:"10px 13px",background:"var(--surface2)",borderRadius:"var(--r-sm)",border:"1px solid var(--border)"}},
-                    React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:7}},"Version History"),
+                    React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:7}},"Version History"),
                     React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
                       versions.map(function(v,vi){
                         return React.createElement("button",{key:v.v,onClick:function(){ setActiveVersion(vi); setBInput(v.prompt); },className:"version-tag"+(activeVersion===vi?" active":"")},"V"+v.v+" - "+v.time);
                       })
                     )
                   ),
-                  React.createElement("div",{className:"ai-shimmer",style:{background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:16,marginBottom:12}},
+                  React.createElement("div",{style:{background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",padding:16,marginBottom:12}},
                     React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,paddingBottom:12,borderBottom:"1px solid var(--border)",flexWrap:"wrap",gap:8}},
-                      React.createElement("span",{style:{fontSize:11,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Improved Prompt"),
+                      React.createElement("span",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)"}},"Improved Prompt"),
                       React.createElement("div",{style:{display:"flex",gap:6,flexWrap:"wrap"}},
                         React.createElement(CopyBtn,{text:imp,label:"Copy Prompt"}),
-                        React.createElement("button",{onClick:function(){ savePrompt("Improved - "+bInput.slice(0,30), imp); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save")
+                        React.createElement("button",{onClick:function(){ savePrompt("Improved - "+bInput.slice(0,30), imp); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Save")
                       )
                     ),
-                    React.createElement("div",{style:{fontSize:14,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},imp),
+                    React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},imp),
                     React.createElement("div",{style:{marginTop:12,display:"flex",gap:8,flexWrap:"wrap"}},
-                      React.createElement("button",{className:"apply-btn",onClick:function(){ setBInput(imp); runBuilder(); }},"Refine Further")
+                      React.createElement("button",{className:"apply-btn",onClick:function(){ setBInput(imp); runBuilder(); }},"Refine Further"),
+                      React.createElement("button",{className:"apply-btn",style:{background:"rgba(99,102,241,0.1)",borderColor:"rgba(99,102,241,0.3)",color:"var(--indigo-l)"},onClick:function(){ setCmpA(bInput); setCmpB(imp); switchMode("compare"); }},"Compare Original vs Improved")
                     )
                   ),
+                  bAnswer && React.createElement("div",{style:{background:"rgba(16,185,129,0.05)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:"var(--r-md)",padding:16,marginBottom:12}},
+                    React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,paddingBottom:12,borderBottom:"1px solid rgba(16,185,129,0.15)",flexWrap:"wrap",gap:8}},
+                      React.createElement("span",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--emerald)"}},"AI Answer"),
+                      React.createElement(CopyBtn,{text:bAnswer,label:"Copy Answer"})
+                    ),
+                    React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},bAnswer)
+                  ),
                   mis && React.createElement("div",{style:{background:"rgba(244,63,94,0.05)",border:"1px solid rgba(244,63,94,0.18)",borderRadius:"var(--r-md)",padding:14,marginBottom:12}},
-                    React.createElement("div",{style:{fontSize:11,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--rose)",marginBottom:10}},"What was Missing"),
-                    React.createElement("div",{style:{fontSize:14,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap"}},mis)
+                    React.createElement("div",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--rose)",marginBottom:10}},"What was Missing"),
+                    React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap"}},mis)
                   ),
                   why && React.createElement("div",{style:{background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-md)",padding:14}},
-                    React.createElement("div",{style:{fontSize:11,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:10}},"Why it is Better"),
-                    React.createElement("div",{style:{fontSize:14,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap"}},why)
+                    React.createElement("div",{style:{fontSize:10,fontWeight:700,letterSpacing:"1.2px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:10}},"Why it is Better"),
+                    React.createElement("div",{style:{fontSize:13,lineHeight:1.8,color:"var(--text2)",whiteSpace:"pre-wrap"}},why)
                   )
                 );
               })()
             ),
 
-            bMode==="compare" && null
+            bMode==="compare" && React.createElement("div",{className:"card card-accent"},
+              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"="),"Compare Mode"),
+              React.createElement("div",{className:"card-sub"},"Write two prompts for the same task. Run both. See which wins."),
+              React.createElement("div",{style:{display:"flex",gap:8,marginBottom:16}},
+                React.createElement("button",{className:"btn btn-ghost btn-sm",onClick:function(){ if(cmpA.trim()) setCmpB(cmpA); }},"Copy A to B"),
+                React.createElement("button",{className:"btn btn-ghost btn-sm",onClick:function(){ setCmpA(""); setCmpB(""); setCmpOutA(""); setCmpOutB(""); }},"Clear All"),
+                React.createElement("button",{className:"btn btn-primary btn-sm",onClick:runBothCompare,disabled:(!cmpA.trim()&&!cmpB.trim())||loadingCmpA||loadingCmpB},
+                  (loadingCmpA||loadingCmpB)?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Running..."):"Run Both"
+                )
+              ),
+              React.createElement("div",{style:{display:"flex",gap:8,marginBottom:8}},
+                React.createElement("div",{style:{flex:1}},
+                  React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:6}},"Prompt A"),
+                  React.createElement("textarea",{value:cmpA,onChange:function(e){ setCmpA(e.target.value); },placeholder:"Write your first prompt here...",rows:5,style:{minHeight:100}}),
+                  React.createElement("div",{style:{marginTop:6,display:"flex",gap:6}},
+                    React.createElement("button",{className:"btn btn-primary btn-sm",onClick:function(){ runCompare("A"); },disabled:loadingCmpA||!cmpA.trim()},
+                      loadingCmpA?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Running A..."):"Run A"
+                    ),
+                    cmpA&&React.createElement(CopyBtn,{text:cmpA,label:"Copy A"})
+                  )
+                ),
+                React.createElement("div",{style:{flex:1}},
+                  React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:6}},"Prompt B"),
+                  React.createElement("textarea",{value:cmpB,onChange:function(e){ setCmpB(e.target.value); },placeholder:"Write your second prompt here...",rows:5,style:{minHeight:100}}),
+                  React.createElement("div",{style:{marginTop:6,display:"flex",gap:6}},
+                    React.createElement("button",{className:"btn btn-primary btn-sm",onClick:function(){ runCompare("B"); },disabled:loadingCmpB||!cmpB.trim()},
+                      loadingCmpB?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Running B..."):"Run B"
+                    ),
+                    cmpB&&React.createElement(CopyBtn,{text:cmpB,label:"Copy B"})
+                  )
+                )
+              ),
+              (cmpOutA||cmpOutB||loadingCmpA||loadingCmpB) && React.createElement("div",null,
+                React.createElement("div",{style:{height:1,background:"var(--border)",margin:"16px 0"}}),
+                React.createElement("div",{style:{display:"flex",gap:8}},
+                  React.createElement("div",{style:{flex:1,background:"rgba(99,102,241,0.06)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-md)",padding:12}},
+                    React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:8}},"Output A"),
+                    loadingCmpA?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,color:"var(--text2)",fontSize:12}},React.createElement("div",{className:"spinner spinner-indigo"}),"Generating..."):
+                    React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.7,whiteSpace:"pre-wrap",wordBreak:"break-word"}},cmpOutA||"Run Prompt A to see output"),
+                    cmpOutA&&React.createElement("div",{style:{marginTop:8}},React.createElement(CopyBtn,{text:cmpOutA,label:"Copy"}))
+                  ),
+                  React.createElement("div",{style:{flex:1,background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:"var(--r-md)",padding:12}},
+                    React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--emerald)",marginBottom:8}},"Output B"),
+                    loadingCmpB?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,color:"var(--text2)",fontSize:12}},React.createElement("div",{className:"spinner",style:{borderColor:"rgba(16,185,129,0.2)",borderTopColor:"var(--emerald)"}}),"Generating..."):
+                    React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.7,whiteSpace:"pre-wrap",wordBreak:"break-word"}},cmpOutB||"Run Prompt B to see output"),
+                    cmpOutB&&React.createElement("div",{style:{marginTop:8}},React.createElement(CopyBtn,{text:cmpOutB,label:"Copy"}))
+                  )
+                )
+              )
+            )
           ),
 
           tab==="guide" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
-              React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"You Don't Need to Be Technical. You Need the Right Framework."),React.createElement("span",{className:"h1-short"},"Master Prompting in Minutes.")),
+              React.createElement("h1",null,"You Don't Need to Be Technical. You Need the Right Framework."),
               React.createElement("p",null,"Learn the 8 building blocks of a great prompt in plain English. Each lesson takes under 5 minutes.")
             ),
             React.createElement("div",{onClick:function(){ window.open("https://youtu.be/ezmuCprlTVE","_blank"); },style:{marginBottom:18,background:"var(--surface)",border:"1px solid var(--border)",borderRadius:"var(--r-lg)",overflow:"hidden",boxShadow:"var(--shadow-card)",cursor:"pointer"}},
-              React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,padding:"14px 16px"}},
-                React.createElement("div",{style:{width:34,height:34,borderRadius:9,background:"rgba(244,63,94,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},
-                  React.createElement("div",{style:{width:0,height:0,borderTop:"7px solid transparent",borderBottom:"7px solid transparent",borderLeft:"12px solid var(--rose)",marginLeft:3}})
+              React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,padding:"13px 16px",borderBottom:"1px solid var(--border)"}},
+                React.createElement("div",{style:{width:28,height:28,borderRadius:8,background:"rgba(244,63,94,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},
+                  React.createElement("div",{style:{width:0,height:0,borderTop:"6px solid transparent",borderBottom:"6px solid transparent",borderLeft:"10px solid var(--rose)",marginLeft:2}})
                 ),
-                React.createElement("div",{style:{flex:1,minWidth:0}},
-                  React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)"}},"Watch the Quick Guide")
+                React.createElement("div",{style:{flex:1}},
+                  React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--text)"}},"Watch the Quick Guide"),
+                  React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},"A quick walkthrough of how PromptCoach works")
+                )
+              ),
+              React.createElement("div",{style:{position:"relative",width:"100%",paddingBottom:"26%",height:0,background:"linear-gradient(135deg,#0b0f1d,#111a2e)"}},
+                React.createElement("div",{style:{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:14}},
+                  React.createElement("div",{style:{width:68,height:68,borderRadius:"50%",background:"var(--rose)",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 8px 30px rgba(244,63,94,0.4)",transition:"transform 0.2s"}},
+                    React.createElement("div",{style:{width:0,height:0,borderTop:"13px solid transparent",borderBottom:"13px solid transparent",borderLeft:"22px solid #fff",marginLeft:5}})
+                  ),
+                  React.createElement("div",{style:{fontSize:12,fontWeight:600,color:"var(--text2)",letterSpacing:"0.3px"}},"Tap to watch on YouTube")
                 ),
-                React.createElement("div",{style:{display:"flex",alignItems:"center",gap:4,fontSize:12,fontWeight:600,color:"var(--rose)",flexShrink:0}},"YouTube",React.createElement("span",{style:{fontSize:13}},"\u2197"))
+                React.createElement("div",{style:{position:"absolute",top:10,right:12,fontSize:9,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",background:"rgba(0,0,0,0.4)",padding:"3px 8px",borderRadius:5}},"Video Guide")
               )
             ),
             LESSONS.map(function(lesson){
@@ -1292,15 +1247,16 @@ export default function PromptCoach() {
                   React.createElement("div",{style:{display:"flex",alignItems:"center",gap:12,minWidth:0}},
                     React.createElement("div",{className:"lesson-icon",style:{background:lesson.bg}},lesson.emoji),
                     React.createElement("div",{style:{minWidth:0}},
-                      React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:lesson.tc,marginBottom:2}},"Lesson "+lesson.num),
-                      React.createElement("div",{style:{fontWeight:700,fontSize:14,color:"var(--text)"}},lesson.label)
+                      React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:lesson.tc,marginBottom:2}},"Lesson "+lesson.num),
+                      React.createElement("div",{style:{fontWeight:700,fontSize:14,color:"var(--text)",marginBottom:2}},lesson.label),
+                      React.createElement("div",{style:{fontSize:11.5,color:"var(--text3)"}},lesson.sub)
                     )
                   ),
                   React.createElement("div",{style:{fontSize:14,color:"var(--text3)",flexShrink:0,transition:"transform 0.2s",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}},"v")
                 ),
                 isOpen && React.createElement("div",{className:"lesson-body",onClick:function(e){ e.stopPropagation(); }},
                   lesson.num===1 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Every powerful prompt is built from the same 8 blocks. Tap each to expand."),
+                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Every powerful prompt is built from the same 8 blocks. Tap each to expand."),
                     ELEMENTS.map(function(el,i){
                       return React.createElement("div",{key:i,className:"el-card"+(openEl===i?" open":""),onClick:function(e){ e.stopPropagation(); setOpenEl(openEl===i?null:i); }},
                         React.createElement("div",{className:"el-header"},
@@ -1320,16 +1276,16 @@ export default function PromptCoach() {
                     }),
                     React.createElement("div",{style:{marginTop:16,padding:"14px 16px",background:"linear-gradient(135deg,rgba(16,185,129,0.1),rgba(99,102,241,0.06))",border:"1px solid rgba(16,185,129,0.25)",borderRadius:"var(--r-md)",textAlign:"center"}},
                       React.createElement("div",{style:{fontSize:18,marginBottom:6}},"(!)"),
-                      React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--emerald)",marginBottom:4}},"You just learned the most important framework in AI."),
+                      React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--emerald)",marginBottom:4}},"You just learned the most important framework in AI."),
                       React.createElement("div",{style:{fontSize:12,color:"var(--text2)",marginBottom:10}},"6 lessons left - each one builds on this foundation."),
                       React.createElement("div",{style:{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}},
-                        React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("wizard"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--emerald),#059669)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Try it in Build Mode"),
-                        React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"1px solid rgba(99,102,241,0.4)",background:"rgba(99,102,241,0.1)",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Get Pro Updates")
+                        React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("wizard"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--emerald),#059669)",color:"#fff",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Try it in Build Mode"),
+                        React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{padding:"8px 18px",borderRadius:"var(--r-sm)",border:"1px solid rgba(99,102,241,0.4)",background:"rgba(99,102,241,0.1)",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Get Pro Updates")
                       )
                     )
                   ),
                   lesson.num===2 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"This is what a fully built prompt looks like - every block filled in for a real business scenario."),
+                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"This is what a fully built prompt looks like - every block filled in for a real business scenario."),
                     FORMULA_ROWS.map(function(row){
                       return React.createElement("div",{key:row.n,style:{display:"flex",gap:12,padding:"11px 0",borderBottom:row.n<8?"1px solid var(--border)":"none",alignItems:"flex-start"}},
                         React.createElement("div",{style:{width:24,height:24,borderRadius:"50%",background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",color:"#fff",fontWeight:800,fontSize:11,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}},row.n),
@@ -1345,23 +1301,23 @@ export default function PromptCoach() {
                     React.createElement("div",{style:{marginTop:14}},React.createElement(CopyBtn,{text:"THE MASTER FORMULA\n1. ROLE - You are a [expert].\n2. OBJECTIVE - Write/Create [specific task].\n3. CONTEXT - My situation: [describe].\n4. TONE - Sound [tone].\n5. FORMAT - [length, structure].\n6. CONSTRAINTS - Avoid: [list].\n7. EXAMPLE - Style: [your example].\n8. CRITIQUE - Re-read and fix. Final version only.",label:"Copy Full Formula"}))
                   ),
                   lesson.num===3 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Start rough and add one block at a time. Each step makes your prompt meaningfully better."),
+                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Start rough and add one block at a time. Each step makes your prompt meaningfully better."),
                     [["Write","Get your rough idea out first"],["Add Role","You are a [expert] at the very start"],["Add Objective","State exactly what you want - specific and clear"],["Add Context","Your business, your customers, the situation"],["Add Tone","Friendly / formal / direct"],["Add Format","Bullets, numbered list, word count"],["Add Constraints","What to avoid: jargon, passive voice"]].map(function(item,i){
                       return React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:12,padding:"11px 0",borderBottom:i<6?"1px solid var(--border)":"none"}},
                         React.createElement("div",{style:{width:26,height:26,borderRadius:"50%",background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",color:"#fff",fontWeight:800,fontSize:11,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}},i+1),
-                        React.createElement("div",{style:{fontSize:14}},React.createElement("strong",{style:{color:"var(--text)"}},item[0]),React.createElement("span",{style:{color:"var(--text2)"}}," - "+item[1]))
+                        React.createElement("div",{style:{fontSize:13}},React.createElement("strong",{style:{color:"var(--text)"}},item[0]),React.createElement("span",{style:{color:"var(--text2)"}}," - "+item[1]))
                       );
                     })
                   ),
                   lesson.num===4 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Add any of these lines to your prompt and the quality jumps immediately."),
+                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Add any of these lines to your prompt and the quality jumps immediately."),
                     [{move:"Think step by step",when:"Decisions, analysis, planning",why:"Forces AI to reason carefully before answering.",use:"Think step by step before giving your final answer."},
                      {move:"Give me 3 versions",when:"Emails, proposals, presentations",why:"You get options - the 2nd or 3rd version is almost always sharper.",use:"Give me 3 versions: one concise for a busy executive, one detailed for a technical team, one persuasive for a client pitch."},
                      {move:"Explain your reasoning",when:"Advice, recommendations, strategy",why:"Makes AI show its thinking so you can challenge it.",use:"After your answer, briefly explain why you made these choices."}].map(function(pm,i){
                       return React.createElement("div",{key:i,style:{padding:"14px 0",borderBottom:i<2?"1px solid var(--border)":"none"}},
                         React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},
                           React.createElement("div",{style:{width:20,height:20,borderRadius:6,background:"rgba(16,185,129,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:"var(--emerald)",flexShrink:0}},i+1),
-                          React.createElement("span",{style:{fontWeight:700,fontSize:14,color:"var(--text)"}},pm.move)
+                          React.createElement("span",{style:{fontWeight:700,fontSize:13.5,color:"var(--text)"}},pm.move)
                         ),
                         React.createElement("div",{style:{fontSize:12,color:"var(--text2)",marginBottom:5,lineHeight:1.55}},pm.why),
                         React.createElement("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:8}},"Best for: "+pm.when),
@@ -1376,7 +1332,7 @@ export default function PromptCoach() {
                     [["One prompt, one goal","Never ask for 5 things at once. Split complex tasks into separate prompts."],["Longer is not better","A focused 3-line prompt beats a rambling 10-liner. Clarity wins."],["Your first prompt is a draft","Always follow up. Refine, redirect, or ask for 3 variations."],["Context is your superpower","The more AI knows about your world, the more relevant its answer."],["Save what works","When a prompt gives great results, save it as your personal template."]].map(function(item,i){
                       return React.createElement("div",{key:i,style:{display:"flex",gap:12,padding:"12px 0",borderBottom:i<4?"1px solid var(--border)":"none"}},
                         React.createElement("div",{style:{width:22,height:22,borderRadius:6,background:"rgba(245,158,11,0.15)",color:"var(--amber)",fontWeight:800,fontSize:11,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}},i+1),
-                        React.createElement("div",null,React.createElement("div",{style:{fontWeight:700,fontSize:14,color:"var(--text)",marginBottom:3}},item[0]),React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.55}},item[1]))
+                        React.createElement("div",null,React.createElement("div",{style:{fontWeight:700,fontSize:13,color:"var(--text)",marginBottom:3}},item[0]),React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.55}},item[1]))
                       );
                     })
                   ),
@@ -1393,7 +1349,7 @@ export default function PromptCoach() {
                     })
                   ),
                   lesson.num===7 && React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Same task. One prompt gets a useless answer. One gets a result you can actually use."),
+                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.65,marginBottom:14}},"Same task. One prompt gets a useless answer. One gets a result you can actually use."),
                     [{task:"Write a performance review",
                       bad:"Help me write a performance review.",
                       good:"You are an experienced people manager at a mid-size technology company.\nWrite a structured annual performance review for a senior software engineer who exceeded targets this year.\nContext: The engineer delivered 3 major features on time, mentored 2 junior developers, but needs to improve documentation.\nTone: Professional, balanced, growth-focused.\nFormat: 4 sections - Key Achievements, Areas of Strength, Development Areas, Goals for Next Year. Each 3-4 sentences.\nAvoid: Vague language, generic praise, no specific examples.\nAfter writing, check: Is every point specific enough? Fix if not.",
@@ -1407,16 +1363,16 @@ export default function PromptCoach() {
                       good:"You are a senior project manager at a consulting firm.\nWrite a concise stakeholder update email for a digital transformation project that is 2 weeks behind schedule.\nContext: Delay is due to a vendor missing a delivery. Stakeholders include the CFO, CTO, and two external partners. They expect directness and solutions.\nTone: Transparent, accountable, solution-focused. Senior executive level.\nFormat: Subject line, 3 paragraphs - current status, root cause, recovery plan with revised timeline.\nAvoid: Burying the delay, passive voice, vague recovery plans.\nAfter writing, check: Will the CFO know the issue and solution within 10 seconds?",
                       blocks:["Role","Objective","Context","Tone","Format","Constraints","Critique"]}].map(function(ex,idx){
                       return React.createElement("div",{key:idx,style:{marginBottom:14,background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",overflow:"hidden"}},
-                        React.createElement("div",{style:{padding:"10px 14px",borderBottom:"1px solid var(--border)",background:"var(--surface)"}},React.createElement("span",{style:{fontSize:14,fontWeight:700,color:"var(--text)"}},ex.task)),
+                        React.createElement("div",{style:{padding:"10px 14px",borderBottom:"1px solid var(--border)",background:"var(--surface)"}},React.createElement("span",{style:{fontSize:13,fontWeight:700,color:"var(--text)"}},ex.task)),
                         React.createElement("div",{style:{padding:"12px 14px",borderBottom:"1px solid var(--border)",background:"rgba(244,63,94,0.04)"}},
-                          React.createElement("div",{style:{fontSize:11,fontWeight:800,textTransform:"uppercase",color:"var(--rose)",marginBottom:7}},"What most people write"),
-                          React.createElement("div",{style:{fontSize:14,color:"rgba(244,63,94,0.85)",fontFamily:"'JetBrains Mono',monospace",padding:"9px 12px",background:"rgba(244,63,94,0.07)",borderRadius:"var(--r-sm)"}},ex.bad)
+                          React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--rose)",marginBottom:7}},"What most people write"),
+                          React.createElement("div",{style:{fontSize:13,color:"rgba(244,63,94,0.85)",fontFamily:"'JetBrains Mono',monospace",padding:"9px 12px",background:"rgba(244,63,94,0.07)",borderRadius:"var(--r-sm)"}},ex.bad)
                         ),
                         React.createElement("div",{style:{padding:"12px 14px",background:"rgba(16,185,129,0.04)"}},
-                          React.createElement("div",{style:{fontSize:11,fontWeight:800,textTransform:"uppercase",color:"var(--emerald)",marginBottom:7}},"What Prompt Coach builds"),
+                          React.createElement("div",{style:{fontSize:10,fontWeight:800,textTransform:"uppercase",color:"var(--emerald)",marginBottom:7}},"What Prompt Coach builds"),
                           React.createElement("div",{style:{fontSize:12,color:"var(--text2)",fontFamily:"'JetBrains Mono',monospace",lineHeight:1.8,padding:"9px 12px",background:"rgba(16,185,129,0.07)",borderRadius:"var(--r-sm)",whiteSpace:"pre-wrap",wordBreak:"break-word"}},ex.good),
                           React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:5,marginTop:10}},
-                            ex.blocks.map(function(b){ return React.createElement("span",{key:b,style:{padding:"2px 9px",borderRadius:999,fontSize:11,fontWeight:700,background:"rgba(16,185,129,0.12)",color:"var(--emerald)"}},b); })
+                            ex.blocks.map(function(b){ return React.createElement("span",{key:b,style:{padding:"2px 9px",borderRadius:999,fontSize:10,fontWeight:700,background:"rgba(16,185,129,0.12)",color:"var(--emerald)"}},b); })
                           ),
                           React.createElement("div",{style:{marginTop:10,display:"flex",justifyContent:"flex-end"}},React.createElement(CopyBtn,{text:ex.good,label:"Copy This Prompt"}))
                         )
@@ -1431,23 +1387,23 @@ export default function PromptCoach() {
 
           tab==="library" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
-              React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"Borrowed From Experts. Ready for Your World."),React.createElement("span",{className:"h1-short"},"Expert Prompts, Ready to Use.")),
+              React.createElement("h1",null,"Borrowed From Experts. Ready for Your World."),
               React.createElement("p",null,"Pick from ready-made prompts across real-life needs. Use them as-is or tweak them to fit your situation.")
             ),
             React.createElement("div",{className:"promo-banner"},
               React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},
                 React.createElement("div",null,
-                  React.createElement("div",{style:{fontSize:14,fontWeight:800,color:"var(--amber)"}},"Prompt Coach Pro - Coming Soon"),
-                  React.createElement("div",{style:{fontSize:12,color:"var(--text2)",marginTop:2}},"500+ premium prompts, AI generator, team sharing, and advanced templates.")
+                  React.createElement("div",{style:{fontSize:13,fontWeight:800,color:"var(--amber)"}},"Prompt Coach Pro - Coming Soon"),
+                  React.createElement("div",{style:{fontSize:11.5,color:"var(--text2)",marginTop:2}},"500+ premium prompts, AI generator, team sharing, and advanced templates.")
                 )
               ),
               React.createElement("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:12}},"Currently free while in beta. Pro plan launching at Rs 199/month."),
-              React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"11px 16px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--amber),#d97706)",color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",boxShadow:"0 4px 14px rgba(245,158,11,0.3)"}},"Join the Waitlist - Get Early Access")
+              React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"11px 16px",borderRadius:"var(--r-sm)",border:"none",background:"linear-gradient(135deg,var(--amber),#d97706)",color:"#fff",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",boxShadow:"0 4px 14px rgba(245,158,11,0.3)"}},"Join the Waitlist - Get Early Access")
             ),
             saved.length>0 && React.createElement("div",{style:{marginBottom:14}},
-              React.createElement("button",{onClick:function(){ setShowSaved(!showSaved); },style:{display:"flex",alignItems:"center",gap:8,width:"100%",background:"rgba(16,185,129,0.08)",border:"1px solid rgba(16,185,129,0.25)",borderRadius:"var(--r-md)",padding:"12px 16px",cursor:"pointer",fontFamily:"'Inter',sans-serif",transition:"all 0.15s"}},
+              React.createElement("button",{onClick:function(){ setShowSaved(!showSaved); },style:{display:"flex",alignItems:"center",gap:8,width:"100%",background:"rgba(16,185,129,0.08)",border:"1px solid rgba(16,185,129,0.25)",borderRadius:"var(--r-md)",padding:"12px 16px",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",transition:"all 0.15s"}},
                 React.createElement("div",{style:{flex:1,textAlign:"left"}},
-                  React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--emerald)"}},"My Saved Prompts ("+saved.length+")"),
+                  React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--emerald)"}},"My Saved Prompts ("+saved.length+")"),
                   React.createElement("div",{style:{fontSize:11,color:"var(--text3)",marginTop:2}},"Tap to "+(showSaved?"hide":"view")+" your saved prompts")
                 ),
                 React.createElement("span",{style:{fontSize:14,color:"var(--text3)"}},"v")
@@ -1458,9 +1414,9 @@ export default function PromptCoach() {
                     React.createElement("div",{style:{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8,marginBottom:6}},
                       React.createElement("div",null,
                         React.createElement("div",{className:"lib-prompt-title"},s.title),
-                        React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},"Saved on "+s.date)
+                        React.createElement("div",{style:{fontSize:10,color:"var(--text3)"}},"Saved on "+s.date)
                       ),
-                      React.createElement("button",{onClick:function(){ deleteSaved(s.id); },style:{background:"rgba(244,63,94,0.1)",border:"1px solid rgba(244,63,94,0.2)",borderRadius:6,color:"var(--rose)",fontSize:11,fontWeight:700,padding:"3px 8px",cursor:"pointer",fontFamily:"'Inter',sans-serif",flexShrink:0}},"Remove")
+                      React.createElement("button",{onClick:function(){ deleteSaved(s.id); },style:{background:"rgba(244,63,94,0.1)",border:"1px solid rgba(244,63,94,0.2)",borderRadius:6,color:"var(--rose)",fontSize:11,fontWeight:700,padding:"3px 8px",cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",flexShrink:0}},"Remove")
                     ),
                     React.createElement("div",{className:"lib-prompt-preview"},s.prompt),
                     React.createElement("div",{className:"lib-actions"},React.createElement(CopyBtn,{text:s.prompt,label:"Copy Prompt"}))
@@ -1468,7 +1424,7 @@ export default function PromptCoach() {
                 })
               )
             ),
-            React.createElement("input",{type:"text",value:libSearch,onChange:function(e){ setLibSearch(e.target.value); },placeholder:"Search prompts...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"11px 15px",outline:"none",marginBottom:14}}),
+            React.createElement("input",{type:"text",value:libSearch,onChange:function(e){ setLibSearch(e.target.value); },placeholder:"Search prompts...",style:{width:"100%",background:"var(--bg2)",border:"1px solid var(--border)",borderRadius:"var(--r-md)",color:"var(--text)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,padding:"11px 15px",outline:"none",marginBottom:14}}),
             React.createElement("div",{className:"lib-cat-row"},
               React.createElement("button",{className:"lib-cat-btn"+(libCat===-1?" sel":""),onClick:function(){ setLibCat(-1); }},"All"),
               PROMPT_LIBRARY.map(function(cat,i){
@@ -1491,18 +1447,16 @@ export default function PromptCoach() {
                 filtered.map(function(p,pi){
                   var isSaved = saved.some(function(s){ return s.prompt===p.prompt; });
                   var isLearning = learnThis && learnThis.title===p.title && learnThis.prompt===p.prompt;
-                  var isExpanded = expandedPrompt===p.title;
                   return React.createElement("div",{key:pi,className:"lib-prompt-card"},
                     React.createElement("div",{className:"lib-prompt-title"},p.title),
-                    React.createElement("div",{className:"lib-prompt-preview"+(isExpanded?" expanded":""),title:"Click to "+(isExpanded?"collapse":"read the full prompt"),onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); }},p.prompt),
-                    React.createElement("button",{onClick:function(){ setExpandedPrompt(isExpanded?null:p.title); },style:{background:"none",border:"none",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif",padding:"0 0 10px",marginTop:-4}},isExpanded?"Show less":"Show full prompt"),
+                    React.createElement("div",{className:"lib-prompt-preview"},p.prompt),
                     React.createElement("div",{className:"lib-actions"},
                       React.createElement(CopyBtn,{text:p.prompt,label:"Copy Prompt"}),
-                      !isSaved?React.createElement("button",{onClick:function(){ savePrompt(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Save"):React.createElement("span",{style:{padding:"5px 10px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11,fontWeight:700}},"Saved"),
-                      React.createElement("button",{onClick:function(){ isLearning?setLearnThis(null):getLearnThis(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(245,158,11,0.35)",background:isLearning?"rgba(245,158,11,0.15)":"rgba(245,158,11,0.08)",color:"var(--amber)",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},isLearning?"Hide":"Why This Works")
+                      !isSaved?React.createElement("button",{onClick:function(){ savePrompt(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Save"):React.createElement("span",{style:{padding:"5px 10px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.08)",color:"var(--emerald)",fontSize:11,fontWeight:700}},"Saved"),
+                      React.createElement("button",{onClick:function(){ isLearning?setLearnThis(null):getLearnThis(p.title,p.prompt); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(245,158,11,0.35)",background:isLearning?"rgba(245,158,11,0.15)":"rgba(245,158,11,0.08)",color:"var(--amber)",fontSize:11.5,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},isLearning?"Hide":"Why This Works")
                     ),
                     isLearning && React.createElement("div",{style:{marginTop:12}},
-                      learnThis.loading?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,padding:"14px 16px",background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-sm)",fontSize:14,color:"var(--text2)"}},React.createElement("div",{className:"spinner",style:{borderColor:"rgba(245,158,11,0.2)",borderTopColor:"var(--amber)"}}),React.createElement("span",null,"Analysing the 8 building blocks...")):
+                      learnThis.loading?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10,padding:"14px 16px",background:"rgba(245,158,11,0.06)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-sm)",fontSize:13,color:"var(--text2)"}},React.createElement("div",{className:"spinner",style:{borderColor:"rgba(245,158,11,0.2)",borderTopColor:"var(--amber)"}}),React.createElement("span",null,"Analysing the 8 building blocks...")):
                       (function(){
                         var bd = learnThis.breakdown;
                         var BLOCKS = ["Role","Objective","Context","Tone","Format","Constraints","Example","Critique"];
@@ -1511,7 +1465,7 @@ export default function PromptCoach() {
                         var tm = bd.match(/TRY IT YOURSELF:\s*([\s\S]*?)$/i);
                         var blocksText = bm?bm[1].trim():""; var lesson2=lm?lm[1].trim():""; var tryIt=tm?tm[1].trim():"";
                         return React.createElement("div",{style:{background:"rgba(245,158,11,0.05)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:"var(--r-md)",padding:14}},
-                          React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:12}},"8-Block Breakdown"),
+                          React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)",marginBottom:12}},"8-Block Breakdown"),
                           BLOCKS.map(function(block){
                             var pattern = new RegExp(block+":\\s*([^\\n]+)","i");
                             var m2 = blocksText.match(pattern);
@@ -1527,13 +1481,13 @@ export default function PromptCoach() {
                             );
                           }),
                           lesson2 && React.createElement("div",{style:{marginTop:12,padding:"10px 13px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.2)",borderRadius:"var(--r-sm)"}},
-                            React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:5}},"Key Lesson"),
-                            React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6}},lesson2)
+                            React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--indigo-l)",marginBottom:5}},"Key Lesson"),
+                            React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},lesson2)
                           ),
                           tryIt && React.createElement("div",{style:{marginTop:10,padding:"10px 13px",background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:"var(--r-sm)"}},
-                            React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:5}},"Try It Yourself"),
-                            React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6}},tryIt),
-                            React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("improve"); setBInput(p.prompt); },style:{marginTop:8,padding:"6px 14px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.1)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Open in Builder")
+                            React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--emerald)",marginBottom:5}},"Try It Yourself"),
+                            React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},tryIt),
+                            React.createElement("button",{onClick:function(){ setTab("builder"); switchMode("improve"); setBInput(p.prompt); },style:{marginTop:8,padding:"6px 14px",borderRadius:6,border:"1px solid rgba(16,185,129,0.3)",background:"rgba(16,185,129,0.1)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Open in Builder")
                           )
                         );
                       })()
@@ -1546,7 +1500,7 @@ export default function PromptCoach() {
 
           tab==="practice" && React.createElement("div", null,
             React.createElement("div",{className:"hero"},
-              React.createElement("h1",null,React.createElement("span",{className:"h1-full"},"Every Attempt Makes the Next One Better."),React.createElement("span",{className:"h1-short"},"Practice. Get Feedback. Improve.")),
+              React.createElement("h1",null,"Every Attempt Makes the Next One Better."),
               React.createElement("p",null,"Try real-world scenarios and get honest feedback on your prompts. No jargon - just clear guidance.")
             ),
             practiceCount>0 && React.createElement("div",{className:"session-bar"},
@@ -1561,7 +1515,7 @@ export default function PromptCoach() {
               React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10,flexWrap:"wrap",gap:8}},
                 React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
                   React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:11,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)"}},"Today's Challenge"),
+                    React.createElement("div",{style:{fontSize:10,fontWeight:700,letterSpacing:"1px",textTransform:"uppercase",color:"var(--amber)"}},"Today's Challenge"),
                     React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)",marginTop:2}},todayChallenge.title)
                   )
                 ),
@@ -1569,7 +1523,7 @@ export default function PromptCoach() {
               ),
               React.createElement("div",{style:{fontSize:12,color:"var(--text3)"}},"Hint: "+todayChallenge.hint),
               showDaily && React.createElement("div",{style:{marginTop:14}},
-                React.createElement("div",{style:{background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:"12px 14px",fontSize:14,color:"var(--text)",lineHeight:1.65,marginBottom:12,borderLeft:"2px solid var(--amber)"}},todayChallenge.scenario),
+                React.createElement("div",{style:{background:"var(--bg2)",borderRadius:"var(--r-sm)",padding:"12px 14px",fontSize:13,color:"var(--text)",lineHeight:1.65,marginBottom:12,borderLeft:"2px solid var(--amber)"}},todayChallenge.scenario),
                 React.createElement("div",{className:"section-label",style:{marginBottom:7}},"Your prompt attempt"),
                 React.createElement("textarea",{value:dailyAns,onChange:function(e){ setDailyAns(e.target.value); },placeholder:"Write your best prompt for today's challenge...",rows:5}),
                 React.createElement("div",{className:"btn-row"},
@@ -1581,22 +1535,31 @@ export default function PromptCoach() {
               )
             ),
             React.createElement("div",{className:"card"},
-              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},icoPractice(16)),"Practice by Track"),
+              React.createElement("div",{className:"card-title"},React.createElement("div",{className:"icon"},"P"),"Practice by Track"),
               React.createElement("div",{className:"card-sub"},"Pick your focus area - get 3 real scenarios from that world every time."),
-              React.createElement("select",{value:track,onChange:function(e){ setTrack(e.target.value); setExs([]); },style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Inter',sans-serif",fontSize:14,padding:"11px 13px",outline:"none",cursor:"pointer",marginBottom:16}},
+              React.createElement("select",{value:track,onChange:function(e){ setTrack(e.target.value); setExs([]); },style:{width:"100%",background:"var(--bg2)",border:"1px solid rgba(99,102,241,0.4)",borderRadius:"var(--r-sm)",color:"var(--text)",fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,padding:"11px 13px",outline:"none",cursor:"pointer",marginBottom:12}},
                 TRACKS.map(function(t){ return React.createElement("option",{key:t.id,value:t.id},t.label+" - "+t.desc); })
               ),
+              (function(){
+                var sel = TRACKS.find(function(t){ return t.id===track; });
+                return sel?React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,padding:"8px 12px",background:"rgba(99,102,241,0.08)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-sm)",marginBottom:14}},
+                  React.createElement("div",null,
+                    React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"var(--indigo-l)"}},sel.label),
+                    React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},sel.desc)
+                  )
+                ):null;
+              })(),
               React.createElement("button",{className:"btn btn-primary",onClick:genExs,disabled:loadingEx},
                 loadingEx?React.createElement(React.Fragment,null,React.createElement("div",{className:"spinner"}),"Generating..."):exs.length?"New Exercises":"Generate Exercises"
               )
             ),
             loadingEx && React.createElement("div",{className:"gen-load"},React.createElement("div",{className:"spinner spinner-indigo",style:{width:28,height:28,borderWidth:3}}),React.createElement("span",null,"Creating exercises...")),
-            !loadingEx && exs.length===0 && React.createElement("div",{className:"empty"},React.createElement("div",{className:"empty-icon"},icoPractice(34)),React.createElement("p",null,"Choose your track and generate exercises. Fresh scenarios every time.")),
+            !loadingEx && exs.length===0 && React.createElement("div",{className:"empty"},React.createElement("div",{className:"empty-icon"},"P"),React.createElement("p",null,"Choose your track and generate exercises. Fresh scenarios every time.")),
             !loadingEx && exs.map(function(ex,i){
               return React.createElement("div",{key:i,className:"ex-card"},
                 React.createElement("div",{className:"ex-num"},React.createElement("div",{className:"ex-num-pill"},i+1),"Exercise "+(i+1)+" of "+exs.length),
                 React.createElement("div",{className:"ex-scenario"},ex.scenario),
-                ex.hint && React.createElement("div",{style:{fontSize:12,color:"var(--text3)",marginBottom:12}},"Hint: "+ex.hint),
+                ex.hint && React.createElement("div",{style:{fontSize:11.5,color:"var(--text3)",marginBottom:12}},"Hint: "+ex.hint),
                 React.createElement("div",{className:"section-label",style:{marginBottom:7}},"Your prompt attempt"),
                 React.createElement("textarea",{value:ans[i],onChange:function(e){ var a=ans.slice(); a[i]=e.target.value; setAns(a); },placeholder:"Write your best prompt here...",rows:5}),
                 React.createElement("div",{className:"btn-row"},
@@ -1610,7 +1573,7 @@ export default function PromptCoach() {
                 fbs[i] && React.createElement(FeedbackCard,{text:fbs[i]}),
                 fbs[i] && React.createElement("div",{style:{marginTop:10,padding:"10px 13px",background:"rgba(99,102,241,0.07)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:"var(--r-sm)",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}},
                   React.createElement("span",{style:{fontSize:12,color:"var(--text2)"}},"Want to refine this prompt further?"),
-                  React.createElement("button",{onClick:function(){ setBInput(ans[i]); setTab("builder"); switchMode("improve"); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(99,102,241,0.3)",background:"rgba(99,102,241,0.1)",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Try this in Build Mode")
+                  React.createElement("button",{onClick:function(){ setBInput(ans[i]); setTab("builder"); switchMode("improve"); },style:{padding:"5px 12px",borderRadius:6,border:"1px solid rgba(99,102,241,0.3)",background:"rgba(99,102,241,0.1)",color:"var(--indigo-l)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Try this in Build Mode")
                 ),
                 showIdeal[i] && ex.ideal && React.createElement("div",{className:"ideal-block"},
                   React.createElement("div",{className:"ideal-header"},React.createElement("div",{className:"ideal-label"},"Ideal Prompt"),React.createElement(CopyBtn,{text:ex.ideal,label:"Copy Ideal"})),
@@ -1636,21 +1599,16 @@ export default function PromptCoach() {
             React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10}},
               React.createElement("div",{style:{width:32,height:32,borderRadius:9,background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:900,color:"#fff",boxShadow:"var(--shadow-primary)"}},"PC"),
               React.createElement("div",null,
-                React.createElement("div",{style:{fontSize:16,fontWeight:800,color:"var(--text)",letterSpacing:"-0.4px"}},"Prompt",React.createElement("span",{style:{color:"var(--indigo-l)"}},"Coach")),
-                React.createElement("div",{style:{fontSize:11,color:"var(--text3)"}},"The AI expert in your pocket")
+                React.createElement("div",{style:{fontSize:15,fontWeight:800,color:"var(--text)",letterSpacing:"-0.4px"}},"Prompt",React.createElement("span",{style:{color:"var(--indigo-l)"}},"Coach")),
+                React.createElement("div",{style:{fontSize:9,color:"var(--text3)"}},"The AI expert in your pocket")
               )
             ),
-            React.createElement("button",{className:"drawer-close-btn",onClick:function(){ setShowMenu(false); setMenuPage("home"); },"aria-label":"Close navigation menu"},
-              React.createElement("svg",{width:14,height:14,viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:2.5,strokeLinecap:"round",strokeLinejoin:"round"},
-                React.createElement("line",{x1:18,y1:6,x2:6,y2:18}),
-                React.createElement("line",{x1:6,y1:6,x2:18,y2:18})
-              )
-            )
+            React.createElement("button",{className:"drawer-close-btn",onClick:function(){ setShowMenu(false); setMenuPage("home"); },"aria-label":"Close navigation menu"},"x")
           ),
           React.createElement("div",{className:"drawer-scroll"},
             React.createElement("div",{style:{padding:"16px 20px"}},
               menuPage==="home" && React.createElement("div",null,
-                React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:14}},"Menu"),
+                React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:14}},"Menu"),
                 [{icon:"A",label:"About Us",sub:"Who built PromptCoach",page:"about"},{icon:"G",label:"Guide to the App",sub:"How to use all 4 tabs",page:"guide_menu"}].map(function(item){
                   return React.createElement("button",{key:item.page,className:"menu-item-btn"+(menuPage===item.page?" active-page":""),onClick:function(){ setMenuPage(menuPage===item.page?"home":item.page); }},
                     React.createElement("div",{style:{width:38,height:38,borderRadius:11,background:"rgba(99,102,241,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}},item.icon),
@@ -1663,17 +1621,17 @@ export default function PromptCoach() {
                 }),
                 React.createElement("div",{style:{marginTop:24,padding:"14px 16px",background:"rgba(16,185,129,0.06)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:"var(--r-md)"}},
                   React.createElement("div",{style:{fontSize:12,fontWeight:700,color:"var(--emerald)",marginBottom:4}},"Free while in Beta"),
-                  React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6,marginBottom:10}},"PromptCoach is completely free to use. Pro plan launching at Rs 199/month."),
-                  React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"9px 14px",borderRadius:"var(--r-sm)",border:"1px solid rgba(16,185,129,0.35)",background:"rgba(16,185,129,0.12)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',sans-serif"}},"Join the Waitlist")
+                  React.createElement("div",{style:{fontSize:11.5,color:"var(--text2)",lineHeight:1.6,marginBottom:10}},"PromptCoach is completely free to use. Pro plan launching at Rs 199/month."),
+                  React.createElement("button",{onClick:function(){ window.open("https://tally.so/r/rjvEep","_blank"); },style:{width:"100%",padding:"9px 14px",borderRadius:"var(--r-sm)",border:"1px solid rgba(16,185,129,0.35)",background:"rgba(16,185,129,0.12)",color:"var(--emerald)",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif"}},"Join the Waitlist")
                 )
               ),
               menuPage==="about" && React.createElement("div",null,
-                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
-                React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"About Us"),
+                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",marginBottom:20,padding:0}},"< Back"),
+                React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"About Us"),
                 React.createElement("div",{style:{display:"flex",alignItems:"center",gap:14,marginBottom:20,padding:"16px",background:"var(--surface)",borderRadius:"var(--r-lg)",border:"1px solid var(--border)"}},
                   React.createElement("div",{style:{width:52,height:52,borderRadius:16,background:"linear-gradient(135deg,var(--indigo),var(--indigo-d))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0,boxShadow:"var(--shadow-primary)",color:"#fff",fontWeight:800}},"B"),
                   React.createElement("div",null,
-                    React.createElement("div",{style:{fontSize:16,fontWeight:800,color:"var(--text)",marginBottom:2}},"Bharat"),
+                    React.createElement("div",{style:{fontSize:15,fontWeight:800,color:"var(--text)",marginBottom:2}},"Bharat"),
                     React.createElement("div",{style:{fontSize:12,color:"var(--indigo-l)",fontWeight:600}},"Creator, PromptCoach")
                   )
                 ),
@@ -1683,16 +1641,16 @@ export default function PromptCoach() {
                  {heading:"A note from me",body:"This is a work in progress, built with genuine care. Every lesson, every example, every feature has been thought through for someone who is using AI for the first time or wants to finally get it right. If something does not work or could be better, I want to know."},
                 ].map(function(section,i){
                   return React.createElement("div",{key:i,style:{marginBottom:18}},
-                    React.createElement("div",{style:{fontSize:14,fontWeight:700,color:"var(--text)",marginBottom:6}},section.heading),
-                    React.createElement("div",{style:{fontSize:14,color:"var(--text2)",lineHeight:1.75}},section.body)
+                    React.createElement("div",{style:{fontSize:13,fontWeight:700,color:"var(--text)",marginBottom:6}},section.heading),
+                    React.createElement("div",{style:{fontSize:13,color:"var(--text2)",lineHeight:1.75}},section.body)
                   );
                 })
               ),
               menuPage==="guide_menu" && React.createElement("div",null,
-                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',sans-serif",marginBottom:20,padding:0}},"< Back"),
-                React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"Guide to the App"),
+                React.createElement("button",{onClick:function(){ setMenuPage("home"); },style:{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",color:"var(--indigo-l)",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Plus Jakarta Sans',sans-serif",marginBottom:20,padding:0}},"< Back"),
+                React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1.5px",textTransform:"uppercase",color:"var(--text3)",marginBottom:16}},"Guide to the App"),
                 [{icon:"L",tab:"Learn",color:"rgba(99,102,241,0.12)",tc:"var(--indigo-l)",border:"rgba(99,102,241,0.25)",tagline:"Start here. Always.",what:"The Learn tab teaches you the 8 building blocks of a great prompt - the same framework used by AI professionals.",how:"Tap any lesson to expand it. Start with Lesson 1 (The 8 Building Blocks). Each lesson takes under 5 minutes.",tip:"Finish Lesson 1 before using any other tab - it makes everything else 10x more useful."},
-                 {icon:"B",tab:"Build",color:"rgba(16,185,129,0.08)",tc:"var(--emerald)",border:"rgba(16,185,129,0.2)",tagline:"Where you create your prompts.",what:"Build has 2 modes - Build (a guided 8-question wizard that writes an expert prompt for you) and Improve (paste any rough idea and we upgrade it into a polished prompt).",how:"New to prompting? Use Build mode for step-by-step guidance. Have a rough idea already? Use Improve to upgrade it instantly.",tip:"In the Role step, choose 'Help me choose' from the dropdown and describe your task - we will suggest the best expert or team."},
+                 {icon:"B",tab:"Build",color:"rgba(16,185,129,0.08)",tc:"var(--emerald)",border:"rgba(16,185,129,0.2)",tagline:"Where you create your prompts.",what:"Build has 3 modes - Build (guided 8-question wizard), Improve (paste any rough idea and we upgrade it), and Compare (test two prompts side by side).",how:"New to prompting? Use Build mode. Have a rough idea? Use Improve. Compare lets you test two prompts side by side.",tip:"In the Role block, tap Help me choose and describe your task - we will suggest the best expert or team."},
                  {icon:"P",tab:"Browse",color:"rgba(245,158,11,0.08)",tc:"var(--amber)",border:"rgba(245,158,11,0.2)",tagline:"Ready-made expert prompts.",what:"The Browse tab has professionally crafted prompts across 9 categories - Marketing, Sales, HR, Finance, Customer Service, and more.",how:"Pick a category, find a prompt, tap Copy to use it. Tap Why This Works to see the 8-block breakdown.",tip:"Tap Why This Works on at least 3 prompts. It is the fastest way to learn what makes a prompt powerful."},
                  {icon:"X",tab:"Practice",color:"rgba(244,63,94,0.08)",tc:"var(--rose)",border:"rgba(244,63,94,0.2)",tagline:"Learn by doing - with real feedback.",what:"Practice gives you real-world scenarios. Write a prompt for each and get AI feedback against all 8 building blocks.",how:"Choose a track, generate exercises, write your prompt, tap Get Feedback. A Daily Challenge gives you one scenario every day.",tip:"Do not read the Ideal Prompt before attempting. Write your own first - that is where the learning happens."}
                 ].map(function(item,i){
@@ -1701,27 +1659,26 @@ export default function PromptCoach() {
                       React.createElement("div",{style:{width:34,height:34,borderRadius:10,background:"rgba(0,0,0,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}},item.icon),
                       React.createElement("div",null,
                         React.createElement("div",{style:{fontSize:14,fontWeight:800,color:item.tc}},item.tab),
-                        React.createElement("div",{style:{fontSize:12,color:"var(--text2)",fontStyle:"italic"}},item.tagline)
+                        React.createElement("div",{style:{fontSize:11.5,color:"var(--text2)",fontStyle:"italic"}},item.tagline)
                       )
                     ),
                     React.createElement("div",{style:{marginBottom:8}},
-                      React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:3}},"What it is"),
-                      React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6}},item.what)
+                      React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:3}},"What it is"),
+                      React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},item.what)
                     ),
                     React.createElement("div",{style:{marginBottom:8}},
-                      React.createElement("div",{style:{fontSize:11,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:3}},"How to use it"),
-                      React.createElement("div",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.6}},item.how)
+                      React.createElement("div",{style:{fontSize:10,fontWeight:800,letterSpacing:"1px",textTransform:"uppercase",color:"var(--text3)",marginBottom:3}},"How to use it"),
+                      React.createElement("div",{style:{fontSize:12.5,color:"var(--text2)",lineHeight:1.6}},item.how)
                     ),
                     React.createElement("div",{style:{padding:"8px 11px",background:"rgba(0,0,0,0.15)",borderRadius:"var(--r-sm)",borderLeft:"2px solid "+item.border}},
-                      React.createElement("span",{style:{fontSize:11,fontWeight:800,color:item.tc}},"Tip: "),
-                      React.createElement("span",{style:{fontSize:12,color:"var(--text2)",lineHeight:1.55}},item.tip)
+                      React.createElement("span",{style:{fontSize:10.5,fontWeight:800,color:item.tc}},"Tip: "),
+                      React.createElement("span",{style:{fontSize:11.5,color:"var(--text2)",lineHeight:1.55}},item.tip)
                     )
                   );
                 })
               )
             )
           )
-        )
         )
       ),
 
@@ -1731,11 +1688,7 @@ export default function PromptCoach() {
             React.createElement("div",{className:"nav-icon-wrap"},t.icon),
             React.createElement("div",{className:"nav-label"},t.label)
           );
-        }),
-        React.createElement("button",{className:"nav-item nav-rate",onClick:function(){ window.open(RATE_URL,"_blank"); }},
-          React.createElement("div",{className:"nav-icon-wrap"},rateIcon),
-          React.createElement("div",{className:"nav-label"},"Rate Us")
-        )
+        })
       )
     )
   );
