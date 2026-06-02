@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 const STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   :root {
     --bg:#07090f; --bg2:#0c0f1a; --surface:#0f1320; --surface2:#141827;
