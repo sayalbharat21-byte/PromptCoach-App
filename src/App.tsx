@@ -40,9 +40,9 @@ const STYLES = `
   .hero p { font-size:var(--fs-sm); color:var(--text2); line-height:var(--lh-base); max-width:580px; margin:0 auto; }
   .h1-short { display:none; }
   @media (max-width:600px) { .h1-full { display:none; } .h1-short { display:inline; } }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.45),0 8px 24px rgba(0,0,0,0.22); transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out); }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; margin-bottom:12px; position:relative; overflow:hidden; box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 1px 2px rgba(0,0,0,0.45),0 8px 24px rgba(0,0,0,0.22); transition:background var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out); }
   .card::before { content:''; position:absolute; inset:0; background:linear-gradient(145deg,rgba(255,255,255,0.03) 0%,transparent 50%); pointer-events:none; }
-  @media (hover:hover) { .card:hover { background:var(--surface2); border-color:var(--border2); transform:translateY(-1px); } }
+  @media (hover:hover) { .card:hover { background:var(--surface2); border-color:var(--border2); } }
   .card-accent { border-left:2px solid var(--indigo); box-shadow:var(--shadow-card),-2px 0 20px rgba(99,102,241,0.08); }
   .card-title { font-size:var(--fs-lg); font-weight:700; color:var(--text); margin-bottom:5px; letter-spacing:-0.3px; display:flex; align-items:center; gap:9px; }
   .card-title .icon { width:30px; height:30px; border-radius:9px; background:rgba(99,102,241,0.13); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; box-shadow:0 2px 8px rgba(99,102,241,0.15); }
